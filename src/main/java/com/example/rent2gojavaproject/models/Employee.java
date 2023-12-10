@@ -29,7 +29,7 @@ public class Employee {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "rental")
+    @OneToMany(mappedBy = "employee")
     @JsonIgnore
     private List<Rental> rentals;
 

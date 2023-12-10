@@ -26,7 +26,7 @@ public class Discount {
     @Column(name = "percentage", nullable = false)
     private double percentage;
 
-    @OneToMany(mappedBy = "rental")
+    @OneToMany(mappedBy = "discount")
     @JsonIgnore
     private List<Rental> rentals;
 
