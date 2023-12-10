@@ -49,4 +49,8 @@ public class Rental {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    @ManyToOne
+    @JoinColumn(name = "discount_id", nullable = false)
+    private Discount discount;
+
 }
