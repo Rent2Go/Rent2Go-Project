@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject;
+package com.rent2go.rent2gojavaproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
