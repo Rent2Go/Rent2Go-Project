@@ -26,8 +26,8 @@ public class User {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "gsm", unique = true, nullable = false)
-    private String gsm;
+    @Column(name = "phone_number", unique = true, nullable = false)
+    private String phoneNumber;
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
@@ -35,5 +35,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Customer> customers;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Employee> employees;
 
 }
