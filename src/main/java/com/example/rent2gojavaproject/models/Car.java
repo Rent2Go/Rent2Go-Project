@@ -1,10 +1,13 @@
 package com.example.rent2gojavaproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "cars")
@@ -38,5 +41,9 @@ public class Car {
     @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
+
+    @OneToMany(mappedBy = "car")
+    @JsonIgnore
+    private List<Rental> rentals;
 
 }
