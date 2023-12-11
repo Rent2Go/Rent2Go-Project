@@ -1,4 +1,4 @@
 package com.example.rent2gojavaproject.services.abstracts;
 
-public class CarService {
+public interface CarService {
 }
