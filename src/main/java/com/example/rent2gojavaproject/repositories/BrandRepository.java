@@ -1,4 +1,8 @@
 package com.example.rent2gojavaproject.repositories;
 
-public interface BrandRepository {
+import com.example.rent2gojavaproject.models.Brand;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BrandRepository extends JpaRepository<Brand,Integer> {
+
 }
