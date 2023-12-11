@@ -10,7 +10,7 @@ public class Rent2GoJavaProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(Rent2GoJavaProjectApplication.class, args);
 
-
+    //test
     }
 
 }
