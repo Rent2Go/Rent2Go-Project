@@ -27,9 +27,9 @@ public class CarManager implements CarService {
     @Override
     public List<GetCarListResponse> getAllCars() {
         List<Car> cars = this.carRepository.findAll();
-        List<GetCarListResponse> responses = cars.stream().map(car ->this.mapperService
-                                .forResponse()
-                                .map(car, GetCarListResponse.class))
+        List<GetCarListResponse> responses = cars.stream().map(car -> this.mapperService
+                        .forResponse()
+                        .map(car, GetCarListResponse.class))
                 .collect(Collectors.toList());
 
 
@@ -38,15 +38,16 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarResponse getById(int id) {
-        this.carRepository.findById(id).orElseThrow();
+        Car car = this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find car id"));
+
+        GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
 
 
-
-        return null;
+        return response;
     }
 
     @Override
-    public String saveCar(AddCarRequest addCarRequest) {
+    public String createCar(AddCarRequest addCarRequest) {
         return null;
     }
 
