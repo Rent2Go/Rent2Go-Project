@@ -46,4 +46,6 @@ public class Car {
     @JsonIgnore
     private List<Rental> rentals;
 
+
+
 }
