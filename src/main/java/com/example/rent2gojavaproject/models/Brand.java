@@ -20,7 +20,7 @@ public class Brand {
     @Column(name = "id")
     private int id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "brand")
