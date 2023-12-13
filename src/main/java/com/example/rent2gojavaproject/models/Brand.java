@@ -20,10 +20,10 @@ public class Brand {
     @Column(name = "id")
     private int id;
 
-    @Column
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Model> models;
 
