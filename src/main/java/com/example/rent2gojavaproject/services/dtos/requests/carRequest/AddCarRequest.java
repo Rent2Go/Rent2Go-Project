@@ -1,13 +1,14 @@
 package com.example.rent2gojavaproject.services.dtos.requests.carRequest;
 
-import com.example.rent2gojavaproject.models.Color;
-import com.example.rent2gojavaproject.models.Model;
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AddCarRequest {
 
-
-///Get by model response ve colorresponse oluşturulacak.
 
     private int kilometer;
 
