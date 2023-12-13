@@ -8,6 +8,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRe
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import com.example.rent2gojavaproject.services.rules.CarBusinessRules;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class CarManager implements CarService {
     private final CarRepository carRepository;
 
     private ModelMapperService mapperService;
+
+    private CarBusinessRules businessRules;
 
 
     @Override
@@ -47,14 +50,11 @@ public class CarManager implements CarService {
 
     @Override
     public String createCar(AddCarRequest addCarRequest) {
-        String licensePlate = addCarRequest.getPlate().replace(" ", "").toUpperCase();
-        addCarRequest.setPlate(licensePlate);
-        boolean result = this.carRepository.existsByPlate(addCarRequest.getPlate());
-        if (result) {
-            throw new IllegalArgumentException("Car Plate already exists! : " + addCarRequest.getPlate());
-        }
-        Car car = this.mapperService.forRequest().map(addCarRequest, Car.class);
 
+        String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
+        addCarRequest.setPlate(editPlate);
+
+        Car car = this.mapperService.forRequest().map(addCarRequest, Car.class);
 
         this.carRepository.save(car);
 
@@ -63,11 +63,25 @@ public class CarManager implements CarService {
 
     @Override
     public String updateCar(UpdateCarRequest updateCarRequest) {
-        return null;
+
+        String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
+        updateCarRequest.setPlate(editPlate);
+
+        Car car = this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new RuntimeException("Car not found"));
+
+        car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
+
+        this.carRepository.save(car);
+
+
+        return "Transactional Successfull";
     }
 
     @Override
     public String deleteCar(int id) {
-        return null;
+        this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        this.carRepository.deleteById(id);
+
+        return "Transactional Successfull";
     }
 }
