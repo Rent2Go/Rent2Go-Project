@@ -38,6 +38,10 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarResponse getById(int id) {
+        this.carRepository.findById(id).orElseThrow();
+
+
+
         return null;
     }
 
