@@ -11,7 +11,6 @@ import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCar
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +47,18 @@ public class CarManager implements CarService {
 
     @Override
     public String createCar(AddCarRequest addCarRequest) {
-        return null;
+        String licensePlate = addCarRequest.getPlate().replace(" ", "").toUpperCase();
+        addCarRequest.setPlate(licensePlate);
+        boolean result = this.carRepository.existsByPlate(addCarRequest.getPlate());
+        if (result) {
+            throw new IllegalArgumentException("Car Plate already exists! : " + addCarRequest.getPlate());
+        }
+        Car car = this.mapperService.forRequest().map(addCarRequest, Car.class);
+
+
+        this.carRepository.save(car);
+
+        return "Transactional Successfull";
     }
 
     @Override

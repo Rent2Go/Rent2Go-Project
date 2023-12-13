@@ -1,8 +1,10 @@
 package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.services.abstracts.CarService;
+import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,11 @@ public class CarsController {
     public GetCarResponse getById(@PathVariable int id) {
 
         return this.carService.getById(id);
+    }
+    @PostMapping("/add")
+    public String createCar(@RequestBody @Valid AddCarRequest addCarRequest) {
+
+        return  this.carService.createCar(addCarRequest);
     }
 
 }
