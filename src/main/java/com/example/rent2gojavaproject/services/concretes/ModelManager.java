@@ -41,7 +41,11 @@ public class ModelManager implements ModelService {
 
     @Override
     public String addModel(AddModelRequest addModelRequest) {
-        return null;
+
+        Model model = this.mapperService.forRequest().map(addModelRequest,Model.class);
+        this.modelRepository.save(model);
+
+        return "Transaction Successfully.";
     }
 
     @Override
