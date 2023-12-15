@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
@@ -33,21 +34,35 @@ public class UserManager implements UserService {
 
     @Override
     public DataResult<GetUserResponse> getById(int id) {
-        return null;
+        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+
+        GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
+
+
+        return new SuccessDataResult<GetUserResponse>(response, "Transaction Successfully");
     }
 
     @Override
     public Result addUser(AddUserRequest addUserRequest) {
-        return null;
+        User user = this.mapperService.forRequest().map(addUserRequest, User.class);
+
+        this.userRepository.save(user);
+        return new SuccessResult("Added user successfully");
     }
 
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
-        return null;
+        User user = this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+
+        //user = this.mapperService.forRequest().map(updateUserRequest, User.class);
+        this.userRepository.save(user);
+        return new SuccessResult("Updated user successfully");
     }
 
     @Override
     public Result deleteUser(int id) {
-        return null;
+        this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        this.userRepository.deleteById(id);
+        return new SuccessResult("Deleted user successfully");
     }
 }
