@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddColorRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
@@ -34,7 +35,7 @@ public class ColorsController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public String createColor(@RequestBody @Valid AddColorRequest addColorRequest){
+    public Result createColor(@RequestBody @Valid AddColorRequest addColorRequest){
 
         return this.colorService.addColor(addColorRequest);
     }
