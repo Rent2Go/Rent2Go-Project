@@ -24,10 +24,8 @@ public class BrandManager implements BrandService {
 
     @Override
     public List<GetBrandListResponse> getAllBrands() {
-        List<Brand> brands =this.brandRepository.findAll();
-        List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService
-                .forResponse().map(brand, GetBrandListResponse.class))
-                .collect(Collectors.toList());
+        List<Brand> brands = this.brandRepository.findAll();
+        List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
         return responses;
     }
 
@@ -48,7 +46,13 @@ public class BrandManager implements BrandService {
 
     @Override
     public String updateBrand(UpdateBrandRequest updateBrandRequest) {
-        return null;
+        Brand brand = this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new RuntimeException("Brand not found !"));
+
+        brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
+
+        this.brandRepository.save(brand);
+
+        return "Transaction Successfully.";
     }
 
     @Override
