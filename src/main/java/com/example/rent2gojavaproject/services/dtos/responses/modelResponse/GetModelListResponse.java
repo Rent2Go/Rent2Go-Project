@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class GetModelListResponse {
     private int id;
     private String name;
-    private GetBrandResponse brandResponse;
+    private String brandName;
 
 }
