@@ -12,5 +12,5 @@ public class GetEmployeeListResponse {
 
     private double salary;
 
-    private int userId;
+    private String userName;
 }
