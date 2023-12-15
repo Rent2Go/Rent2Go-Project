@@ -22,47 +22,5 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CustomerManager implements CustomerService {
 
-    private CustomerRepository customerRepository;
-    private ModelMapperService mapperService;
 
-    @Override
-    public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
-        List<Customer> customers = this.customerRepository.findAll();
-        List<GetCustomerListResponse> responses = customers.stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetCustomerListResponse>>(responses, "Transaction Successfully");
-    }
-
-    @Override
-    public DataResult<GetCustomerResponse> getById(int customerId) {
-        Customer customer = this.customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found: " + customerId));
-        GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
-        return new SuccessDataResult<GetCustomerResponse>(response, "Transaction Successfully");
-
-    }
-
-    @Override
-    public Result addCustomer(AddCustomerRequest addCustomerRequest) {
-        Customer customer = this.mapperService.forRequest().map(addCustomerRequest, Customer.class);
-        this.customerRepository.save(customer);
-
-        return new SuccessResult("Transaction Successfully");
-    }
-
-    @Override
-    public Result updateCustomer(UpdateCustomerRequest updateCustomerRequest) {
-        this.customerRepository.findById(updateCustomerRequest.getId()).orElseThrow(() -> new RuntimeException("Customer not found: " + updateCustomerRequest.getId()));
-        Customer customer = this.mapperService.forRequest().map(updateCustomerRequest, Customer.class);
-        this.customerRepository.save(customer);
-
-
-        return new SuccessResult("Transaction Successfully");
-    }
-
-    @Override
-    public Result DeleteCustomer(int customerId) {
-        this.customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found: " + customerId));
-
-        this.customerRepository.deleteById(customerId);
-        return null;
-    }
 }
