@@ -17,6 +17,12 @@ public abstract class Result {
         this.result = result;
     }
 
+    public Result(boolean result) {
+
+        this.result = result;
+    }
+
+
     public String getMessage() {
         return message;
     }

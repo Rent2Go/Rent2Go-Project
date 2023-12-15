@@ -13,6 +13,16 @@ public class DataResult<T> extends Result {
         this.data = data;
     }
 
+    public DataResult(T data, boolean result) {
+        super(result);
+        this.data = data;
+    }
+
+    public DataResult(String message, boolean result) {
+        super(message, result);
+        this.data = data;
+    }
+
     public T getData() {
         return data;
     }
