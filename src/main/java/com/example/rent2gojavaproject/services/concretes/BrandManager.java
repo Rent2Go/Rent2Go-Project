@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
+import com.example.rent2gojavaproject.models.Brand;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.services.abstracts.BrandService;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
@@ -12,6 +13,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class BrandManager implements BrandService {
@@ -21,12 +24,19 @@ public class BrandManager implements BrandService {
 
     @Override
     public List<GetBrandListResponse> getAllBrands() {
-        return null;
+        List<Brand> brands =this.brandRepository.findAll();
+        List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService
+                .forResponse().map(brand, GetBrandListResponse.class))
+                .collect(Collectors.toList());
+        return responses;
     }
 
     @Override
     public GetBrandResponse getById(int id) {
-        return null;
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
+
+        GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
+        return response;
     }
 
     @Override
