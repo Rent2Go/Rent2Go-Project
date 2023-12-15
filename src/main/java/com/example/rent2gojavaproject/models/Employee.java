@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class Employee {
 
     @Id
@@ -25,8 +25,8 @@ public class Employee {
     @Column(name = "salary", nullable = false)
     private double salary;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", columnDefinition = "integer default 1")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "user_id", columnDefinition = "integer default 1",nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "employee")
@@ -34,4 +34,8 @@ public class Employee {
     private List<Rental> rentals;
 
 
+   //  Created empty constructor for default value.
+    public Employee() {
+        this.user = new User(1);
+    }
 }
