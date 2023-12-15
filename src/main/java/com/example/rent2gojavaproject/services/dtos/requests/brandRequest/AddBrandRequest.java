@@ -15,6 +15,6 @@ public class AddBrandRequest {
     @NotNull(message = "The brand name cannot be null.")
     @NotBlank(message = "The brand name can't be empty.")
     @Size(min = 2, max = 15, message = "Brand name should be between 2 and 15 digits.")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "The brand name should only contain letters.")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$", message = "Marka adı sadece harfleri içermelidir.")
     private String name;
 }

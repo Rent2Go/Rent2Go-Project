@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ColorBusinessRules {
 
-    private final ColorRepository colorRepository;
 
 
 
