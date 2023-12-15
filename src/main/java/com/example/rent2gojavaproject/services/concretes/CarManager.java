@@ -59,7 +59,7 @@ public class CarManager implements CarService {
 
         this.carRepository.save(car);
 
-        return "Transactional Successfull";
+        return "Transaction Successfully";
 
     }
 
@@ -76,7 +76,7 @@ public class CarManager implements CarService {
         this.carRepository.save(car);
 
 
-        return "Transactional Successfull";
+        return "Transaction Successfully";
     }
 
     @Override
@@ -84,6 +84,6 @@ public class CarManager implements CarService {
         this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
         this.carRepository.deleteById(id);
 
-        return "Transactional Successfull";
+        return "Transaction Successfully";
     }
 }
