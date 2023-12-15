@@ -27,4 +27,6 @@ public class Brand {
     @JsonIgnore
     private List<Model> models;
 
+
+
 }

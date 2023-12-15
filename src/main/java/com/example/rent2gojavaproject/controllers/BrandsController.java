@@ -6,4 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/V1/brands")
 public class BrandsController {
+
+
 }
