@@ -59,7 +59,10 @@ public class ColorManager implements ColorService {
 
     @Override
     public String deleteColor(int id) {
-        return null;
+        this.colorRepository.findById(id).orElseThrow(()-> new RuntimeException("id not found"));
+        this.colorRepository.deleteById(id);
+
+        return "Transaction Successfully";
     }
 
 
