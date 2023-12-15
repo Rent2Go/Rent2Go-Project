@@ -41,7 +41,10 @@ public class ColorManager implements ColorService {
 
     @Override
     public String addColor(AddColorRequest addColorRequest) {
-        return null;
+
+        Color color = this.mapperService.forRequest().map(addColorRequest, Color.class);
+        this.colorRepository.save(color);
+        return "Transaction Successfully";
     }
 
     @Override
