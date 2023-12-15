@@ -41,4 +41,10 @@ public class UsersController {
     public Result updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         return userService.updateUser(updateUserRequest);
     }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result deleteUser(@PathVariable int id) {
+        return userService.deleteUser(id);
+    }
 }
