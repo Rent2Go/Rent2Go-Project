@@ -23,6 +23,7 @@ application.properties
 *.iws
 *.iml
 *.ipr
+*.swp
 
 ### NetBeans ###
 /nbproject/private/
