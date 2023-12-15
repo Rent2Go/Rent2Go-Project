@@ -24,14 +24,15 @@ public class DiscountManager implements DiscountService {
 
     private DiscountRepository discountRepository;
     private ModelMapperService mapperService;
-    private String successMessage ="Transaction Successfully !";
+
+    private String successMessage ="Process successful !";
 
     @Override
     public DataResult<List<GetDiscountListResponse>> getAllDiscounts(){
         List<Discount> discounts = this.discountRepository.findAll();
         List<GetDiscountListResponse> responses = discounts.stream().map(discount -> this.mapperService.forResponse().map(discount, GetDiscountListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, successMessage);
+        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, "Listing "+successMessage);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DiscountManager implements DiscountService {
         Discount discount = this.discountRepository.findById(id).orElseThrow(()-> new RuntimeException("Couldn't find discount id"));
         GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
 
-        return new SuccessDataResult<GetDiscountResponse>(response, successMessage);
+        return new SuccessDataResult<GetDiscountResponse>(response, "Response " + successMessage);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class DiscountManager implements DiscountService {
         Discount discount = this.mapperService.forRequest().map(addDiscountRequest, Discount.class);
 
         this.discountRepository.save(discount);
-        return new SuccessResult("Added Discount successfully");
+        return new SuccessResult("Add " + successMessage);
     }
 
     @Override
@@ -57,14 +58,14 @@ public class DiscountManager implements DiscountService {
         discount = this.mapperService.forRequest().map(updateDiscountRequest, Discount.class);
         this.discountRepository.save(discount);
 
-        return new SuccessResult("Updated Discount successfully");
+        return new SuccessResult("Update " + successMessage);
     }
 
     @Override
     public Result deleteDiscount(int id){
         this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
 
-        return new SuccessResult("Deleted Discount successfully");
+        return new SuccessResult("Delete " + successMessage);
 
     }
 }
