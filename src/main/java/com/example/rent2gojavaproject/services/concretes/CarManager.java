@@ -69,9 +69,9 @@ public class CarManager implements CarService {
         String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
         updateCarRequest.setPlate(editPlate);
         this.businessRules.updateCarMethod(updateCarRequest.getModelId(), updateCarRequest.getColorId());
-        Car car = this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new RuntimeException("Car not found"));
+        this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new RuntimeException("Car not found"));
 
-        car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
+        Car car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
 
         this.carRepository.save(car);
 
