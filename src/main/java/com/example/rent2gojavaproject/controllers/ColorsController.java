@@ -43,15 +43,15 @@ public class ColorsController {
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)
-    public String updateColor(@RequestBody @Valid UpdateColorRequest updateColorRequest){
+    public Result updateColor(@RequestBody @Valid UpdateColorRequest updateColorRequest){
 
         return this.colorService.updateColor(updateColorRequest);
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public String deleteColor(@PathVariable int id){
+    public Result deleteColor(@PathVariable int id){
 
         return this.colorService.deleteColor(id);
     }
