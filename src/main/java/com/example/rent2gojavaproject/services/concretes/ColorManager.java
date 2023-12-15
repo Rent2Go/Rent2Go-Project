@@ -31,7 +31,7 @@ public class ColorManager implements ColorService {
                     .map(color, GetColorListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetColorListResponse>>(responses);
+        return new SuccessDataResult<List<GetColorListResponse>>(responses, "Transaction Successfully");
     }
 
     @Override
