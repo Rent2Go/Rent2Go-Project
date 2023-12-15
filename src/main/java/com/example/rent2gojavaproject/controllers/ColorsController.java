@@ -27,7 +27,7 @@ public class ColorsController {
     }
 
     @GetMapping("/{id}")
-    public GetColorResponse getById(@PathVariable int id){
+    public DataResult<GetColorResponse> getById(@PathVariable int id){
 
         return this.colorService.getById(id);
     }
