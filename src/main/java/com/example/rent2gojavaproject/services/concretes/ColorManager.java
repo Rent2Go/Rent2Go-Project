@@ -35,10 +35,10 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public GetColorResponse getById(int id) {
+    public DataResult<GetColorResponse> getById(int id) {
         Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find color id"));
-        GetColorResponse response = this.mapperService.forResponse().map(color, GetColorResponse.class);
-        return response;
+        GetColorResponse responses = this.mapperService.forResponse().map(color, GetColorResponse.class);
+        return new SuccessDataResult<>(responses, "Transaction Successfully");
     }
 
     @Override
