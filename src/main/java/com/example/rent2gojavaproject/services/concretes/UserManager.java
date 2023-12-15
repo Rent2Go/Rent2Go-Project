@@ -26,7 +26,9 @@ public class UserManager implements UserService {
     @Override
     public DataResult<List<GetUserListResponse>> getAllUsers() {
         List<User> users = this.userRepository.findAll();
-        List<GetUserListResponse> responses = users.stream().map(employee -> this.mapperService.forResponse().map(users, GetUserListResponse.class)).collect(Collectors.toList());
+        List<GetUserListResponse> responses = users.stream().map(user -> this.mapperService
+                .forResponse().map(user, GetUserListResponse.class))
+                .collect(Collectors.toList());
 
 
         return new SuccessDataResult<List<GetUserListResponse>>(responses,"Transaction Successfully");
