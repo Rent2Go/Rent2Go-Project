@@ -24,6 +24,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public List<GetBrandListResponse> getAllBrands() {
+
         List<Brand> brands = this.brandRepository.findAll();
         List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
         return responses;
@@ -31,6 +32,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public GetBrandResponse getById(int id) {
+
         Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
@@ -39,17 +41,19 @@ public class BrandManager implements BrandService {
 
     @Override
     public String addBrand(AddBrandRequest addBrandRequest) {
+
         Brand brand = this.mapperService.forRequest().map(addBrandRequest, Brand.class);
         this.brandRepository.save(brand);
+
         return "Transaction Successfully.";
     }
 
     @Override
     public String updateBrand(UpdateBrandRequest updateBrandRequest) {
+
         Brand brand = this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new RuntimeException("Brand not found !"));
 
         brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
-
         this.brandRepository.save(brand);
 
         return "Transaction Successfully.";
@@ -57,6 +61,10 @@ public class BrandManager implements BrandService {
 
     @Override
     public String deleteBrand(int id) {
-        return null;
+
+        this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("ID not found!"));
+        this.brandRepository.deleteById(id);
+
+        return "Transaction Successfully.";
     }
 }
