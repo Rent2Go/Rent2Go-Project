@@ -4,7 +4,6 @@ import com.example.rent2gojavaproject.repositories.ColorRepository;
 
 public class ColorBusinessRules {
 
-    private final ColorRepository colorRepository;
 
 
 
