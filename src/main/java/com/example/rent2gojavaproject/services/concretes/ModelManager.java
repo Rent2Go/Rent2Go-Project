@@ -33,7 +33,10 @@ public class ModelManager implements ModelService {
 
     @Override
     public GetModelResponse getById(int id) {
-        return null;
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id!"));
+
+        GetModelResponse response = this.mapperService.forResponse().map(model,GetModelResponse.class);
+        return response;
     }
 
     @Override
