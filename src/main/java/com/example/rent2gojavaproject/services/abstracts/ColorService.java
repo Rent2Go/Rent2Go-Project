@@ -1,5 +1,7 @@
 package com.example.rent2gojavaproject.services.abstracts;
 
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddColorRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorListResponse;
@@ -9,14 +11,14 @@ import java.util.List;
 
 public interface ColorService {
 
-    List<GetColorListResponse> getAllColors();
+    DataResult<List<GetColorListResponse>> getAllColors();
 
-    GetColorResponse getById(int id);
+    DataResult<GetColorResponse> getById(int id);
 
-    String addColor(AddColorRequest addColorRequest);
+    Result addColor(AddColorRequest addColorRequest);
 
-    String updateColor(UpdateColorRequest updateColorRequest);
+    Result updateColor(UpdateColorRequest updateColorRequest);
 
-    String deleteColor(int id);
+    Result deleteColor(int id);
 
 }
