@@ -53,12 +53,14 @@ public class CarManager implements CarService {
 
         String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
         addCarRequest.setPlate(editPlate);
+        this.businessRules.updateCarMethod(addCarRequest.getModelId(), addCarRequest.getColorId());
 
         Car car = this.mapperService.forRequest().map(addCarRequest, Car.class);
 
         this.carRepository.save(car);
 
         return "Transactional Successfull";
+
     }
 
     @Override
@@ -66,7 +68,7 @@ public class CarManager implements CarService {
 
         String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
         updateCarRequest.setPlate(editPlate);
-
+        this.businessRules.updateCarMethod(updateCarRequest.getModelId(), updateCarRequest.getColorId());
         Car car = this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new RuntimeException("Car not found"));
 
         car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
