@@ -20,8 +20,8 @@ public class AddCarRequest {
     @DecimalMin(value = "0.0", inclusive = false, message = "Daily price must be greater than 0.")
     private double dailyPrice;
     @NotBlank(message = "The plate field can't be empty.")
-    @Pattern(regexp = "(0[1-9]|[1-7][0-9]|8[01])[A-Z]{1,3}(\\d{2}|\\d{4})", message = "Invalid licence plate")
-    @Size(min = 5, max = 9, message = "Licence plate must be between 5 and 9 characters")
+    @Pattern(regexp = "(0[1-9]|[1-7][0-9]|8[01])\s?[A-Za-z]{1,3}\s?(\\d{2}|\\d{4})", message = "Invalid licence plate")
+    @Size(min = 5, max = 11, message = "Licence plate must be between 5 and 11 characters")
     private String plate;
     @NotNull(message = "The model id cannot be null.")
     @Positive(message = "Id must be a positive number.")
