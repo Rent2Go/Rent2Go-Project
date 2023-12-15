@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class AddBrandRequest {
     @NotNull(message = "The brand name cannot be null.")
     @NotBlank(message = "The brand name can't be empty.")
-    @Size(min = 3, max = 15, message = "Brand name should be between 3 and 15 digits.")
+    @Size(min = 2, max = 15, message = "Brand name should be between 2 and 15 digits.")
     @Pattern(regexp = "^[a-zA-Z]*$", message = "The brand name should only contain letters.")
     private String name;
 }

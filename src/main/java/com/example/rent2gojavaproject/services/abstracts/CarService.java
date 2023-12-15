@@ -14,7 +14,7 @@ public interface CarService {
 
     GetCarResponse getById(int id);
 
-    String createCar(AddCarRequest addCarRequest);
+    String addCar(AddCarRequest addCarRequest);
 
     String updateCar(UpdateCarRequest updateCarRequest);
 

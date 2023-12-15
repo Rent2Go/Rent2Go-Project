@@ -20,7 +20,7 @@ public class GetCarListResponse {
 
     private String plate;
 
-    private GetModelResponse model;
+    private String modelName;
 
-    private GetColorResponse color ;
+    private String colorName ;
 }
