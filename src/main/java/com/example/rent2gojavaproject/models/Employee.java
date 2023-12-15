@@ -26,7 +26,7 @@ public class Employee {
     private double salary;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", columnDefinition = "integer default 1")
     private User user;
 
     @OneToMany(mappedBy = "employee")
