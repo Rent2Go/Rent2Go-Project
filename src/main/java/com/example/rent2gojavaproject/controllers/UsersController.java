@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import jakarta.validation.Valid;
@@ -33,5 +34,11 @@ public class UsersController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createUser(@RequestBody @Valid AddUserRequest addUserRequest) {
         return userService.addUser(addUserRequest);
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
+        return userService.updateUser(updateUserRequest);
     }
 }
