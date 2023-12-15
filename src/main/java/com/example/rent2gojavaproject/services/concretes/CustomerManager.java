@@ -32,8 +32,8 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public DataResult<GetCustomerResponse> getById(int customerId) {
-        Customer customer = this.customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found: " + customerId));
+    public DataResult<GetCustomerResponse> getById(int id) {
+        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
         return new SuccessDataResult<GetCustomerResponse>(response, "Transaction Successfully");
 
@@ -58,10 +58,10 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public Result DeleteCustomer(int customerId) {
-        this.customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found: " + customerId));
+    public Result DeleteCustomer(int id) {
+        this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
 
-        this.customerRepository.deleteById(customerId);
+        this.customerRepository.deleteById(id);
         return new SuccessResult("Transaction Successfully");
     }
 
