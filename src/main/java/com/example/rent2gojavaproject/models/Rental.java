@@ -34,7 +34,7 @@ public class Rental {
     @Column(name = "end_kilometer")
     private int endKilometer;
 
-    @Column(name = "total_price", nullable = false)
+    @Column(name = "total_price")
     private double totalPrice;
 
     @ManyToOne
