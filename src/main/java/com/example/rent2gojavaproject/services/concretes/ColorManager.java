@@ -52,13 +52,13 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public String updateColor(UpdateColorRequest updateColorRequest) {
+    public Result updateColor(UpdateColorRequest updateColorRequest) {
 
         Color color = this.colorRepository.findById(updateColorRequest.getId()).orElseThrow(()-> new RuntimeException("Color not found"));
         color = this.mapperService.forRequest().map(updateColorRequest, Color.class);
         this.colorRepository.save(color);
 
-        return "Transaction Successfully";
+        return new SuccessResult("Updated Color Successfully");
     }
 
     @Override
