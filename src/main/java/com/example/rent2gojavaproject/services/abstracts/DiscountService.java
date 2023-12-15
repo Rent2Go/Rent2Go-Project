@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface DiscountService {
 
+
     DataResult<List<GetDiscountListResponse>> getAllDiscounts();
 
     DataResult<GetDiscountResponse> getById(int id);

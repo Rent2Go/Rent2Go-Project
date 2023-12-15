@@ -13,6 +13,8 @@ import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.Upd
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +27,13 @@ public class DiscountManager implements DiscountService {
     private DiscountRepository discountRepository;
     private ModelMapperService mapperService;
 
-    private String successMessage ="Process successful !";
 
     @Override
     public DataResult<List<GetDiscountListResponse>> getAllDiscounts(){
         List<Discount> discounts = this.discountRepository.findAll();
         List<GetDiscountListResponse> responses = discounts.stream().map(discount -> this.mapperService.forResponse().map(discount, GetDiscountListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, "Listing "+successMessage);
+        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, "Listing Process Successful !");
     }
 
     @Override
@@ -40,7 +41,7 @@ public class DiscountManager implements DiscountService {
         Discount discount = this.discountRepository.findById(id).orElseThrow(()-> new RuntimeException("Couldn't find discount id"));
         GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
 
-        return new SuccessDataResult<GetDiscountResponse>(response, "Response " + successMessage);
+        return new SuccessDataResult<GetDiscountResponse>(response, "Response Process Successful !");
     }
 
     @Override
@@ -48,7 +49,7 @@ public class DiscountManager implements DiscountService {
         Discount discount = this.mapperService.forRequest().map(addDiscountRequest, Discount.class);
 
         this.discountRepository.save(discount);
-        return new SuccessResult("Add " + successMessage);
+        return new SuccessResult("Add Process Successful !");
     }
 
     @Override
@@ -58,14 +59,14 @@ public class DiscountManager implements DiscountService {
         discount = this.mapperService.forRequest().map(updateDiscountRequest, Discount.class);
         this.discountRepository.save(discount);
 
-        return new SuccessResult("Update " + successMessage);
+        return new SuccessResult("Update Process Successful !");
     }
 
     @Override
     public Result deleteDiscount(int id){
         this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
 
-        return new SuccessResult("Delete " + successMessage);
+        return new SuccessResult("Delete Process Successful !");
 
     }
 }
