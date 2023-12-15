@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.controllers;
 
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddColorRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
@@ -20,7 +21,7 @@ public class ColorsController {
     private final ColorService colorService;
 
     @GetMapping("/getAll")
-    public List<GetColorListResponse> getAllColor(){
+    public DataResult<List<GetColorListResponse>> getAllColor(){
 
         return this.colorService.getAllColors();
     }
