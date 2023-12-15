@@ -1,5 +1,7 @@
 package com.example.rent2gojavaproject.services.abstracts;
 
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.AddModelRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.UpdateModelRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelListResponse;
@@ -8,13 +10,13 @@ import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetM
 import java.util.List;
 
 public interface ModelService {
-    List<GetModelListResponse> getAllModels();
+    DataResult<List<GetModelListResponse>> getAllModels();
 
-    GetModelResponse getById(int id);
+    DataResult<GetModelResponse> getById(int id);
 
-    String addModel(AddModelRequest addModelRequest);
+    Result addModel(AddModelRequest addModelRequest);
 
-    String updateModel(UpdateModelRequest updateModelRequest);
+    Result updateModel(UpdateModelRequest updateModelRequest);
 
-    String deleteModel(int id);
+    Result deleteModel(int id);
 }
