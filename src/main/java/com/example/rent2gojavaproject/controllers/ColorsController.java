@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddColorRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorResponse;
 import jakarta.validation.Valid;
@@ -19,22 +20,30 @@ public class ColorsController {
     private final ColorService colorService;
 
     @GetMapping("/getAll")
-    List<GetColorListResponse> getAllColor(){
+    public List<GetColorListResponse> getAllColor(){
 
         return this.colorService.getAllColors();
     }
 
     @GetMapping("/{id}")
-    GetColorResponse getById(@PathVariable int id){
+    public GetColorResponse getById(@PathVariable int id){
 
         return this.colorService.getById(id);
     }
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    String createColor(@RequestBody @Valid AddColorRequest addColorRequest){
+    public String createColor(@RequestBody @Valid AddColorRequest addColorRequest){
 
         return this.colorService.addColor(addColorRequest);
+    }
+
+
+    @PutMapping("/update")
+    @ResponseStatus(code = HttpStatus.OK)
+    public String updateColor(@RequestBody @Valid UpdateColorRequest updateColorRequest){
+
+        return this.colorService.updateColor(updateColorRequest);
     }
 
 
