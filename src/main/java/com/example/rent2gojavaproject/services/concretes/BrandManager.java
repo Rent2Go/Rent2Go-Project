@@ -41,7 +41,9 @@ public class BrandManager implements BrandService {
 
     @Override
     public String addBrand(AddBrandRequest addBrandRequest) {
-        return null;
+        Brand brand = this.mapperService.forRequest().map(addBrandRequest, Brand.class);
+        this.brandRepository.save(brand);
+        return "Transaction Successfully.";
     }
 
     @Override
