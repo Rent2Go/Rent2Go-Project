@@ -26,9 +26,9 @@ public class CustomersController {
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetCustomerResponse> getById(@PathVariable int customerId) {
+    public DataResult<GetCustomerResponse> getById(@PathVariable int id) {
 
-        return this.customerService.getById(customerId);
+        return this.customerService.getById(id);
     }
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -44,10 +44,10 @@ public class CustomersController {
     }
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result DeleteCustomer(@PathVariable int customerId) {
+    public Result DeleteCustomer(@PathVariable int id) {
 
 
-        return this.customerService.DeleteCustomer(customerId);
+        return this.customerService.DeleteCustomer(id);
 
     }
 

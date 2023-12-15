@@ -11,5 +11,5 @@ public class GetCustomerResponse {
 
     private int id;
     private String nationalityId;
-    private String username;
+    private String name;
 }
