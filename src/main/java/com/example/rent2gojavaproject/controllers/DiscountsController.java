@@ -11,6 +11,7 @@ import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.G
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.crypto.Data;
@@ -40,5 +41,10 @@ public class DiscountsController {
     @PutMapping("/update")
     public Result updateDiscount(@RequestBody @Valid UpdateDiscountRequest updateDiscountRequest){
         return discountService.updateDiscount(updateDiscountRequest);
+    }
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result deleteDiscount(@PathVariable int id) {
+        return discountService.deleteDiscount(id);
     }
 }
