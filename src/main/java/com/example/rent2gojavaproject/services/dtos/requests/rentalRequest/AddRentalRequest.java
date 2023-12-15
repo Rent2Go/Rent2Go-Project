@@ -8,18 +8,19 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 public class AddRentalRequest {
+    
 
-    @NotNull(message = "Start Date is required !!")
+    @NotNull(message = "Start Date must be entered !!")
     @Future(message = "Start Date must be in the future !!")
     private LocalDate startDate;
 
-    @NotNull(message = "End Date is required !!")
+    @NotNull(message = "End Date must be entered !!")
     @Future(message = "End Date must be in the future !!")
     private LocalDate endDate;
 
     private LocalDate returnDate;
 
-    @NotNull(message = "Start Kilometer is required !!")
+    @NotNull(message = "Start Kilometer must be entered !!")
     @Positive(message = "Start Kilometer must be bigger than 0 !!")
     private int startKilometer;
 
@@ -29,16 +30,16 @@ public class AddRentalRequest {
     @Positive(message = "Total Price must be bigger than 0 !!")
     private double totalPrice;
 
-    @NotNull(message = "Car ID is required !!")
+    @NotNull(message = "Car ID must be entered !!")
     private int carId;
 
-    @NotNull(message = "Customer ID is required !!")
+    @NotNull(message = "Customer ID must be entered !!")
     private int customerId;
 
-    @NotNull(message = "Employee ID is required !!")
+    @NotNull(message = "Employee ID must be entered !!")
     private int employeeId;
 
-    @NotNull(message = "Discount ID is required !!")
+    @NotNull(message = "Discount ID must be entered !!")
     private int discountId;
 
 

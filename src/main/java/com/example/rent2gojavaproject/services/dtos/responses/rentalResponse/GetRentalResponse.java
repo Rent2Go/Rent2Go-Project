@@ -2,7 +2,7 @@ package com.example.rent2gojavaproject.services.dtos.responses.rentalResponse;
 
 import java.time.LocalDate;
 
-public class GetRentalListResponse {
+public class GetRentalResponse {
     private int id;
 
     private LocalDate startDate;

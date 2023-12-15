@@ -7,7 +7,6 @@ import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCar
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +34,7 @@ public class CarsController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public String createCar(@RequestBody @Valid AddCarRequest addCarRequest) {
 
-        return  this.carService.createCar(addCarRequest);
+        return  this.carService.addCar(addCarRequest);
     }
 
     @PutMapping("/update")

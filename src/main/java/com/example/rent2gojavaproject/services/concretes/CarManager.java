@@ -49,7 +49,7 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public String createCar(AddCarRequest addCarRequest) {
+    public String addCar(AddCarRequest addCarRequest) {
 
         String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
         addCarRequest.setPlate(editPlate);
