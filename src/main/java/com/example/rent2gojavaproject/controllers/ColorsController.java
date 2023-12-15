@@ -47,4 +47,11 @@ public class ColorsController {
     }
 
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public String deleteColor(@PathVariable int id){
+
+        return this.colorService.deleteColor(id);
+    }
+
 }
