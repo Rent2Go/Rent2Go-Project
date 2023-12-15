@@ -12,5 +12,5 @@ public class AddEmployeeRequest {
 
     private double salary;
 
-    private int userId;
+
 }
