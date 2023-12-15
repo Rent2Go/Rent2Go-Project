@@ -1,6 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.repositories.ColorRepository;
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
@@ -22,14 +24,14 @@ public class ColorManager implements ColorService {
     private ModelMapperService mapperService;
 
     @Override
-    public List<GetColorListResponse> getAllColors() {
+    public DataResult<List<GetColorListResponse>> getAllColors() {
         List<Color> colors = this.colorRepository.findAll();
         List<GetColorListResponse> responses = colors.stream().map(color -> this.mapperService
                     .forResponse()
                     .map(color, GetColorListResponse.class))
                 .collect(Collectors.toList());
 
-        return responses;
+        return new SuccessDataResult<List<GetColorListResponse>>(responses);
     }
 
     @Override
