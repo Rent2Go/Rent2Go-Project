@@ -40,4 +40,7 @@ public class User {
     @JsonIgnore
     private List<Employee> employees;
 
+    public User(int id) {
+        this.id = id;
+    }
 }
