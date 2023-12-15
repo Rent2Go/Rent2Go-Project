@@ -2,7 +2,9 @@ package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.repositories.ColorRepository;
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
@@ -42,11 +44,11 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public String addColor(AddColorRequest addColorRequest) {
+    public Result addColor(AddColorRequest addColorRequest) {
 
         Color color = this.mapperService.forRequest().map(addColorRequest, Color.class);
         this.colorRepository.save(color);
-        return "Transaction Successfully";
+        return new SuccessResult("Added Color Successfully");
     }
 
     @Override
