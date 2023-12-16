@@ -42,7 +42,7 @@ public class DiscountManager implements DiscountService {
         Discount discount = this.discountRepository.findById(id).orElseThrow(()-> new RuntimeException("Couldn't find discount id"));
         GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
 
-        return new SuccessDataResult<GetDiscountResponse>(response, "Response Process Successful !");
+        return new SuccessDataResult<GetDiscountResponse>(response, Message.GET.getMessage());
     }
 
     @Override
