@@ -3,9 +3,14 @@ package com.example.rent2gojavaproject.services.dtos.requests.rentalRequest;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class UpdateRentalRequest {
 
     @NotNull(message = "Rental ID must be entered !!")
