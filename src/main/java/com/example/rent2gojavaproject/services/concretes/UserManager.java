@@ -43,7 +43,7 @@ public class UserManager implements UserService {
         GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
 
 
-        return new SuccessDataResult<GetUserResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetUserResponse>(response, Message.GET.getMessage());
     }
 
     @Override
