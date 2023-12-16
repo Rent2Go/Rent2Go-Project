@@ -45,7 +45,7 @@ public class CustomerManager implements CustomerService {
         Customer customer = this.mapperService.forRequest().map(addCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
-        return new SuccessResult("Transaction Successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
