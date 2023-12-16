@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -33,14 +34,14 @@ public class ColorManager implements ColorService {
                     .map(color, GetColorListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetColorListResponse>>(responses, "Transaction Successfully");
+        return new SuccessDataResult<List<GetColorListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetColorResponse> getById(int id) {
         Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find color id"));
         GetColorResponse responses = this.mapperService.forResponse().map(color, GetColorResponse.class);
-        return new SuccessDataResult<>(responses, "Transaction Successfully");
+        return new SuccessDataResult<>(responses, Message.GET.getMessage());
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ColorManager implements ColorService {
 
         Color color = this.mapperService.forRequest().map(addColorRequest, Color.class);
         this.colorRepository.save(color);
-        return new SuccessResult("Added Color Successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ColorManager implements ColorService {
         color = this.mapperService.forRequest().map(updateColorRequest, Color.class);
         this.colorRepository.save(color);
 
-        return new SuccessResult("Updated Color Successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
@@ -66,7 +67,7 @@ public class ColorManager implements ColorService {
         this.colorRepository.findById(id).orElseThrow(()-> new RuntimeException("id not found"));
         this.colorRepository.deleteById(id);
 
-        return new SuccessResult("Deleted Color Successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 
 
