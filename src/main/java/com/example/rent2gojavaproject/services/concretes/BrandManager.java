@@ -46,19 +46,19 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result addBrand(AddBrandRequest addBrandRequest) {
-
+        String editName = businessRules.checkIfExistsByName(addBrandRequest.getName());
         Brand brand = this.mapperService.forRequest().map(addBrandRequest, Brand.class);
+        brand.setName(editName);
         this.brandRepository.save(brand);
-
         return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
     public Result updateBrand(UpdateBrandRequest updateBrandRequest) {
-
+        String editName = businessRules.checkIfExistsByName(updateBrandRequest.getName());
         this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new RuntimeException("Brand not found !"));
-
         Brand brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
+        brand.setName(editName);
         this.brandRepository.save(brand);
 
         return new SuccessResult(Message.UPDATE.getMessage());
