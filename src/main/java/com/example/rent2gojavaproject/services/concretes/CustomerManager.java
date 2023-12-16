@@ -55,7 +55,7 @@ public class CustomerManager implements CustomerService {
         this.customerRepository.save(customer);
 
 
-        return new SuccessResult("Transaction Successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
