@@ -40,11 +40,11 @@ public class RentalBusinessRules {
         }
     }
 
-    public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double rentalPrice) {
+    public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double dailyPrice) {
 
 
         Long rentalDays = endDate.toEpochDay() - startDate.toEpochDay();
-        Double totalPrice = rentalPrice * rentalDays;
+        Double totalPrice = dailyPrice * rentalDays;
 
         //  Double a =  Double.valueOf(rentalDays) * rentalPrice;
 
