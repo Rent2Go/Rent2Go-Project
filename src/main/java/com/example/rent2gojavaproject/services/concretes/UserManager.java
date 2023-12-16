@@ -56,9 +56,9 @@ public class UserManager implements UserService {
 
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
-        User user = this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
 
-        //user = this.mapperService.forRequest().map(updateUserRequest, User.class);
+        User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
         return new SuccessResult(Message.UPDATE.getMessage());
     }

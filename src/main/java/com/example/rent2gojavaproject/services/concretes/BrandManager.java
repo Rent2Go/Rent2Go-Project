@@ -13,11 +13,8 @@ import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBra
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.UpdateBrandRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandResponse;
-import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
-import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
 import com.example.rent2gojavaproject.services.rules.BrandBusinessRules;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,9 +56,9 @@ public class BrandManager implements BrandService {
     @Override
     public Result updateBrand(UpdateBrandRequest updateBrandRequest) {
 
-        Brand brand = this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new RuntimeException("Brand not found !"));
+        this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new RuntimeException("Brand not found !"));
 
-        brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
+        Brand brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
         this.brandRepository.save(brand);
 
         return new SuccessResult(Message.UPDATE.getMessage());

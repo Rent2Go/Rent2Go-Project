@@ -24,11 +24,12 @@ import java.util.stream.Collectors;
 public class RentalManager implements RentalService {
     private final RentalRepository rentalRepository;
     private ModelMapperService mapperService;
+
     @Override
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         List<Rental> rentals = this.rentalRepository.findAll();
         List<GetRentalListResponse> responses = rentals.stream().map(rental -> this.mapperService.forResponse()
-                .map(rental,GetRentalListResponse.class)).collect(Collectors.toList());
+                .map(rental, GetRentalListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<GetRentalListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
@@ -47,13 +48,14 @@ public class RentalManager implements RentalService {
         Rental rental = this.mapperService.forRequest().map(addRentalRequest, Rental.class);
 
         this.rentalRepository.save(rental);
-        return new SuccessResult(Message.ADD.getMessage());    }
+        return new SuccessResult(Message.ADD.getMessage());
+    }
 
     @Override
     public Result updateRental(UpdateRentalRequest updateRentalRequest) {
-        Rental rental = this.rentalRepository.findById(updateRentalRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
+        this.rentalRepository.findById(updateRentalRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
 
-        rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
+        Rental rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
         this.rentalRepository.save(rental);
         return new SuccessResult(Message.UPDATE.getMessage());
     }
@@ -62,5 +64,6 @@ public class RentalManager implements RentalService {
     public Result deleteRental(int id) {
         this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
         this.rentalRepository.deleteById(id);
-        return new SuccessResult(Message.DELETE.getMessage());    }
+        return new SuccessResult(Message.DELETE.getMessage());
+    }
 }

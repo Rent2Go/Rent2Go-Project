@@ -55,9 +55,9 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public Result updateEmployee(UpdateEmployeeRequest updateEmployeeRequest) {
-        Employee employee = this.employeeRepository.findById(updateEmployeeRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
+        this.employeeRepository.findById(updateEmployeeRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
 
-        employee = this.mapperService.forRequest().map(updateEmployeeRequest, Employee.class);
+        Employee employee = this.mapperService.forRequest().map(updateEmployeeRequest, Employee.class);
         this.employeeRepository.save(employee);
         return new SuccessResult(Message.UPDATE.getMessage());
     }
