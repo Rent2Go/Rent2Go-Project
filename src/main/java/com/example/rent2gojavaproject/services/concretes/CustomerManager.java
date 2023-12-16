@@ -36,7 +36,7 @@ public class CustomerManager implements CustomerService {
     public DataResult<GetCustomerResponse> getById(int id) {
         Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
-        return new SuccessDataResult<GetCustomerResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetCustomerResponse>(response, Message.GET.getMessage());
 
     }
 
