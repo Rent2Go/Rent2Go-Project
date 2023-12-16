@@ -1,6 +1,10 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
@@ -8,6 +12,8 @@ import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRe
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
 import com.example.rent2gojavaproject.services.rules.CarBusinessRules;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +33,7 @@ public class CarManager implements CarService {
 
 
     @Override
-    public List<GetCarListResponse> getAllCars() {
+    public DataResult<List<GetCarListResponse>> getAllCars() {
         List<Car> cars = this.carRepository.findAll();
         List<GetCarListResponse> responses = cars.stream().map(car -> this.mapperService
                         .forResponse()
@@ -35,21 +41,21 @@ public class CarManager implements CarService {
                 .collect(Collectors.toList());
 
 
-        return responses;
+        return new SuccessDataResult<List<GetCarListResponse>>(responses,"Transaction Successfully");
     }
 
     @Override
-    public GetCarResponse getById(int id) {
+    public DataResult<GetCarResponse> getById(int id) {
         Car car = this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find car id"));
 
         GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
 
 
-        return response;
+        return new SuccessDataResult<GetCarResponse>(response, "Transaction Successfully");
     }
 
     @Override
-    public String addCar(AddCarRequest addCarRequest) {
+    public Result addCar(AddCarRequest addCarRequest) {
 
         String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
         addCarRequest.setPlate(editPlate);
@@ -59,12 +65,12 @@ public class CarManager implements CarService {
 
         this.carRepository.save(car);
 
-        return "Transaction Successfully";
+        return new SuccessResult("Added car successfully");
 
     }
 
     @Override
-    public String updateCar(UpdateCarRequest updateCarRequest) {
+    public Result updateCar(UpdateCarRequest updateCarRequest) {
 
         String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
         updateCarRequest.setPlate(editPlate);
@@ -76,14 +82,14 @@ public class CarManager implements CarService {
         this.carRepository.save(car);
 
 
-        return "Transaction Successfully";
+        return new SuccessResult("Updated car successfully");
     }
 
     @Override
-    public String deleteCar(int id) {
+    public Result deleteCar(int id) {
         this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
         this.carRepository.deleteById(id);
 
-        return "Transaction Successfully";
+        return new SuccessResult("Deleted car successfully");
     }
 }
