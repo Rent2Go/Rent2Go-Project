@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -32,7 +33,7 @@ public class UserManager implements UserService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetUserListResponse>>(responses, "Transaction Successfully");
+        return new SuccessDataResult<List<GetUserListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -42,7 +43,7 @@ public class UserManager implements UserService {
         GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
 
 
-        return new SuccessDataResult<GetUserResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetUserResponse>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class UserManager implements UserService {
         User user = this.mapperService.forRequest().map(addUserRequest, User.class);
 
         this.userRepository.save(user);
-        return new SuccessResult("Added user successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
@@ -59,13 +60,13 @@ public class UserManager implements UserService {
 
         //user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
-        return new SuccessResult("Updated user successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteUser(int id) {
         this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
         this.userRepository.deleteById(id);
-        return new SuccessResult("Deleted user successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }

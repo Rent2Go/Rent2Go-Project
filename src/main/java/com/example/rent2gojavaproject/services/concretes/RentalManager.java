@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -28,7 +29,7 @@ public class RentalManager implements RentalService {
         List<Rental> rentals = this.rentalRepository.findAll();
         List<GetRentalListResponse> responses = rentals.stream().map(rental -> this.mapperService.forResponse()
                 .map(rental,GetRentalListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetRentalListResponse>>(responses,"Transaction Successfully");
+        return new SuccessDataResult<List<GetRentalListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -38,7 +39,7 @@ public class RentalManager implements RentalService {
         GetRentalResponse response = this.mapperService.forResponse().map(rental, GetRentalResponse.class);
 
 
-        return new SuccessDataResult<GetRentalResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetRentalResponse>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -46,7 +47,7 @@ public class RentalManager implements RentalService {
         Rental rental = this.mapperService.forRequest().map(addRentalRequest, Rental.class);
 
         this.rentalRepository.save(rental);
-        return new SuccessResult("Added rental successfully");    }
+        return new SuccessResult(Message.ADD.getMessage());    }
 
     @Override
     public Result updateRental(UpdateRentalRequest updateRentalRequest) {
@@ -54,12 +55,12 @@ public class RentalManager implements RentalService {
 
         rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
         this.rentalRepository.save(rental);
-        return new SuccessResult("Updated rental successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteRental(int id) {
         this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
         this.rentalRepository.deleteById(id);
-        return new SuccessResult("Deleted rental successfully");    }
+        return new SuccessResult(Message.DELETE.getMessage());    }
 }
