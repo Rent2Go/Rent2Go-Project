@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -32,7 +33,7 @@ public class UserManager implements UserService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetUserListResponse>>(responses, "Transaction Successfully");
+        return new SuccessDataResult<List<GetUserListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
