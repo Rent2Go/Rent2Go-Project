@@ -66,6 +66,6 @@ public class EmployeeManager implements EmployeeService {
     public Result deleteEmployee(int id) {
         this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
         this.employeeRepository.deleteById(id);
-        return new SuccessResult("Deleted employee successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }
