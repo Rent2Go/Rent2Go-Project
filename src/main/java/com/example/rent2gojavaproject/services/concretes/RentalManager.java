@@ -39,7 +39,7 @@ public class RentalManager implements RentalService {
         GetRentalResponse response = this.mapperService.forResponse().map(rental, GetRentalResponse.class);
 
 
-        return new SuccessDataResult<GetRentalResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetRentalResponse>(response, Message.GET.getMessage());
     }
 
     @Override
