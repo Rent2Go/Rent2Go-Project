@@ -4,10 +4,14 @@ import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.repositories.CustomerRepository;
 import com.example.rent2gojavaproject.repositories.EmployeeRepository;
 import com.example.rent2gojavaproject.repositories.RentalRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 
+@AllArgsConstructor
+@Service
 public class RentalBusinessRules {
 
     private CarRepository carRepository;
@@ -34,6 +38,17 @@ public class RentalBusinessRules {
         if (rentalDays > 25) {
             throw new IllegalStateException("Car can be rented for a maximum of 25 days.!");
         }
+    }
+
+    public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double rentalPrice) {
+
+
+        Long rentalDays = endDate.toEpochDay() - startDate.toEpochDay();
+        Double totalPrice = rentalPrice * rentalDays;
+
+        //  Double a =  Double.valueOf(rentalDays) * rentalPrice;
+
+        return totalPrice;
     }
 
 

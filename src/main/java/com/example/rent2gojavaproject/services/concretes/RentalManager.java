@@ -6,13 +6,16 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.models.Rental;
+import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.repositories.RentalRepository;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
+import com.example.rent2gojavaproject.services.rules.RentalBusinessRules;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +26,10 @@ import java.util.stream.Collectors;
 @Service
 public class RentalManager implements RentalService {
     private final RentalRepository rentalRepository;
-    private ModelMapperService mapperService;
+    private final ModelMapperService mapperService;
+    private final CarRepository carRepository;
+    private final  RentalBusinessRules businessRules;
+
 
     @Override
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
@@ -45,7 +51,11 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result addRental(AddRentalRequest addRentalRequest) {
+       Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
+      double totalPrice = this.businessRules.calculateTotalPrice(addRentalRequest.getStartDate(), addRentalRequest.getEndDate(),car.getDailyPrice());
+
         Rental rental = this.mapperService.forRequest().map(addRentalRequest, Rental.class);
+        rental.setTotalPrice(totalPrice);
 
         this.rentalRepository.save(rental);
         return new SuccessResult(Message.ADD.getMessage());
