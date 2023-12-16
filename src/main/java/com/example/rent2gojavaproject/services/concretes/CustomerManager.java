@@ -63,7 +63,7 @@ public class CustomerManager implements CustomerService {
         this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
 
         this.customerRepository.deleteById(id);
-        return new SuccessResult("Transaction Successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 
 
