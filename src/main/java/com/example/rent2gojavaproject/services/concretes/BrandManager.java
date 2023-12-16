@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -34,7 +35,7 @@ public class BrandManager implements BrandService {
 
         List<Brand> brands = this.brandRepository.findAll();
         List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetBrandListResponse>>(responses,"Transaction Successfully");
+        return new SuccessDataResult<List<GetBrandListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -43,7 +44,7 @@ public class BrandManager implements BrandService {
         Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
-        return new SuccessDataResult<GetBrandResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetBrandResponse>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -52,7 +53,7 @@ public class BrandManager implements BrandService {
         Brand brand = this.mapperService.forRequest().map(addBrandRequest, Brand.class);
         this.brandRepository.save(brand);
 
-        return new SuccessResult("Added brand successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
@@ -63,7 +64,7 @@ public class BrandManager implements BrandService {
         brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
         this.brandRepository.save(brand);
 
-        return new SuccessResult("Updated brand successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
@@ -72,6 +73,6 @@ public class BrandManager implements BrandService {
         this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("ID not found!"));
         this.brandRepository.deleteById(id);
 
-        return new SuccessResult("Deleted brand successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }
