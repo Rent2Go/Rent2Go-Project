@@ -33,8 +33,6 @@ public class UpdateRentalRequest {
     @Positive(message = "End Kilometer must be bigger than 0 !!")
     private int endKilometer;
 
-    @Positive(message = "Total Price must be bigger than 0 !!")
-    private double totalPrice;
 
     @NotNull(message = "Car ID must be entered !!")
     private int carId;
