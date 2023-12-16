@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -28,14 +29,14 @@ public class CustomerManager implements CustomerService {
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
         List<Customer> customers = this.customerRepository.findAll();
         List<GetCustomerListResponse> responses = customers.stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetCustomerListResponse>>(responses, "Transaction Successfully");
+        return new SuccessDataResult<List<GetCustomerListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetCustomerResponse> getById(int id) {
         Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
-        return new SuccessDataResult<GetCustomerResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetCustomerResponse>(response, Message.GET.getMessage());
 
     }
 
@@ -44,7 +45,7 @@ public class CustomerManager implements CustomerService {
         Customer customer = this.mapperService.forRequest().map(addCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
-        return new SuccessResult("Transaction Successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class CustomerManager implements CustomerService {
         this.customerRepository.save(customer);
 
 
-        return new SuccessResult("Transaction Successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CustomerManager implements CustomerService {
         this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
 
         this.customerRepository.deleteById(id);
-        return new SuccessResult("Transaction Successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 
 
