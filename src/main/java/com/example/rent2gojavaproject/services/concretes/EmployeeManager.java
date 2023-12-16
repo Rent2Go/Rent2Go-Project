@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -31,7 +32,7 @@ public class EmployeeManager implements EmployeeService {
         List<GetEmployeeListResponse> responses = employees.stream().map(employee -> this.mapperService.forResponse().map(employee, GetEmployeeListResponse.class)).collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetEmployeeListResponse>>(responses,"Transaction Successfully");
+        return new SuccessDataResult<List<GetEmployeeListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
