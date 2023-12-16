@@ -50,7 +50,7 @@ public class EmployeeManager implements EmployeeService {
         Employee employee = this.mapperService.forRequest().map(addEmployeeRequest, Employee.class);
 
         this.employeeRepository.save(employee);
-        return new SuccessResult("Added employee successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
