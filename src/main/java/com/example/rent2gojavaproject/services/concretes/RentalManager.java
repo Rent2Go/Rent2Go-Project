@@ -62,5 +62,5 @@ public class RentalManager implements RentalService {
     public Result deleteRental(int id) {
         this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
         this.rentalRepository.deleteById(id);
-        return new SuccessResult("Deleted rental successfully");    }
+        return new SuccessResult(Message.DELETE.getMessage());    }
 }
