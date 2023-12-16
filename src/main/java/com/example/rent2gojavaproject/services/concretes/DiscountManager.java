@@ -60,7 +60,7 @@ public class DiscountManager implements DiscountService {
         discount = this.mapperService.forRequest().map(updateDiscountRequest, Discount.class);
         this.discountRepository.save(discount);
 
-        return new SuccessResult("Update Process Successful !");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
