@@ -15,6 +15,6 @@ public class UpdateBrandRequest {
     @NotNull(message = "The brand name cannot be null.")
     @NotBlank(message = "The brand name can't be empty.")
     @Size(min = 2, max = 15, message = "Brand name should be between 2 and 15 digits.")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "The brand name should only contain letters.")
+    @Pattern(regexp = "^[\\s*?a-zA-Z\\s*?]*$", message = "Brand name must be contain only letters !")
     private String name;
 }
