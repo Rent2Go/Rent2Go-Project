@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -31,7 +32,7 @@ public class EmployeeManager implements EmployeeService {
         List<GetEmployeeListResponse> responses = employees.stream().map(employee -> this.mapperService.forResponse().map(employee, GetEmployeeListResponse.class)).collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetEmployeeListResponse>>(responses,"Transaction Successfully");
+        return new SuccessDataResult<List<GetEmployeeListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -41,7 +42,7 @@ public class EmployeeManager implements EmployeeService {
         GetEmployeeResponse response = this.mapperService.forResponse().map(employee, GetEmployeeResponse.class);
 
 
-        return new SuccessDataResult<GetEmployeeResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetEmployeeResponse>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -49,7 +50,7 @@ public class EmployeeManager implements EmployeeService {
         Employee employee = this.mapperService.forRequest().map(addEmployeeRequest, Employee.class);
 
         this.employeeRepository.save(employee);
-        return new SuccessResult("Added employee successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
@@ -58,13 +59,13 @@ public class EmployeeManager implements EmployeeService {
 
         employee = this.mapperService.forRequest().map(updateEmployeeRequest, Employee.class);
         this.employeeRepository.save(employee);
-        return new SuccessResult("Updated employee successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteEmployee(int id) {
         this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
         this.employeeRepository.deleteById(id);
-        return new SuccessResult("Deleted employee successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }
