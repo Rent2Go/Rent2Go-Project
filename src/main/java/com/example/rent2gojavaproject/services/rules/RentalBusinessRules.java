@@ -5,6 +5,9 @@ import com.example.rent2gojavaproject.repositories.CustomerRepository;
 import com.example.rent2gojavaproject.repositories.EmployeeRepository;
 import com.example.rent2gojavaproject.repositories.RentalRepository;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class RentalBusinessRules {
 
     private CarRepository carRepository;
@@ -15,17 +18,23 @@ public class RentalBusinessRules {
     public void checkIfExistsById(int carId, int customerId, int employeeId) {
         if (!(carRepository.existsById(carId))) {
             throw new IllegalStateException("Car ID doesn't exist !");
-        }
-        else if (!(customerRepository.existsById(customerId))) {
+        } else if (!(customerRepository.existsById(customerId))) {
             throw new IllegalStateException("Customer ID doesn't exist !");
-        }
-        else if (!(employeeRepository.existsById(employeeId))) {
+        } else if (!(employeeRepository.existsById(employeeId))) {
             throw new IllegalStateException("Employee ID doesn't exist !");
         }
 
 
     }
 
+    public void checkRentalPeriod(LocalDate startDate, LocalDate endDate) {
+        Period period = Period.between(startDate, endDate);
+        int rentalDays = period.getDays();
+
+        if (rentalDays > 25) {
+            throw new IllegalStateException("Car can be rented for a maximum of 25 days.!");
+        }
+    }
 
 
 }
