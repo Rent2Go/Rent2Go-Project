@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -32,7 +33,7 @@ public class ModelManager implements ModelService {
                 .map(model -> this.mapperService.forResponse()
                         .map(model,GetModelListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetModelListResponse>>(responses, "Transaction Successfully");
+        return new SuccessDataResult<List<GetModelListResponse>>(responses, Message.GET_ALL.getMessage());
 
     }
 
@@ -41,7 +42,7 @@ public class ModelManager implements ModelService {
         Model model = this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id!"));
 
         GetModelResponse response = this.mapperService.forResponse().map(model,GetModelResponse.class);
-        return new SuccessDataResult<GetModelResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetModelResponse>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ModelManager implements ModelService {
         Model model = this.mapperService.forRequest().map(addModelRequest,Model.class);
         this.modelRepository.save(model);
 
-        return new SuccessResult("Added model successfully");
+        return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
@@ -59,13 +60,13 @@ public class ModelManager implements ModelService {
 
         model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
         this.modelRepository.save(model);
-        return new SuccessResult("Updated model successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteModel(int id) {
         this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id"));
         this.modelRepository.deleteById(id);
-        return new SuccessResult("Deleted model successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }
