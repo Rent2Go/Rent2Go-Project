@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -41,7 +42,7 @@ public class CarManager implements CarService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetCarListResponse>>(responses,"Transaction Successfully");
+        return new SuccessDataResult<List<GetCarListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CarManager implements CarService {
         GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
 
 
-        return new SuccessDataResult<GetCarResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetCarResponse>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -65,7 +66,7 @@ public class CarManager implements CarService {
 
         this.carRepository.save(car);
 
-        return new SuccessResult("Added car successfully");
+        return new SuccessResult(Message.ADD.getMessage());
 
     }
 
@@ -82,7 +83,7 @@ public class CarManager implements CarService {
         this.carRepository.save(car);
 
 
-        return new SuccessResult("Updated car successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
@@ -90,6 +91,6 @@ public class CarManager implements CarService {
         this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
         this.carRepository.deleteById(id);
 
-        return new SuccessResult("Deleted car successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }
