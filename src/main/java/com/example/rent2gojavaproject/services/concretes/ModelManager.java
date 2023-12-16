@@ -50,7 +50,7 @@ public class ModelManager implements ModelService {
         Model model = this.mapperService.forRequest().map(addModelRequest,Model.class);
         this.modelRepository.save(model);
 
-        return new SuccessResult("Added employee successfully");
+        return new SuccessResult("Added model successfully");
     }
 
     @Override
@@ -59,13 +59,13 @@ public class ModelManager implements ModelService {
 
         model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
         this.modelRepository.save(model);
-        return new SuccessResult("Updated employee successfully");
+        return new SuccessResult("Updated model successfully");
     }
 
     @Override
     public Result deleteModel(int id) {
         this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id"));
         this.modelRepository.deleteById(id);
-        return new SuccessResult("Deleted employee successfully");
+        return new SuccessResult("Deleted model successfully");
     }
 }

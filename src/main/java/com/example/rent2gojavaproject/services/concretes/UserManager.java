@@ -23,15 +23,16 @@ import java.util.stream.Collectors;
 public class UserManager implements UserService {
     private final UserRepository userRepository;
     private ModelMapperService mapperService;
+
     @Override
     public DataResult<List<GetUserListResponse>> getAllUsers() {
         List<User> users = this.userRepository.findAll();
         List<GetUserListResponse> responses = users.stream().map(user -> this.mapperService
-                .forResponse().map(user, GetUserListResponse.class))
+                        .forResponse().map(user, GetUserListResponse.class))
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetUserListResponse>>(responses,"Transaction Successfully");
+        return new SuccessDataResult<List<GetUserListResponse>>(responses, "Transaction Successfully");
     }
 
     @Override

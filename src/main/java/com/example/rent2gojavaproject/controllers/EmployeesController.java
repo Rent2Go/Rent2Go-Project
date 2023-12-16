@@ -38,7 +38,7 @@ public class EmployeesController {
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result updateEmployee(@RequestBody @Valid UpdateEmployeeRequest updateEmployeeRequest) {
+    public Result updateEmployee(@RequestBody @Valid  UpdateEmployeeRequest updateEmployeeRequest) {
         return employeeService.updateEmployee(updateEmployeeRequest);
     }
 

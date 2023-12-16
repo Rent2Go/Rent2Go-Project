@@ -1,5 +1,7 @@
 package com.example.rent2gojavaproject.controllers;
 
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.concretes.BrandManager;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.UpdateBrandRequest;
@@ -20,30 +22,30 @@ public class BrandsController {
     private final BrandManager brandManager;
 
     @GetMapping("/getall")
-    public List<GetBrandListResponse> getAllBrands() {
+    public DataResult<List<GetBrandListResponse>> getAllBrands() {
         return brandManager.getAllBrands();
     }
 
     @GetMapping("/{id}")
-    public GetBrandResponse getById(@PathVariable int id) {
+    public DataResult<GetBrandResponse> getById(@PathVariable int id) {
         return brandManager.getById(id);
     }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createBrand(@RequestBody @Valid AddBrandRequest addBrandRequest) {
+    public Result createBrand(@RequestBody @Valid AddBrandRequest addBrandRequest) {
         return brandManager.addBrand(addBrandRequest);
     }
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public String updateBrand(@RequestBody @Valid UpdateBrandRequest updateBrandRequest) {
+    public Result updateBrand(@RequestBody @Valid UpdateBrandRequest updateBrandRequest) {
         return brandManager.updateBrand(updateBrandRequest);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteBrand(@PathVariable int id) {
+    public Result deleteBrand(@PathVariable int id) {
         return brandManager.deleteBrand(id);
     }
 }

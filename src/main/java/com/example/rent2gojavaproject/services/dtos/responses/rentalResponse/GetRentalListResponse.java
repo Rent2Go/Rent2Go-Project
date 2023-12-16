@@ -1,7 +1,13 @@
 package com.example.rent2gojavaproject.services.dtos.responses.rentalResponse;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class GetRentalListResponse {
     private int id;
 
