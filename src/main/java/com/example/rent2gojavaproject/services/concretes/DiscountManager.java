@@ -67,7 +67,7 @@ public class DiscountManager implements DiscountService {
     public Result deleteDiscount(int id){
         this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
 
-        return new SuccessResult("Delete Process Successful !");
+        return new SuccessResult(Message.DELETE.getMessage());
 
     }
 }
