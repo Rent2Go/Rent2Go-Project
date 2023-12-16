@@ -48,17 +48,19 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result addColor(AddColorRequest addColorRequest) {
-        businessRules.checkIfExistsByName(addColorRequest.getName());
+        String editName = businessRules.checkIfExistsByName(addColorRequest.getName());
         Color color = this.mapperService.forRequest().map(addColorRequest, Color.class);
+        color.setName(editName);
         this.colorRepository.save(color);
         return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
     public Result updateColor(UpdateColorRequest updateColorRequest) {
-        businessRules.checkIfExistsByName(updateColorRequest.getName());
+        String editName = businessRules.checkIfExistsByName(updateColorRequest.getName());
         this.colorRepository.findById(updateColorRequest.getId()).orElseThrow(() -> new RuntimeException("Color not found"));
         Color color = this.mapperService.forRequest().map(updateColorRequest, Color.class);
+        color.setName(editName);
         this.colorRepository.save(color);
 
         return new SuccessResult(Message.UPDATE.getMessage());

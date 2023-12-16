@@ -2,17 +2,21 @@ package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.repositories.ColorRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
+@Service
 public class ColorBusinessRules {
 
 
     private ColorRepository colorRepository;
 
-    public void checkIfExistsByName(String name){
-        if(colorRepository.existsByName(name.toLowerCase().trim())){
+    public String checkIfExistsByName(String name){
+        String value = name.toLowerCase().trim();
+        if(colorRepository.existsByName(value)){
             throw new IllegalArgumentException("Color already exists");
         }
+        return value;
     }
 
 
