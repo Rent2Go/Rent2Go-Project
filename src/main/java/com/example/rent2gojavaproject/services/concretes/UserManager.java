@@ -60,7 +60,7 @@ public class UserManager implements UserService {
 
         //user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
-        return new SuccessResult("Updated user successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
