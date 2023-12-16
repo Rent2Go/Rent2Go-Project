@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -33,7 +34,7 @@ public class DiscountManager implements DiscountService {
         List<Discount> discounts = this.discountRepository.findAll();
         List<GetDiscountListResponse> responses = discounts.stream().map(discount -> this.mapperService.forResponse().map(discount, GetDiscountListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, "Listing Process Successful !");
+        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
