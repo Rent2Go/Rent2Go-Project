@@ -13,6 +13,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddCol
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorResponse;
+import com.example.rent2gojavaproject.services.rules.ColorBusinessRules;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class ColorManager implements ColorService {
 
     private final ColorRepository colorRepository;
     private ModelMapperService mapperService;
+    private final ColorBusinessRules businessRules;
 
     @Override
     public DataResult<List<GetColorListResponse>> getAllColors() {
@@ -46,7 +48,7 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result addColor(AddColorRequest addColorRequest) {
-
+        businessRules.checkIfExistsByName(addColorRequest.getName());
         Color color = this.mapperService.forRequest().map(addColorRequest, Color.class);
         this.colorRepository.save(color);
         return new SuccessResult(Message.ADD.getMessage());
@@ -54,7 +56,7 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result updateColor(UpdateColorRequest updateColorRequest) {
-
+        businessRules.checkIfExistsByName(updateColorRequest.getName());
         this.colorRepository.findById(updateColorRequest.getId()).orElseThrow(() -> new RuntimeException("Color not found"));
         Color color = this.mapperService.forRequest().map(updateColorRequest, Color.class);
         this.colorRepository.save(color);
