@@ -28,7 +28,7 @@ public class RentalManager implements RentalService {
     private final RentalRepository rentalRepository;
     private final ModelMapperService mapperService;
     private final CarRepository carRepository;
-    private final  RentalBusinessRules businessRules;
+    private final RentalBusinessRules businessRules;
 
 
     @Override
@@ -51,11 +51,15 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result addRental(AddRentalRequest addRentalRequest) {
-       Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
-      double totalPrice = this.businessRules.calculateTotalPrice(addRentalRequest.getStartDate(), addRentalRequest.getEndDate(),car.getDailyPrice());
+        Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
+
+        this.businessRules.checkRentalPeriod(addRentalRequest.getStartDate(),addRentalRequest.getEndDate());
+
+        double totalPrice = this.businessRules.calculateTotalPrice(addRentalRequest.getStartDate(), addRentalRequest.getEndDate(), car.getDailyPrice());
 
         Rental rental = this.mapperService.forRequest().map(addRentalRequest, Rental.class);
         rental.setTotalPrice(totalPrice);
+        rental.setStartKilometer(car.getKilometer());
 
         this.rentalRepository.save(rental);
         return new SuccessResult(Message.ADD.getMessage());
