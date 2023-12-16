@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -28,7 +29,7 @@ public class CustomerManager implements CustomerService {
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
         List<Customer> customers = this.customerRepository.findAll();
         List<GetCustomerListResponse> responses = customers.stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetCustomerListResponse>>(responses, "Transaction Successfully");
+        return new SuccessDataResult<List<GetCustomerListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
