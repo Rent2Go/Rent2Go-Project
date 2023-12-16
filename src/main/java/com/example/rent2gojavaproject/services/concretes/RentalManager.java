@@ -55,7 +55,7 @@ public class RentalManager implements RentalService {
 
         rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
         this.rentalRepository.save(rental);
-        return new SuccessResult("Updated rental successfully");
+        return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
