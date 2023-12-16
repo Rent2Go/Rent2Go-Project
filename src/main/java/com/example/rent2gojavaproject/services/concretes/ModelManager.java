@@ -13,6 +13,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.AddMod
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.UpdateModelRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelResponse;
+import com.example.rent2gojavaproject.services.rules.ModelBusinessRules;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ModelManager implements ModelService {
     private final ModelRepository modelRepository;
-    private ModelMapperService mapperService;
+    private final ModelMapperService mapperService;
+    private final ModelBusinessRules modelBusinessRules;
 
     @Override
     public DataResult<List<GetModelListResponse>> getAllModels() {
@@ -47,7 +49,11 @@ public class ModelManager implements ModelService {
     @Override
     public Result addModel(AddModelRequest addModelRequest) {
 
+        String editValue = modelBusinessRules.checkIfExistsByIdAndName(addModelRequest.getBrandId(), addModelRequest.getName());
+
         Model model = this.mapperService.forRequest().map(addModelRequest, Model.class);
+        model.setName(editValue);
+
         this.modelRepository.save(model);
 
         return new SuccessResult(Message.ADD.getMessage());
@@ -55,10 +61,16 @@ public class ModelManager implements ModelService {
 
     @Override
     public Result updateModel(UpdateModelRequest updateModelRequest) {
+
+        String editValue = modelBusinessRules.checkIfExistsByIdAndName(updateModelRequest.getBrandId(), updateModelRequest.getName());
+
         this.modelRepository.findById(updateModelRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find model id!"));
 
         Model model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
+        updateModelRequest.setName(editValue);
+
         this.modelRepository.save(model);
+
         return new SuccessResult(Message.UPDATE.getMessage());
     }
 
