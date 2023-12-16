@@ -67,6 +67,6 @@ public class UserManager implements UserService {
     public Result deleteUser(int id) {
         this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
         this.userRepository.deleteById(id);
-        return new SuccessResult("Deleted user successfully");
+        return new SuccessResult(Message.DELETE.getMessage());
     }
 }
