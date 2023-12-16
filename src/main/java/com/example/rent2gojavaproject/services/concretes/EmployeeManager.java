@@ -42,7 +42,7 @@ public class EmployeeManager implements EmployeeService {
         GetEmployeeResponse response = this.mapperService.forResponse().map(employee, GetEmployeeResponse.class);
 
 
-        return new SuccessDataResult<GetEmployeeResponse>(response, "Transaction Successfully");
+        return new SuccessDataResult<GetEmployeeResponse>(response, Message.GET.getMessage());
     }
 
     @Override
