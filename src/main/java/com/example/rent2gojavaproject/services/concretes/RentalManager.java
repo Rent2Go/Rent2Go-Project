@@ -7,8 +7,10 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Car;
+import com.example.rent2gojavaproject.models.Discount;
 import com.example.rent2gojavaproject.models.Rental;
 import com.example.rent2gojavaproject.repositories.CarRepository;
+import com.example.rent2gojavaproject.repositories.DiscountRepository;
 import com.example.rent2gojavaproject.repositories.RentalRepository;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
@@ -29,6 +31,7 @@ public class RentalManager implements RentalService {
     private final ModelMapperService mapperService;
     private final CarRepository carRepository;
     private final RentalBusinessRules businessRules;
+    private final DiscountRepository discountRepository;
 
 
     @Override
@@ -52,15 +55,24 @@ public class RentalManager implements RentalService {
     public Result addRental(AddRentalRequest addRentalRequest) {
         Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
 
-        this.businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId(), addRentalRequest.getEmployeeId());
-        this.businessRules.checkRentalPeriod(addRentalRequest.getStartDate(), addRentalRequest.getEndDate());
-        double totalPrice = this.businessRules.calculateTotalPrice(addRentalRequest.getStartDate(), addRentalRequest.getEndDate(), car.getDailyPrice(), addRentalRequest.getDiscountCode());
+        String discountCode = addRentalRequest.getDiscountCode();
+        Discount defaultDiscount = businessRules.getDiscountByCodeOrDefault(discountCode);
 
-        Rental rental = this.mapperService.forRequest().map(addRentalRequest, Rental.class);
+        businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId(), addRentalRequest.getEmployeeId());
+        businessRules.checkRentalPeriod(addRentalRequest.getStartDate(), addRentalRequest.getEndDate());
+
+        double totalPrice = businessRules.calculateTotalPrice(
+                addRentalRequest.getStartDate(), addRentalRequest.getEndDate(),
+                car.getDailyPrice(), defaultDiscount.getDiscountCode()
+        );
+
+        Rental rental = mapperService.forRequest().map(addRentalRequest, Rental.class);
+        rental.setDiscount(defaultDiscount);
         rental.setTotalPrice(totalPrice);
-        rental.setStartKilometer(car.getKilometer());
 
-        this.rentalRepository.save(rental);
+        rental.setStartKilometer(car.getKilometer());
+        rentalRepository.save(rental);
+
         return new SuccessResult(Message.ADD.getMessage());
     }
 
