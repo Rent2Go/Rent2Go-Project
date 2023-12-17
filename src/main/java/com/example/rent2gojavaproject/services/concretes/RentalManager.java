@@ -34,8 +34,7 @@ public class RentalManager implements RentalService {
     @Override
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         List<Rental> rentals = this.rentalRepository.findAll();
-        List<GetRentalListResponse> responses = rentals.stream().map(rental -> this.mapperService.forResponse()
-                .map(rental, GetRentalListResponse.class)).collect(Collectors.toList());
+        List<GetRentalListResponse> responses = rentals.stream().map(rental -> this.mapperService.forResponse().map(rental, GetRentalListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<GetRentalListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
@@ -53,9 +52,9 @@ public class RentalManager implements RentalService {
     public Result addRental(AddRentalRequest addRentalRequest) {
         Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
 
-        this.businessRules.checkRentalPeriod(addRentalRequest.getStartDate(),addRentalRequest.getEndDate());
-
-        double totalPrice = this.businessRules.calculateTotalPrice(addRentalRequest.getStartDate(), addRentalRequest.getEndDate(), car.getDailyPrice());
+        this.businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId(), addRentalRequest.getEmployeeId());
+        this.businessRules.checkRentalPeriod(addRentalRequest.getStartDate(), addRentalRequest.getEndDate());
+        double totalPrice = this.businessRules.calculateTotalPrice(addRentalRequest.getStartDate(), addRentalRequest.getEndDate(), car.getDailyPrice(), addRentalRequest.getDiscountCode());
 
         Rental rental = this.mapperService.forRequest().map(addRentalRequest, Rental.class);
         rental.setTotalPrice(totalPrice);
@@ -67,8 +66,12 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result updateRental(UpdateRentalRequest updateRentalRequest) {
+        Car car = carRepository.findById(updateRentalRequest.getCarId()).orElseThrow();
+
         this.rentalRepository.findById(updateRentalRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
 
+        this.businessRules.checkIfExistsById(updateRentalRequest.getCarId(), updateRentalRequest.getCustomerId(), updateRentalRequest.getEmployeeId());
+        this.businessRules.checkRentalPeriod(updateRentalRequest.getStartDate(), updateRentalRequest.getEndDate());
         Rental rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
         this.rentalRepository.save(rental);
         return new SuccessResult(Message.UPDATE.getMessage());
