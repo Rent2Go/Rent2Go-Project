@@ -18,7 +18,7 @@ public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "discount_code", nullable = false, unique = true)
     private String discountCode;
@@ -35,4 +35,5 @@ public class Discount {
         this.discountCode = discountCode;
         this.percentage = percentage;
     }
+
 }
