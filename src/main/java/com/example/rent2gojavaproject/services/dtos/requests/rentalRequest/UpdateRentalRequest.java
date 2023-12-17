@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.dtos.requests.rentalRequest;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class UpdateRentalRequest {
     private int employeeId;
 
     @NotNull(message = "Discount ID must be entered !!")
+    @Pattern(regexp = "^[A-Z0-9]+$", message = "Discount code must consist of uppercase letters and numbers only.")
     private String discountCode;
 
 }
