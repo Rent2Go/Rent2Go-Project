@@ -1,6 +1,5 @@
 package com.example.rent2gojavaproject.services.dtos.requests.rentalRequest;
 
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,21 +17,13 @@ public class UpdateRentalRequest {
     @Positive(message = "Rental ID must be bigger than 0 !!")
     private int id;
     @NotNull(message = "Start Date must be entered !!")
-    @Future(message = "Start Date must be in the future !!")
     private LocalDate startDate;
-
     @NotNull(message = "End Date must be entered !!")
-    @Future(message = "End Date must be in the future !!")
     private LocalDate endDate;
-
     private LocalDate returnDate;
 
-    @NotNull(message = "Start Kilometer must be entered !!")
-    @Positive(message = "Start Kilometer must be bigger than 0 !!")
-    private int startKilometer;
-
     @Positive(message = "End Kilometer must be bigger than 0 !!")
-    private int endKilometer;
+    private Integer endKilometer;
 
 
     @NotNull(message = "Car ID must be entered !!")
