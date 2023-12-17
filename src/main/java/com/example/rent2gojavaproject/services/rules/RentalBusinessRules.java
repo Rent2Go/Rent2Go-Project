@@ -41,23 +41,22 @@ public class RentalBusinessRules {
             throw new IllegalStateException("Car can be rented for a maximum of 25 days.!");
         }
     }
-
-    public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double dailyPrice, String discountCode) {
-        Discount discount = this.discountRepository.findByDiscountCode(discountCode);
-        double percentAge = discount.getPercentage()/100;
-
-        double totalDiscount = 0;
-        double totalPrice = 0;
-        long rentalDays = endDate.toEpochDay() - startDate.toEpochDay();
-        if (percentAge > 0) {
-            totalDiscount = (((dailyPrice * rentalDays) * discount.getPercentage()));
-            totalPrice = (dailyPrice * rentalDays) - totalDiscount;
-
-        } else {
-            totalPrice = dailyPrice * rentalDays;
+    public Discount getDiscountByCodeOrDefault(String discountCode) {
+        if (discountCode == null || discountCode.isEmpty()) {
+            return discountRepository.findByDiscountCode("DEFAULT");
         }
-        return totalPrice;
+
+        Discount selectedDiscount = discountRepository.findByDiscountCode(discountCode);
+        return (selectedDiscount != null) ? selectedDiscount : discountRepository.findByDiscountCode("DEFAULT");
     }
 
+    public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double dailyPrice, String discountCode) {
+        Discount discount = getDiscountByCodeOrDefault(discountCode);
+
+        double totalDiscount = (discount.getPercentage() / 100) * dailyPrice * (endDate.toEpochDay() - startDate.toEpochDay());
+        double totalPrice = dailyPrice * (endDate.toEpochDay() - startDate.toEpochDay()) - totalDiscount;
+
+        return (totalPrice < 0) ? 0 : totalPrice;
+    }
 
 }
