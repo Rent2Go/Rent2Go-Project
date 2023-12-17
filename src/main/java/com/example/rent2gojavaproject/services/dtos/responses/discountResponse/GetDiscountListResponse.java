@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 public class GetDiscountListResponse {
     private int id;
     private String discountCode;
-    private double percentage;
+    private Double percentage;
     private int rentalId;
 }
