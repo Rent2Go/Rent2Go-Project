@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Table(name = "rentals")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Rental {
 
     @Id
@@ -25,14 +24,14 @@ public class Rental {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column(name = "return_date")
+    @Column(name = "return_date", columnDefinition = "DATE DEFAULT NULL")
     private LocalDate returnDate;
 
     @Column(name = "start_kilometer", nullable = false)
     private int startKilometer;
 
-    @Column(name = "end_kilometer")
-    private int endKilometer;
+    @Column(name = "end_kilometer", columnDefinition = "INTEGER DEFAULT NULL")
+    private Integer endKilometer;
 
     @Column(name = "total_price")
     private double totalPrice;
@@ -50,7 +49,13 @@ public class Rental {
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "discount_id", nullable = false)
+    @JoinColumn(name = "discount_id", nullable = false, columnDefinition = "BIGINT DEFAULT 0")
     private Discount discount;
+
+    public Rental() {
+        this.endKilometer = null;
+        this.returnDate = null;
+        this.discount = new Discount(1);
+    }
 
 }
