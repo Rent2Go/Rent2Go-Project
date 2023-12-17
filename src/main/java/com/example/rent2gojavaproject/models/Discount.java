@@ -24,13 +24,15 @@ public class Discount {
     private String discountCode;
 
     @Column(name = "percentage", nullable = false)
-    private double percentage;
+    private Double percentage;
 
     @OneToMany(mappedBy = "discount")
     @JsonIgnore
     private List<Rental> rentals;
 
-    public Discount(int id) {
+    public Discount(int id, String discountCode,double percentage) {
         this.id = id;
+        this.discountCode = discountCode;
+        this.percentage = percentage;
     }
 }

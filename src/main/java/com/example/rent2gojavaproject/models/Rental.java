@@ -55,7 +55,7 @@ public class Rental {
     public Rental() {
         this.endKilometer = null;
         this.returnDate = null;
-        this.discount = new Discount(1);
+        this.discount = new Discount(1,"DEFAULT",0);
     }
 
 }
