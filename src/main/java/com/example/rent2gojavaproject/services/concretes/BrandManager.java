@@ -72,4 +72,9 @@ public class BrandManager implements BrandService {
 
         return new SuccessResult(Message.DELETE.getMessage());
     }
+
+    @Override
+    public boolean existsById(int id) {
+        return this.brandRepository.existsById(id);
+    }
 }
