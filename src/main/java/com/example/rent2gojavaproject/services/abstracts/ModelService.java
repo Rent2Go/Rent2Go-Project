@@ -19,4 +19,7 @@ public interface ModelService {
     Result updateModel(UpdateModelRequest updateModelRequest);
 
     Result deleteModel(int id);
+
+    boolean existsById(int id);
 }
+

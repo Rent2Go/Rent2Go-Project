@@ -80,4 +80,9 @@ public class ModelManager implements ModelService {
         this.modelRepository.deleteById(id);
         return new SuccessResult(Message.DELETE.getMessage());
     }
+
+    @Override
+    public boolean existsById(int id) {
+        return this.modelRepository.existsById(id);
+    }
 }
