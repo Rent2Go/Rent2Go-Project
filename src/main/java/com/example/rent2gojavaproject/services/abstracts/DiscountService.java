@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.abstracts;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.Discount;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.AddDiscountRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.UpdateDiscountRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountListResponse;
@@ -21,4 +22,6 @@ public interface DiscountService {
     Result updateDiscount(UpdateDiscountRequest updateDiscountRequest);
 
     Result deleteDiscount(int id);
+
+    Discount findByDiscountCode(String discountCode);
 }

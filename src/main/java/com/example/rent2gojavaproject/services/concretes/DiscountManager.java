@@ -68,4 +68,9 @@ public class DiscountManager implements DiscountService {
         return new SuccessResult(Message.DELETE.getMessage());
 
     }
+
+    @Override
+    public Discount findByDiscountCode(String discountCode) {
+        return this.discountRepository.findByDiscountCode(discountCode);
+    }
 }
