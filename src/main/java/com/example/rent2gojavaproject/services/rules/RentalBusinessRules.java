@@ -7,6 +7,7 @@ import com.example.rent2gojavaproject.repositories.DiscountRepository;
 import com.example.rent2gojavaproject.repositories.EmployeeRepository;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
+import com.example.rent2gojavaproject.services.abstracts.DiscountService;
 import com.example.rent2gojavaproject.services.abstracts.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class RentalBusinessRules {
     private CarService carService;
     private CustomerService customerService;
     private EmployeeService employeeService;
-    private DiscountRepository discountRepository;
+    private DiscountService discountService;
 
     public void checkIfExistsById(int carId, int customerId, int employeeId) {
         if (!(carService.existsById(carId))) {
@@ -46,11 +47,11 @@ public class RentalBusinessRules {
     }
     public Discount getDiscountByCodeOrDefault(String discountCode) {
         if (discountCode == null || discountCode.isEmpty()) {
-            return discountRepository.findByDiscountCode("DEFAULT");
+            return discountService.findByDiscountCode("DEFAULT");
         }
 
-        Discount selectedDiscount = discountRepository.findByDiscountCode(discountCode);
-        return (selectedDiscount != null) ? selectedDiscount : discountRepository.findByDiscountCode("DEFAULT");
+        Discount selectedDiscount = discountService.findByDiscountCode(discountCode);
+        return (selectedDiscount != null) ? selectedDiscount : discountService.findByDiscountCode("DEFAULT");
     }
 
     public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double dailyPrice, String discountCode) {
