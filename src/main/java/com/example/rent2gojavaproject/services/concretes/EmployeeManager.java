@@ -68,4 +68,9 @@ public class EmployeeManager implements EmployeeService {
         this.employeeRepository.deleteById(id);
         return new SuccessResult(Message.DELETE.getMessage());
     }
+
+    @Override
+    public boolean existsById(int id) {
+        return this.employeeRepository.existsById(id);
+    }
 }

@@ -21,4 +21,6 @@ public interface EmployeeService {
 
     Result deleteEmployee(int id);
 
+    boolean existsById(int id);
+
 }
