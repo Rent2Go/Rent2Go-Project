@@ -41,17 +41,17 @@ public class Employee {
     @JoinColumn(name = "user_id", columnDefinition = "integer default 1",nullable = false)
     private User user;
 
-    @ManyToOne(optional = true)
+    /*@ManyToOne(optional = true)
     @JoinColumn(name = "department_id", columnDefinition = "integer default 1",nullable = false)
     private Department department;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "city_id", columnDefinition = "integer default 1",nullable = false)
+    @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "county_id", columnDefinition = "integer default 1",nullable = false)
-    private County county;
+    @JoinColumn(name = "county_id", nullable = false)
+    private County county;*/
 
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
