@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.repositories.ColorRepository;
 import com.example.rent2gojavaproject.repositories.ModelRepository;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
+import com.example.rent2gojavaproject.services.abstracts.ColorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CarBusinessRules {
     private final ModelRepository modelRepository;
-    private final ColorRepository colorRepository;
+    private final ColorService colorService;
     private final CarService carService;
 
 
@@ -27,7 +28,7 @@ public class CarBusinessRules {
     }
 
     public void updateCarMethod (int modelId, int colorId){
-        if (!(modelRepository.existsById(modelId) && colorRepository.existsById(colorId))){
+        if (!(modelRepository.existsById(modelId) && colorService.existsById(colorId))){
             throw  new IllegalStateException("Model or color does not exist");
         }
     }
