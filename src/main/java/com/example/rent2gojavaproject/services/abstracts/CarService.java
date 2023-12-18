@@ -21,6 +21,7 @@ public interface CarService {
     Result updateCar(UpdateCarRequest updateCarRequest);
 
     Result deleteCar(int id);
+    boolean existsByPlate(String plate);
 
 
 }

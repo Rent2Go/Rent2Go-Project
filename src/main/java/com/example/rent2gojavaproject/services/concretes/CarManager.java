@@ -93,4 +93,9 @@ public class CarManager implements CarService {
 
         return new SuccessResult(Message.DELETE.getMessage());
     }
+
+    @Override
+    public boolean existsByPlate(String plate) {
+        return this.carRepository.existsByPlate(plate);
+    }
 }
