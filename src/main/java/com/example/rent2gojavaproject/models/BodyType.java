@@ -22,7 +22,4 @@ public class BodyType {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "bodyType", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Car> cars;
 }

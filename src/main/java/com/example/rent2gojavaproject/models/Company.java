@@ -40,9 +40,7 @@ public class Company {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Policy> policies;
+
 
 
 }

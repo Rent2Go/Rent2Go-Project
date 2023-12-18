@@ -28,7 +28,7 @@ public class Bill {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "price", nullable = false)
     private double price;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "integer default 1")
@@ -41,9 +41,11 @@ public class Bill {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @OneToMany(mappedBy = "bill")
-    @JsonIgnore
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+
 
 
 }

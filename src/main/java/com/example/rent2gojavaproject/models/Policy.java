@@ -38,15 +38,7 @@ public class Policy {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Company> companies;
 
-    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Car> cars;
 
-    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Employee> employees;
+
 }

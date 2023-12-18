@@ -30,8 +30,6 @@ public class Department {
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDate createdAt;
-
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Employee> employees;
 }
+
+

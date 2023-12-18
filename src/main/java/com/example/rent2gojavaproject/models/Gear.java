@@ -23,7 +23,5 @@ public class Gear {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "gear", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Car> cars;
+
 }
