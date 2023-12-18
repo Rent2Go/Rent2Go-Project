@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.repositories.ModelRepository;
+import com.example.rent2gojavaproject.services.abstracts.BrandService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,11 @@ import org.springframework.stereotype.Service;
 public class ModelBusinessRules {
 
     private ModelRepository modelRepository;
-    private BrandRepository brandRepository;
+    private BrandService brandService;
 
     public String checkIfExistsByIdAndName(int brandId, String name){
         String value = name.toLowerCase().trim();
-        if (!(brandRepository.existsById(brandId))) {
+        if (!(brandService.existsById(brandId))) {
             throw new IllegalStateException("Brand ID doesn't exist !");
         }else if(modelRepository.existsByName(value)){
             throw new IllegalArgumentException("Model already exists");
