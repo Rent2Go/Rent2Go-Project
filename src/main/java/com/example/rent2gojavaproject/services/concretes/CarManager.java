@@ -98,4 +98,9 @@ public class CarManager implements CarService {
     public boolean existsByPlate(String plate) {
         return this.carRepository.existsByPlate(plate);
     }
+
+    @Override
+    public boolean existsById(int id) {
+        return this.carRepository.existsById(id);
+    }
 }

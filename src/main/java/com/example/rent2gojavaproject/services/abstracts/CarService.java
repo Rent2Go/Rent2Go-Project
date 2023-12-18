@@ -22,6 +22,8 @@ public interface CarService {
 
     Result deleteCar(int id);
     boolean existsByPlate(String plate);
+    boolean existsById(int id);
+
 
 
 }
