@@ -20,4 +20,6 @@ public interface CustomerService {
     Result updateCustomer(UpdateCustomerRequest updateCustomerRequest);
 
     Result DeleteCustomer(int customerId);
+
+    boolean existsById(int id);
 }

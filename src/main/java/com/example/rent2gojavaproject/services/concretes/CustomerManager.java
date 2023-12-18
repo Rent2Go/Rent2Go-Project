@@ -66,5 +66,8 @@ public class CustomerManager implements CustomerService {
         return new SuccessResult(Message.DELETE.getMessage());
     }
 
-
+    @Override
+    public boolean existsById(int id) {
+        return this.customerRepository.existsById(id);s
+    }
 }
