@@ -5,6 +5,9 @@ import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.repositories.CustomerRepository;
 import com.example.rent2gojavaproject.repositories.DiscountRepository;
 import com.example.rent2gojavaproject.repositories.EmployeeRepository;
+import com.example.rent2gojavaproject.services.abstracts.CarService;
+import com.example.rent2gojavaproject.services.abstracts.CustomerService;
+import com.example.rent2gojavaproject.services.abstracts.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +18,17 @@ import java.time.Period;
 @Service
 public class RentalBusinessRules {
 
-    private CarRepository carRepository;
-    private CustomerRepository customerRepository;
-    private EmployeeRepository employeeRepository;
+    private CarService carService;
+    private CustomerService customerService;
+    private EmployeeService employeeService;
     private DiscountRepository discountRepository;
 
     public void checkIfExistsById(int carId, int customerId, int employeeId) {
-        if (!(carRepository.existsById(carId))) {
+        if (!(carService.existsById(carId))) {
             throw new IllegalStateException("Car ID doesn't exist !");
-        } else if (!(customerRepository.existsById(customerId))) {
+        } else if (!(customerService.existsById(customerId))) {
             throw new IllegalStateException("Customer ID doesn't exist !");
-        } else if (!(employeeRepository.existsById(employeeId))) {
+        } else if (!(employeeService.existsById(employeeId))) {
             throw new IllegalStateException("Employee ID doesn't exist !");
         }
 
