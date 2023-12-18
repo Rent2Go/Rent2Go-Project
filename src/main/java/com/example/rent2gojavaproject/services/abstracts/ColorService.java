@@ -21,4 +21,6 @@ public interface ColorService {
 
     Result deleteColor(int id);
 
+    boolean existsById(int id);
+
 }

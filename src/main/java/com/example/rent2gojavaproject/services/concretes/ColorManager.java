@@ -75,4 +75,8 @@ public class ColorManager implements ColorService {
     }
 
 
+    @Override
+    public boolean existsById(int id) {
+        return this.colorRepository.existsById(id);
+    }
 }
