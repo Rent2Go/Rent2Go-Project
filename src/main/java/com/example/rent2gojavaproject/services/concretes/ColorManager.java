@@ -20,6 +20,7 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class ColorManager implements ColorService {
                         .map(color, GetColorListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetColorListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -73,7 +74,9 @@ public class ColorManager implements ColorService {
     @Override
     public Result deleteColor(int id) {
         Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
-        this.colorRepository.deleteById(id);
+        color.setDeletedAt(LocalDate.now());
+        this.colorRepository.save(color);
+        this.colorRepository.delete(color);
 
         return new SuccessResult(Message.DELETE.getMessage());
     }
@@ -99,6 +102,6 @@ public class ColorManager implements ColorService {
         List<Color> colors = this.colorRepository.findAllInactiveColors();
         List<GetColorListResponse> getColorListResponse = colors.stream().map(color -> this.mapperService.forResponse()
                 .map(color, GetColorListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetColorListResponse>>(getColorListResponse, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(getColorListResponse, Message.GET_ALL.getMessage());
     }
 }
