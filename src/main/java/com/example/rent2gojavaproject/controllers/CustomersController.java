@@ -5,6 +5,7 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 import jakarta.validation.Valid;
@@ -23,6 +24,10 @@ public class CustomersController {
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
 
         return this.customerService.getAllCustomer();
+    }
+    @GetMapping("/getAllActiveOrNot")
+    public DataResult<Iterable<GetCustomerListResponse>> findAll(@RequestParam boolean isDeleted) {
+        return this.customerService.findAll(isDeleted);
     }
 
     @GetMapping("/{id}")

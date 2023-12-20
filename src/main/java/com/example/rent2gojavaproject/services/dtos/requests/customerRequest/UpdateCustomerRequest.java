@@ -22,4 +22,5 @@ public class UpdateCustomerRequest {
     @NotNull(message = "The user id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int userId;
+    private boolean isActive;
 }

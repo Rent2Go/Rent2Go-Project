@@ -6,16 +6,22 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Brand;
 import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.repositories.CustomerRepository;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +30,26 @@ import java.util.stream.Collectors;
 public class CustomerManager implements CustomerService {
     private CustomerRepository customerRepository;
     private ModelMapperService mapperService;
+    private EntityManager entityManager;
 
     @Override
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
         List<Customer> customers = this.customerRepository.findAll();
         List<GetCustomerListResponse> responses = customers.stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<GetCustomerListResponse>>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterCustomer");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetCustomerListResponse> customers = this.customerRepository.findAll()
+                .stream().map(customer -> this.mapperService.forResponse()
+                        .map(customer, GetCustomerListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterCustomer");
+        return new SuccessDataResult<>(customers,Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -60,9 +80,11 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public Result DeleteCustomer(int id) {
-        this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
+        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        customer.setDeletedAt(LocalDate.now());
+        this.customerRepository.save(customer);
+        this.customerRepository.delete(customer);
 
-        this.customerRepository.deleteById(id);
         return new SuccessResult(Message.DELETE.getMessage());
     }
 
