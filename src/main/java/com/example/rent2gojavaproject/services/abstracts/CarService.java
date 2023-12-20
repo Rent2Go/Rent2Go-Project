@@ -3,7 +3,6 @@ package com.example.rent2gojavaproject.services.abstracts;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
-import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
@@ -27,7 +26,7 @@ public interface CarService {
 
     boolean existsById(int id);
 
-    Iterable<GetCarListResponse> findAll(boolean isDeleted);
+    DataResult<Iterable<GetCarListResponse>> findAll(boolean isDeleted);
 
 
 }

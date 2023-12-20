@@ -49,7 +49,7 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public Iterable<GetCarListResponse> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetCarListResponse>> findAll(boolean isDeleted) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterCar");
         filter.setParameter("isActive", isDeleted);
@@ -58,7 +58,7 @@ public class CarManager implements CarService {
                         .map(car, GetCarListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterCar");
-        return cars;
+        return new SuccessDataResult<>(cars,Message.GET_ALL.getMessage());
     }
 
     @Override
