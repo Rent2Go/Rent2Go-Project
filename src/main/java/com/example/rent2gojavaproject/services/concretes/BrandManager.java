@@ -17,6 +17,7 @@ import com.example.rent2gojavaproject.services.rules.BrandBusinessRules;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,17 +29,26 @@ public class BrandManager implements BrandService {
     private BrandBusinessRules businessRules;
 
     @Override
-    public DataResult<List<GetBrandListResponse>> getAllBrands() {
+    public DataResult<List<GetBrandListResponse>> getAllActiveBrands() {
 
-        List<Brand> brands = this.brandRepository.findAll();
+        List<Brand> brands = this.brandRepository.findByIsActiveTrue();
         List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<GetBrandListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
+    public DataResult<List<GetBrandListResponse>> getPassiveBrands() {
+        List<Brand> deletedBrands = this.brandRepository.findByIsActiveFalse();
+        List<GetBrandListResponse> responses = deletedBrands.stream()
+                .map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class))
+                .collect(Collectors.toList());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
     public DataResult<GetBrandResponse> getById(int id) {
 
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
+        Brand brand = this.brandRepository.findByIdAndIsActiveTrue(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
         return new SuccessDataResult<GetBrandResponse>(response, Message.GET.getMessage());
@@ -67,8 +77,10 @@ public class BrandManager implements BrandService {
     @Override
     public Result deleteBrand(int id) {
 
-        this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("ID not found!"));
-        this.brandRepository.deleteById(id);
+        Brand brand = this.brandRepository.findByIdAndIsActiveTrue(id).orElseThrow(() -> new RuntimeException("ID not found!"));
+        brand.setActive(false);
+        brand.setDeletedAt(LocalDate.now());
+        brandRepository.save(brand);
 
         return new SuccessResult(Message.DELETE.getMessage());
     }

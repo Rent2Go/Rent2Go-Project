@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddColorRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
@@ -22,20 +23,20 @@ public class ColorsController {
     private final ColorService colorService;
 
     @GetMapping("/getAll")
-    public DataResult<List<GetColorListResponse>> getAllColor(){
+    public DataResult<List<GetColorListResponse>> getAllColor() {
 
         return this.colorService.getAllColors();
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetColorResponse> getById(@PathVariable int id){
+    public DataResult<GetColorResponse> getById(@PathVariable int id) {
 
         return this.colorService.getById(id);
     }
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Result createColor(@RequestBody @Valid AddColorRequest addColorRequest){
+    public Result createColor(@RequestBody @Valid AddColorRequest addColorRequest) {
 
         return this.colorService.addColor(addColorRequest);
     }
@@ -43,7 +44,7 @@ public class ColorsController {
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result updateColor(@RequestBody @Valid UpdateColorRequest updateColorRequest){
+    public Result updateColor(@RequestBody @Valid UpdateColorRequest updateColorRequest) {
 
         return this.colorService.updateColor(updateColorRequest);
     }
@@ -51,9 +52,20 @@ public class ColorsController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result deleteColor(@PathVariable int id){
+    public Result deleteColor(@PathVariable int id) {
 
         return this.colorService.deleteColor(id);
+    }
+
+    @GetMapping("/filteredgetall")
+    public Iterable<Color> findAll(@RequestParam boolean isDeleted) {
+
+        return this.colorService.findAll(isDeleted);
+    }
+
+    @GetMapping("/filteredgetallfalse")
+    public DataResult<List<GetColorListResponse>> findAllInactiveColors() {
+        return this.colorService.findAllInactiveColors();
     }
 
 }

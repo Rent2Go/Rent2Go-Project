@@ -14,7 +14,10 @@ import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.Update
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorResponse;
 import com.example.rent2gojavaproject.services.rules.ColorBusinessRules;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +28,9 @@ import java.util.stream.Collectors;
 public class ColorManager implements ColorService {
 
     private final ColorRepository colorRepository;
-    private ModelMapperService mapperService;
     private final ColorBusinessRules businessRules;
+    private ModelMapperService mapperService;
+    private EntityManager entityManager;
 
     @Override
     public DataResult<List<GetColorListResponse>> getAllColors() {
@@ -68,7 +72,7 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result deleteColor(int id) {
-        this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
         this.colorRepository.deleteById(id);
 
         return new SuccessResult(Message.DELETE.getMessage());
@@ -78,5 +82,23 @@ public class ColorManager implements ColorService {
     @Override
     public boolean existsById(int id) {
         return this.colorRepository.existsById(id);
+
+    }
+    @Override
+    public Iterable<Color> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilter");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<Color> products = this.colorRepository.findAll();
+        session.disableFilter("isActiveFilter");
+        return products;
+    }
+
+    @Override
+    public DataResult<List<GetColorListResponse>> findAllInactiveColors() {
+        List<Color> colors = this.colorRepository.findAllInactiveColors();
+        List<GetColorListResponse> getColorListResponse = colors.stream().map(color -> this.mapperService.forResponse()
+                .map(color, GetColorListResponse.class)).collect(Collectors.toList());
+        return new SuccessDataResult<List<GetColorListResponse>>(getColorListResponse, Message.GET_ALL.getMessage());
     }
 }
