@@ -97,11 +97,4 @@ public class ColorManager implements ColorService {
         return colors;
     }
 
-    @Override
-    public DataResult<List<GetColorListResponse>> findAllInactiveColors() {
-        List<Color> colors = this.colorRepository.findAllInactiveColors();
-        List<GetColorListResponse> getColorListResponse = colors.stream().map(color -> this.mapperService.forResponse()
-                .map(color, GetColorListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<>(getColorListResponse, Message.GET_ALL.getMessage());
-    }
 }

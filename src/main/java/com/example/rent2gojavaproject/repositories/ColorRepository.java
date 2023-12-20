@@ -9,10 +9,6 @@ import java.util.List;
 
 public interface ColorRepository extends JpaRepository<Color,Integer> {
 
-    @Query("FROM Color b WHERE b.isActive = true")
-    List<Color> findAllInactiveColors();
-
-
     boolean existsByName(String name);
 
 }

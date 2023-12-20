@@ -26,6 +26,4 @@ public interface ColorService {
 
     Iterable<Color> findAll(boolean isDeleted);
 
-    DataResult<List<GetColorListResponse>> findAllInactiveColors();
-
 }
