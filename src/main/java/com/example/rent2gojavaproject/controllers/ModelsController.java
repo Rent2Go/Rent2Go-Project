@@ -2,6 +2,8 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.Color;
+import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.services.abstracts.ModelService;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.AddModelRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.UpdateModelRequest;
@@ -47,4 +49,11 @@ public class ModelsController {
     public Result deleteModel(@PathVariable int id) {
         return modelService.deleteModel(id);
     }
+
+    @GetMapping("/filteredgetall")
+    public DataResult<Iterable<GetModelListResponse>> findAll(@RequestParam boolean isDeleted) {
+
+        return this.modelService.findAll(isDeleted);
+    }
+
 }
