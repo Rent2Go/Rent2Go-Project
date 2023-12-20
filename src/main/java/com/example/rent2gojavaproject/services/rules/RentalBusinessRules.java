@@ -32,6 +32,13 @@ public class RentalBusinessRules {
 
     }
 
+    public void checkIfKilometer(int kilometer, Integer endKilometer) {
+       Integer changeInteger =Integer.valueOf(kilometer);
+        if (changeInteger > endKilometer) {
+            throw new IllegalStateException("The last kilometer of the vehicle cannot be lower than the delivered mileage.");
+        }
+    }
+
     public void checkRentalPeriod(LocalDate startDate, LocalDate endDate) {
         Period period = Period.between(startDate, endDate);
         int rentalDays = period.getDays();
