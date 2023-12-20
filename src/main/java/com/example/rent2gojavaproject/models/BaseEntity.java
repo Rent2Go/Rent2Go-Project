@@ -40,11 +40,7 @@ public abstract class BaseEntity {
         this.updatedAt = LocalDate.now();
 
     }
-    @PreRemove
-    public void preDelete() {
-        this.deletedAt = LocalDate.now();
 
-    }
 
 
 
