@@ -13,10 +13,11 @@ import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRe
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
-import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
-import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
 import com.example.rent2gojavaproject.services.rules.CarBusinessRules;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,8 @@ public class CarManager implements CarService {
 
     private CarBusinessRules businessRules;
 
+    private EntityManager entityManager;
+
 
     @Override
     public DataResult<List<GetCarListResponse>> getAllCars() {
@@ -43,6 +46,19 @@ public class CarManager implements CarService {
 
 
         return new SuccessDataResult<List<GetCarListResponse>>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<Iterable<GetCarListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterCar");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetCarListResponse> cars = this.carRepository.findAll()
+                .stream().map(car -> this.mapperService.forResponse()
+                        .map(car, GetCarListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterCar");
+        return new SuccessDataResult<>(cars,Message.GET_ALL.getMessage());
     }
 
     @Override

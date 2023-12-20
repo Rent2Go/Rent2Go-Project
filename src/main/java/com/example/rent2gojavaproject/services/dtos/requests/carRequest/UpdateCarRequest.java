@@ -32,4 +32,5 @@ public class UpdateCarRequest {
     @NotNull(message = "The color id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int colorId;
+    private boolean isActive;
 }
