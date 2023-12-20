@@ -44,6 +44,7 @@ public class ColorManager implements ColorService {
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
+
     @Override
     public DataResult<GetColorResponse> getById(int id) {
         Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find color id"));
@@ -90,10 +91,10 @@ public class ColorManager implements ColorService {
     @Override
     public Iterable<Color> findAll(boolean isDeleted) {
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilter");
+        Filter filter = session.enableFilter("isActiveFilterColor");
         filter.setParameter("isActive", isDeleted);
         Iterable<Color> colors = this.colorRepository.findAll();
-        session.disableFilter("isActiveFilter");
+        session.disableFilter("isActiveFilterColor");
         return colors;
     }
 

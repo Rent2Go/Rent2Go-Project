@@ -15,8 +15,8 @@ import java.util.List;
 @Table(name = "colors")
 @SQLDelete(sql = "update colors SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilter", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilter", condition="IS_ACTIVE = :isActive")
+@FilterDef(name="isActiveFilterColor", parameters=@ParamDef( name="isActive", type=Boolean.class ))
+@Filter(name="isActiveFilterColor", condition="IS_ACTIVE = :isActive")
 
 @Data
 @AllArgsConstructor
