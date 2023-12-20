@@ -24,6 +24,6 @@ public interface ColorService {
 
     boolean existsById(int id);
 
-    Iterable<Color> findAll(boolean isDeleted);
+    DataResult<Iterable<Color>> findAll(boolean isDeleted);
 
 }

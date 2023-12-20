@@ -44,6 +44,16 @@ public class ColorManager implements ColorService {
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
+    @Override
+    public DataResult<Iterable<Color>> findAll(boolean isDeleted){
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterColor");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<Color> colors = this.colorRepository.findAll();
+        session.disableFilter("isActiveFilterColor");
+        return new SuccessDataResult<>(colors, Message.GET_ALL.getMessage());
+    }
+
 
     @Override
     public DataResult<GetColorResponse> getById(int id) {
@@ -82,20 +92,10 @@ public class ColorManager implements ColorService {
         return new SuccessResult(Message.DELETE.getMessage());
     }
 
-
     @Override
     public boolean existsById(int id) {
         return this.colorRepository.existsById(id);
 
-    }
-    @Override
-    public Iterable<Color> findAll(boolean isDeleted) {
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterColor");
-        filter.setParameter("isActive", isDeleted);
-        Iterable<Color> colors = this.colorRepository.findAll();
-        session.disableFilter("isActiveFilterColor");
-        return colors;
     }
 
 }
