@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.sql.Update;
 
 import java.time.LocalDate;
@@ -16,6 +20,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+
 public abstract class BaseEntity {
     @Column(name = "IS_ACTIVE", columnDefinition ="boolean default true")
     protected boolean isActive;
@@ -24,7 +29,7 @@ public abstract class BaseEntity {
     @Column(name = "UPDATE_AT")
     protected LocalDate updatedAt;
     @Column(name = "DELETE_AT")
-    protected LocalDate deletedAt;
+    protected LocalDate deletedAt ;
 
 
     @PrePersist
@@ -40,6 +45,12 @@ public abstract class BaseEntity {
         this.updatedAt = LocalDate.now();
 
     }
+    @PreRemove
+    public void preRemove() {
+        this.deletedAt = LocalDate.now();
+    }
+
+
 
 
 
