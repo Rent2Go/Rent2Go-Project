@@ -84,7 +84,9 @@ public class RentalManager implements RentalService {
 
         this.businessRules.checkIfExistsById(updateRentalRequest.getCarId(), updateRentalRequest.getCustomerId(), updateRentalRequest.getEmployeeId());
         this.businessRules.checkRentalPeriod(updateRentalRequest.getStartDate(), updateRentalRequest.getEndDate());
+        this.businessRules.checkIfKilometer(car.getKilometer(), updateRentalRequest.getEndKilometer());
         Rental rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
+        car.setKilometer(rental.getEndKilometer());
         this.rentalRepository.save(rental);
         return new SuccessResult(Message.UPDATE.getMessage());
     }
