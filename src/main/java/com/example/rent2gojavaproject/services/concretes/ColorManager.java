@@ -92,9 +92,9 @@ public class ColorManager implements ColorService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilter");
         filter.setParameter("isActive", isDeleted);
-        Iterable<Color> products = this.colorRepository.findAll();
+        Iterable<Color> models = this.colorRepository.findAll();
         session.disableFilter("isActiveFilter");
-        return products;
+        return models;
     }
 
     @Override
