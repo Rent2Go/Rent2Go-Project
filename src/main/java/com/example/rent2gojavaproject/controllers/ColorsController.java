@@ -63,9 +63,5 @@ public class ColorsController {
         return this.colorService.findAll(isDeleted);
     }
 
-    @GetMapping("/filteredgetallfalse")
-    public DataResult<List<GetColorListResponse>> findAllInactiveColors() {
-        return this.colorService.findAllInactiveColors();
-    }
 
 }
