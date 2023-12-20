@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.abstracts;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddColorRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorListResponse;
@@ -22,5 +23,9 @@ public interface ColorService {
     Result deleteColor(int id);
 
     boolean existsById(int id);
+
+    Iterable<Color> findAll(boolean isDeleted);
+
+    DataResult<List<GetColorListResponse>> findAllInactiveColors();
 
 }
