@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.rules;
 
+import com.example.rent2gojavaproject.models.Brand;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.repositories.ColorRepository;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,12 @@ public class BrandBusinessRules {
 
     public String checkIfExistsByName(String name){
         String value = name.toLowerCase().trim();
-        if(brandRepository.existsByName(value)){
+        if(brandRepository.existsByNameAndIsActiveTrue(value)){
             throw new IllegalArgumentException("Brand already exists");
         }
         return value;
     }
+
+
 
 }

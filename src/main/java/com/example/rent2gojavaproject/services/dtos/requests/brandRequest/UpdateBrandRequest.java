@@ -17,4 +17,5 @@ public class UpdateBrandRequest {
     @Size(min = 2, max = 15, message = "Brand name should be between 2 and 15 digits.")
     @Pattern(regexp = "^[\\s*?a-zA-Z\\s*?]*$", message = "Brand name must be contain only letters !")
     private String name;
+    boolean isActive;
 }

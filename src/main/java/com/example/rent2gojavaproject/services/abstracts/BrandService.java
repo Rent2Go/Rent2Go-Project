@@ -10,7 +10,8 @@ import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetB
 import java.util.List;
 
 public interface BrandService {
-    DataResult<List<GetBrandListResponse>> getAllBrands();
+    DataResult<List<GetBrandListResponse>> getAllActiveBrands();
+    DataResult<List<GetBrandListResponse>> getPassiveBrands();
 
     DataResult<GetBrandResponse> getById(int id);
 
