@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -46,7 +47,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public DataResult<GetModelResponse> getById(int id) {
-        Model model = this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id!"));
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
 
         GetModelResponse response = this.mapperService.forResponse().map(model, GetModelResponse.class);
         return new SuccessDataResult<GetModelResponse>(response, Message.GET.getMessage());
@@ -70,7 +71,7 @@ public class ModelManager implements ModelService {
 
         String editValue = modelBusinessRules.checkIfExistsByIdAndName(updateModelRequest.getBrandId(), updateModelRequest.getName());
 
-        this.modelRepository.findById(updateModelRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find model id!"));
+        this.modelRepository.findById(updateModelRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find model id!"));
 
         Model model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
         updateModelRequest.setName(editValue);
@@ -82,7 +83,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public Result deleteModel(int id) {
-        Model model = this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id"));
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
         model.setDeletedAt(LocalDate.now());
         this.modelRepository.save(model);
         this.modelRepository.delete(model);
