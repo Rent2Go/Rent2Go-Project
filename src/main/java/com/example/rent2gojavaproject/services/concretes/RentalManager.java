@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -37,8 +38,8 @@ public class RentalManager implements RentalService {
     private final ModelMapperService mapperService;
     private final CarRepository carRepository;
     private final RentalBusinessRules businessRules;
-    private final DiscountRepository discountRepository;
     private EntityManager entityManager;
+
 
     @Override
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
@@ -57,12 +58,12 @@ public class RentalManager implements RentalService {
                         .map(rental, GetRentalListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterRental");
-        return new SuccessDataResult<>(rentals,Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(rentals, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetRentalResponse> getById(int id) {
-        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
+        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find rental id : " + id));
 
         GetRentalResponse response = this.mapperService.forResponse().map(rental, GetRentalResponse.class);
 
@@ -99,7 +100,7 @@ public class RentalManager implements RentalService {
     public Result updateRental(UpdateRentalRequest updateRentalRequest) {
         Car car = carRepository.findById(updateRentalRequest.getCarId()).orElseThrow();
 
-        this.rentalRepository.findById(updateRentalRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
+        this.rentalRepository.findById(updateRentalRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find rental id"));
 
         this.businessRules.checkIfExistsById(updateRentalRequest.getCarId(), updateRentalRequest.getCustomerId(), updateRentalRequest.getEmployeeId());
         this.businessRules.checkRentalPeriod(updateRentalRequest.getStartDate(), updateRentalRequest.getEndDate());
@@ -112,7 +113,7 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result deleteRental(int id) {
-        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
         rental.setDeletedAt(LocalDate.now());
         this.rentalRepository.save(rental);
         this.rentalRepository.delete(rental);

@@ -1,18 +1,17 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
-import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
-import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import jakarta.persistence.EntityManager;
@@ -53,12 +52,12 @@ public class UserManager implements UserService {
                         .map(user, GetUserListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterUser");
-        return new SuccessDataResult<>(users,Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(users, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetUserResponse> getById(int id) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find user id: " + id));
 
         GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
 
@@ -76,7 +75,7 @@ public class UserManager implements UserService {
 
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
-        this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find user id"));
 
         User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
@@ -85,10 +84,11 @@ public class UserManager implements UserService {
 
     @Override
     public Result deleteUser(int id) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
         user.setDeletedAt(LocalDate.now());
         this.userRepository.save(user);
         this.userRepository.delete(user);
+
         return new SuccessResult(Message.DELETE.getMessage());
     }
 }

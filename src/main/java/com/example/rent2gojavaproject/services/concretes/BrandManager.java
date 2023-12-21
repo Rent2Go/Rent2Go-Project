@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -58,7 +59,7 @@ public class BrandManager implements BrandService {
     @Override
     public DataResult<GetBrandResponse> getById(int id) {
 
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find brand id : " + id ));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
         return new SuccessDataResult<>(response, Message.GET.getMessage());
@@ -76,7 +77,7 @@ public class BrandManager implements BrandService {
     @Override
     public Result updateBrand(UpdateBrandRequest updateBrandRequest) {
         String editName = businessRules.checkIfExistsByName(updateBrandRequest.getName());
-        this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new RuntimeException("Brand not found !"));
+        this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new NotFoundException("Brand not found !"));
         Brand brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
         brand.setName(editName);
         this.brandRepository.save(brand);
@@ -86,7 +87,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result deleteBrand(int id) {
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
         brand.setDeletedAt(LocalDate.now());
         this.brandRepository.save(brand);
         this.brandRepository.delete(brand);

@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.rules;
 
+import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
 import com.example.rent2gojavaproject.repositories.ColorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class ColorBusinessRules {
     public String checkIfExistsByName(String name){
         String value = name.toLowerCase().trim();
         if(colorRepository.existsByName(value)){
-            throw new IllegalArgumentException("Color already exists");
+            throw new AlreadyExistsException("Color already exists");
         }
         return value;
     }
