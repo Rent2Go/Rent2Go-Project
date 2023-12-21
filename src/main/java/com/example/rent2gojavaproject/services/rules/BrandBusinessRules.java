@@ -14,7 +14,7 @@ public class BrandBusinessRules {
     public String checkIfExistsByName(String name){
         String value = name.toLowerCase().trim();
         if(brandRepository.existsByNameAndIsActiveTrue(value)){
-            throw new AlreadyExistsException("Brand already exists");
+            throw new AlreadyExistsException("Brand name already exists");
         }
         return value;
     }
