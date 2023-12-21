@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -38,7 +39,7 @@ public class UserManager implements UserService {
 
     @Override
     public DataResult<GetUserResponse> getById(int id) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find user id: " + id));
 
         GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
 
@@ -56,7 +57,7 @@ public class UserManager implements UserService {
 
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
-        this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find user id"));
 
         User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
@@ -65,7 +66,7 @@ public class UserManager implements UserService {
 
     @Override
     public Result deleteUser(int id) {
-        this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
+        this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find user id : " + id));
         this.userRepository.deleteById(id);
         return new SuccessResult(Message.DELETE.getMessage());
     }
