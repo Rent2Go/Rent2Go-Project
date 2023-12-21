@@ -5,6 +5,7 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
 import jakarta.validation.Valid;
@@ -25,7 +26,10 @@ public class RentalsController {
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         return rentalService.getAllRentals();
     }
-
+    @GetMapping("/getAllActiveOrNot")
+    public DataResult<Iterable<GetRentalListResponse>> findAll(@RequestParam boolean isDeleted) {
+        return this.rentalService.findAll(isDeleted);
+    }
     @GetMapping("/{id}")
     public DataResult<GetRentalResponse> getRentalById(@PathVariable int id) {
         return rentalService.getById(id);
