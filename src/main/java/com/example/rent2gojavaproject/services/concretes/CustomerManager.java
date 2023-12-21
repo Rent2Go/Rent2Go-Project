@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -54,7 +55,7 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public DataResult<GetCustomerResponse> getById(int id) {
-        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
+        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found: " + id));
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
         return new SuccessDataResult<GetCustomerResponse>(response, Message.GET.getMessage());
 
@@ -70,7 +71,7 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public Result updateCustomer(UpdateCustomerRequest updateCustomerRequest) {
-        this.customerRepository.findById(updateCustomerRequest.getId()).orElseThrow(() -> new RuntimeException("Customer not found: " + updateCustomerRequest.getId()));
+        this.customerRepository.findById(updateCustomerRequest.getId()).orElseThrow(() -> new NotFoundException("Customer not found "));
         Customer customer = this.mapperService.forRequest().map(updateCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
@@ -80,7 +81,7 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public Result DeleteCustomer(int id) {
-        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
         customer.setDeletedAt(LocalDate.now());
         this.customerRepository.save(customer);
         this.customerRepository.delete(customer);
