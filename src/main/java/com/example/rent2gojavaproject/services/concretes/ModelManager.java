@@ -40,7 +40,20 @@ public class ModelManager implements ModelService {
                 .map(model -> this.mapperService.forResponse()
                         .map(model, GetModelListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetModelListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+
+    }
+
+    @Override
+    public DataResult<Iterable<GetModelListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterModel");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetModelListResponse> models = this.modelRepository.findAll().stream()
+                .map(model -> this.mapperService.forResponse().map(model, GetModelListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterModel");
+        return new SuccessDataResult<>(models, Message.GET_ALL.getMessage());
 
     }
 
@@ -49,7 +62,7 @@ public class ModelManager implements ModelService {
         Model model = this.modelRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find model id!"));
 
         GetModelResponse response = this.mapperService.forResponse().map(model, GetModelResponse.class);
-        return new SuccessDataResult<GetModelResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -93,18 +106,5 @@ public class ModelManager implements ModelService {
     @Override
     public boolean existsById(int id) {
         return this.modelRepository.existsById(id);
-    }
-
-    @Override
-    public DataResult<Iterable<GetModelListResponse>> findAll(boolean isDeleted) {
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterModel");
-        filter.setParameter("isActive", isDeleted);
-        Iterable<GetModelListResponse> models = this.modelRepository.findAll().stream()
-                        .map(model -> this.mapperService.forResponse().map(model, GetModelListResponse.class))
-                                .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterModel");
-        return new SuccessDataResult<>(models, Message.GET_ALL.getMessage());
-
     }
 }

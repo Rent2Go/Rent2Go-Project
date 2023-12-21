@@ -45,7 +45,7 @@ public class CarManager implements CarService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetCarListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CarManager implements CarService {
         GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
 
 
-        return new SuccessDataResult<GetCarResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override
