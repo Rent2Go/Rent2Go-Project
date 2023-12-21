@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -37,7 +38,7 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public DataResult<GetDiscountResponse> getById(int id) {
-        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
+        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find discount id : " + id));
         GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
 
         return new SuccessDataResult<GetDiscountResponse>(response, Message.GET.getMessage());
@@ -53,7 +54,7 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public Result updateDiscount(UpdateDiscountRequest updateDiscountRequest) {
-        this.discountRepository.findById(updateDiscountRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
+        this.discountRepository.findById(updateDiscountRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find discount id"));
 
         Discount discount = this.mapperService.forRequest().map(updateDiscountRequest, Discount.class);
         this.discountRepository.save(discount);
@@ -63,7 +64,7 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public Result deleteDiscount(int id) {
-        this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
+        this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find discount id : " + id));
 
         return new SuccessResult(Message.DELETE.getMessage());
 
