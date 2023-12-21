@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -63,7 +64,7 @@ public class CarManager implements CarService {
 
     @Override
     public DataResult<GetCarResponse> getById(int id) {
-        Car car = this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find car id"));
+        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find car id : " + id));
 
         GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
 
@@ -92,7 +93,7 @@ public class CarManager implements CarService {
         String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
         updateCarRequest.setPlate(editPlate);
         this.businessRules.updateCarMethod(updateCarRequest.getModelId(), updateCarRequest.getColorId());
-        this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new RuntimeException("Car not found"));
+        this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new NotFoundException("Car not found"));
 
         Car car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
 
@@ -104,7 +105,7 @@ public class CarManager implements CarService {
 
     @Override
     public Result deleteCar(int id) {
-        this.carRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
         this.carRepository.deleteById(id);
 
         return new SuccessResult(Message.DELETE.getMessage());
