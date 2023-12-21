@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -37,7 +38,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public DataResult<GetEmployeeResponse> getById(int id) {
-        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
+        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find employee id : " + id));
 
         GetEmployeeResponse response = this.mapperService.forResponse().map(employee, GetEmployeeResponse.class);
 
@@ -55,7 +56,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public Result updateEmployee(UpdateEmployeeRequest updateEmployeeRequest) {
-        this.employeeRepository.findById(updateEmployeeRequest.getId()).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
+        this.employeeRepository.findById(updateEmployeeRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find employee id"));
 
         Employee employee = this.mapperService.forRequest().map(updateEmployeeRequest, Employee.class);
         this.employeeRepository.save(employee);
@@ -64,7 +65,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public Result deleteEmployee(int id) {
-        this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
+        this.employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find employee id : " + id));
         this.employeeRepository.deleteById(id);
         return new SuccessResult(Message.DELETE.getMessage());
     }
