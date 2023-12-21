@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -57,7 +58,7 @@ public class ColorManager implements ColorService {
 
     @Override
     public DataResult<GetColorResponse> getById(int id) {
-        Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find color id"));
+        Color color = this.colorRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find color id : " + id));
         GetColorResponse responses = this.mapperService.forResponse().map(color, GetColorResponse.class);
         return new SuccessDataResult<>(responses, Message.GET.getMessage());
     }
@@ -74,7 +75,7 @@ public class ColorManager implements ColorService {
     @Override
     public Result updateColor(UpdateColorRequest updateColorRequest) {
         String editName = businessRules.checkIfExistsByName(updateColorRequest.getName());
-        this.colorRepository.findById(updateColorRequest.getId()).orElseThrow(() -> new RuntimeException("Color not found"));
+        this.colorRepository.findById(updateColorRequest.getId()).orElseThrow(() -> new NotFoundException("Color not found"));
         Color color = this.mapperService.forRequest().map(updateColorRequest, Color.class);
         color.setName(editName);
         this.colorRepository.save(color);
@@ -84,7 +85,7 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result deleteColor(int id) {
-        Color color = this.colorRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        Color color = this.colorRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
         color.setDeletedAt(LocalDate.now());
         this.colorRepository.save(color);
         this.colorRepository.delete(color);
