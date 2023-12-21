@@ -6,6 +6,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.AddMod
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.UpdateModelRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
@@ -23,4 +24,5 @@ public interface UserService {
     Result updateUser(UpdateUserRequest updateUserRequest);
 
     Result deleteUser(int id);
+    DataResult<Iterable<GetUserListResponse>> findAll(boolean isDeleted);
 }

@@ -26,4 +26,5 @@ public class UpdateUserRequest {
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
     private String email;
+    private boolean isActive;
 }
