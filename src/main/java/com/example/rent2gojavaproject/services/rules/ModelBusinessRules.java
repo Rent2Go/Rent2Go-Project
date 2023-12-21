@@ -1,5 +1,7 @@
 package com.example.rent2gojavaproject.services.rules;
 
+import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.repositories.ModelRepository;
 import com.example.rent2gojavaproject.services.abstracts.BrandService;
@@ -16,9 +18,9 @@ public class ModelBusinessRules {
     public String checkIfExistsByIdAndName(int brandId, String name){
         String value = name.toLowerCase().trim();
         if (!(brandService.existsById(brandId))) {
-            throw new IllegalStateException("Brand ID doesn't exist !");
+            throw new NotFoundException("Brand ID doesn't exist !");
         }else if(modelRepository.existsByName(value)){
-            throw new IllegalArgumentException("Model already exists");
+            throw new AlreadyExistsException("Model already exists");
         }
         return value;
     }
