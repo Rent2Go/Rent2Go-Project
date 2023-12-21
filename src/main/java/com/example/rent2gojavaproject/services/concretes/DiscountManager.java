@@ -43,10 +43,10 @@ public class DiscountManager implements DiscountService {
     }
 
     @Override
-    public DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterDiscount");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetDiscountListResponse> discounts = this.discountRepository.findAll()
                 .stream().map(discount -> this.mapperService.forResponse()
                         .map(discount, GetDiscountListResponse.class))

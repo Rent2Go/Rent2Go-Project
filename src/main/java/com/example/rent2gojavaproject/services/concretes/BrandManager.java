@@ -42,10 +42,10 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public DataResult<Iterable<GetBrandListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetBrandListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterBrand");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetBrandListResponse> brands = this.brandRepository.findAll()
                 .stream().map(brand -> this.mapperService.forResponse()
                         .map(brand, GetBrandListResponse.class))

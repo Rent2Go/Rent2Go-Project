@@ -48,10 +48,10 @@ public class RentalManager implements RentalService {
     }
 
     @Override
-    public DataResult<Iterable<GetRentalListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetRentalListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterRental");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetRentalListResponse> rentals = this.rentalRepository.findAll()
                 .stream().map(rental -> this.mapperService.forResponse()
                         .map(rental, GetRentalListResponse.class))

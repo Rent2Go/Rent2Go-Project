@@ -42,10 +42,10 @@ public class EmployeeManager implements EmployeeService {
     }
 
     @Override
-    public DataResult<Iterable<GetEmployeeListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetEmployeeListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterEmployee");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetEmployeeListResponse> employees = this.employeeRepository.findAll()
                 .stream().map(employee -> this.mapperService.forResponse()
                         .map(employee, GetEmployeeListResponse.class))

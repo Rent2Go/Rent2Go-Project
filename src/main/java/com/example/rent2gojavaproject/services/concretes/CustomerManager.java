@@ -40,10 +40,10 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterCustomer");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetCustomerListResponse> customers = this.customerRepository.findAll()
                 .stream().map(customer -> this.mapperService.forResponse()
                         .map(customer, GetCustomerListResponse.class))

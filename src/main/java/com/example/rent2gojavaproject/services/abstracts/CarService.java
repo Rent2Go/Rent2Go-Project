@@ -26,7 +26,7 @@ public interface CarService {
 
     boolean existsById(int id);
 
-    DataResult<Iterable<GetCarListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetCarListResponse>> findAll(boolean isActive);
 
 
 }

@@ -46,10 +46,10 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public DataResult<Iterable<GetColorListResponse>> findAll(boolean isDeleted){
+    public DataResult<Iterable<GetColorListResponse>> findAll(boolean isActive){
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterColor");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetColorListResponse> colors = this.colorRepository.findAll()
                 .stream().map(color -> this.mapperService.forResponse()
                         .map(color, GetColorListResponse.class))

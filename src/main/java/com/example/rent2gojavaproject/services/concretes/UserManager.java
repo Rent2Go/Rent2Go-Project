@@ -44,10 +44,10 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public DataResult<Iterable<GetUserListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterUser");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetUserListResponse> users = this.userRepository.findAll()
                 .stream().map(user -> this.mapperService.forResponse()
                         .map(user, GetUserListResponse.class))

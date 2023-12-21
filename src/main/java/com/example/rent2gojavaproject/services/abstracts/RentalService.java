@@ -21,5 +21,5 @@ public interface RentalService {
     Result updateRental (UpdateRentalRequest updateRentalRequest);
 
     Result deleteRental(int id);
-    DataResult<Iterable<GetRentalListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetRentalListResponse>> findAll(boolean isActive);
 }

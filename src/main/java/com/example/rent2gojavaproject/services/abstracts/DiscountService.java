@@ -25,5 +25,5 @@ public interface DiscountService {
     Result deleteDiscount(int id);
 
     Discount findByDiscountCode(String discountCode);
-    DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isActive);
 }

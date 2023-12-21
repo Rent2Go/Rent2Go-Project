@@ -24,5 +24,5 @@ public interface UserService {
     Result updateUser(UpdateUserRequest updateUserRequest);
 
     Result deleteUser(int id);
-    DataResult<Iterable<GetUserListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive);
 }

@@ -5,17 +5,13 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.DiscountService;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.AddDiscountRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.UpdateDiscountRequest;
-import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountResponse;
-import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 @RestController
@@ -29,8 +25,8 @@ public class DiscountsController {
         return discountService.getAllDiscounts();
     }
     @GetMapping("/getAllActiveOrNot")
-    public DataResult<Iterable<GetDiscountListResponse>> findAll(@RequestParam boolean isDeleted) {
-        return this.discountService.findAll(isDeleted);
+    public DataResult<Iterable<GetDiscountListResponse>> findAll(@RequestParam boolean isActive) {
+        return this.discountService.findAll(isActive);
     }
 
     @GetMapping("/{id}")

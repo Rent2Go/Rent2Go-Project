@@ -21,6 +21,6 @@ public interface BrandService {
     Result updateBrand(UpdateBrandRequest updateBrandRequest);
 
     Result deleteBrand(int id);
-    DataResult<Iterable<GetBrandListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetBrandListResponse>> findAll(boolean isActive);
     boolean existsById(int id);
 }

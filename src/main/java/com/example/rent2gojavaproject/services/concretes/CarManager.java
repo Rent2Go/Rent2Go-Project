@@ -49,10 +49,10 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public DataResult<Iterable<GetCarListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetCarListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterCar");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetCarListResponse> cars = this.carRepository.findAll()
                 .stream().map(car -> this.mapperService.forResponse()
                         .map(car, GetCarListResponse.class))

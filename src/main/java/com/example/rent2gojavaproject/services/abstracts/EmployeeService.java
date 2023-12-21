@@ -21,7 +21,7 @@ public interface EmployeeService {
     Result updateEmployee(UpdateEmployeeRequest updateEmployeeRequest);
 
     Result deleteEmployee(int id);
-    DataResult<Iterable<GetEmployeeListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetEmployeeListResponse>> findAll(boolean isActive);
     boolean existsById(int id);
 
 }

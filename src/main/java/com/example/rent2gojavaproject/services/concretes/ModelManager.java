@@ -45,10 +45,10 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public DataResult<Iterable<GetModelListResponse>> findAll(boolean isDeleted) {
+    public DataResult<Iterable<GetModelListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterModel");
-        filter.setParameter("isActive", isDeleted);
+        filter.setParameter("isActive", isActive);
         Iterable<GetModelListResponse> models = this.modelRepository.findAll().stream()
                 .map(model -> this.mapperService.forResponse().map(model, GetModelListResponse.class))
                 .collect(Collectors.toList());

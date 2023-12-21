@@ -21,7 +21,7 @@ public interface CustomerService {
     Result updateCustomer(UpdateCustomerRequest updateCustomerRequest);
 
     Result DeleteCustomer(int customerId);
-    DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isActive);
 
     boolean existsById(int id);
 }

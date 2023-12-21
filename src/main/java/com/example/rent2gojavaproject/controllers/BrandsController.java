@@ -2,7 +2,6 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
-import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.services.abstracts.BrandService;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.UpdateBrandRequest;
@@ -27,8 +26,8 @@ public class BrandsController {
         return brandService.getAllBrands();
     }
     @GetMapping("/getAllActiveOrNot")
-    public DataResult<Iterable<GetBrandListResponse>> findAll(@RequestParam boolean isDeleted) {
-        return this.brandService.findAll(isDeleted);
+    public DataResult<Iterable<GetBrandListResponse>> findAll(@RequestParam boolean isActive) {
+        return this.brandService.findAll(isActive);
     }
 
     @GetMapping("/{id}")

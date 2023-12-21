@@ -2,8 +2,6 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
-import com.example.rent2gojavaproject.models.Color;
-import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.services.abstracts.ModelService;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.AddModelRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.UpdateModelRequest;
@@ -51,9 +49,9 @@ public class ModelsController {
     }
 
     @GetMapping("/filteredgetall")
-    public DataResult<Iterable<GetModelListResponse>> findAll(@RequestParam boolean isDeleted) {
+    public DataResult<Iterable<GetModelListResponse>> findAll(@RequestParam boolean isActive) {
 
-        return this.modelService.findAll(isDeleted);
+        return this.modelService.findAll(isActive);
     }
 
 }

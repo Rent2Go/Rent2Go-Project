@@ -23,6 +23,6 @@ public interface ModelService {
 
     boolean existsById(int id);
 
-    DataResult<Iterable<GetModelListResponse>> findAll(boolean isDeleted);
+    DataResult<Iterable<GetModelListResponse>> findAll(boolean isActive);
 }
 
