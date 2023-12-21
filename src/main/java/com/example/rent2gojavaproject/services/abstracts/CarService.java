@@ -21,9 +21,12 @@ public interface CarService {
     Result updateCar(UpdateCarRequest updateCarRequest);
 
     Result deleteCar(int id);
+
     boolean existsByPlate(String plate);
+
     boolean existsById(int id);
 
+    DataResult<Iterable<GetCarListResponse>> findAll(boolean isDeleted);
 
 
 }

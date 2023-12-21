@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.List;
 
@@ -13,6 +17,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "update customers SET IS_ACTIVE = false WHERE id=?")
+//@Where(clause = "IS_ACTIVE=true")
+@FilterDef(name="isActiveFilterCustomer", parameters=@ParamDef( name="isActive", type=Boolean.class ))
+@Filter(name="isActiveFilterCustomer", condition="IS_ACTIVE = :isActive")
 public class Customer extends BaseEntity{
 
     @Id

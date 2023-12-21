@@ -23,4 +23,6 @@ public class UpdateModelRequest {
     @NotNull(message = "The brand id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int brandId;
+
+    private boolean isActive;
 }

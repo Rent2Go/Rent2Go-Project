@@ -23,7 +23,7 @@ public class UpdateCarRequest {
     @Positive(message = "Daily price must be greater than 0.")
     private double dailyPrice;
     @NotBlank(message = "The plate field can't be empty.")
-    @Pattern(regexp = "(0[1-9]|[1-7][0-9]|8[01])[A-Z]{1,3}(\\d{2}|\\d{4})", message = "Invalid licence plate")
+    @Pattern(regexp = "^(?iu)\\s?(0[1-9]|[1-7][0-9]|8[01])\\s?[A-Za-zğüşıöçĞÜŞİÖÇ]{1,3}\\s?[0-9]{2,4}\\s?$", message = "Invalid licence plate")
     @Size(min = 5, max = 9, message = "Licence plate must be between 5 and 9 characters")
     private String plate;
     @NotNull(message = "The model id cannot be null.")
@@ -32,4 +32,5 @@ public class UpdateCarRequest {
     @NotNull(message = "The color id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int colorId;
+    private boolean isActive;
 }

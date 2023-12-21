@@ -6,12 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.List;
 
 @Entity
 @Table(name = "cars")
 @Getter
+@SQLDelete(sql = "update cars SET IS_ACTIVE = false WHERE id=?")
+//@Where(clause = "IS_ACTIVE=true")
+@FilterDef(name="isActiveFilterCar", parameters=@ParamDef( name="isActive", type=Boolean.class ))
+@Filter(name="isActiveFilterCar", condition="IS_ACTIVE = :isActive")
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor

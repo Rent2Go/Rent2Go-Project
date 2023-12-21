@@ -7,6 +7,7 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Brand;
+import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.services.abstracts.BrandService;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
@@ -14,7 +15,10 @@ import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.Update
 import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandResponse;
 import com.example.rent2gojavaproject.services.rules.BrandBusinessRules;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,28 +31,34 @@ public class BrandManager implements BrandService {
     private final BrandRepository brandRepository;
     private ModelMapperService mapperService;
     private BrandBusinessRules businessRules;
+    private EntityManager entityManager;
 
     @Override
-    public DataResult<List<GetBrandListResponse>> getAllActiveBrands() {
+    public DataResult<List<GetBrandListResponse>> getAllBrands() {
 
-        List<Brand> brands = this.brandRepository.findByIsActiveTrue();
+        List<Brand> brands = this.brandRepository.findAll();
         List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<GetBrandListResponse>>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
-    public DataResult<List<GetBrandListResponse>> getPassiveBrands() {
-        List<Brand> deletedBrands = this.brandRepository.findByIsActiveFalse();
-        List<GetBrandListResponse> responses = deletedBrands.stream()
-                .map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class))
+    public DataResult<Iterable<GetBrandListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterBrand");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetBrandListResponse> brands = this.brandRepository.findAll()
+                .stream().map(brand -> this.mapperService.forResponse()
+                        .map(brand, GetBrandListResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        session.disableFilter("isActiveFilterBrand");
+        return new SuccessDataResult<>(brands,Message.GET_ALL.getMessage());
     }
+
 
     @Override
     public DataResult<GetBrandResponse> getById(int id) {
 
-        Brand brand = this.brandRepository.findByIdAndIsActiveTrue(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
         return new SuccessDataResult<GetBrandResponse>(response, Message.GET.getMessage());
@@ -76,11 +86,10 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result deleteBrand(int id) {
-
-        Brand brand = this.brandRepository.findByIdAndIsActiveTrue(id).orElseThrow(() -> new RuntimeException("ID not found!"));
-        brand.setActive(false);
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
         brand.setDeletedAt(LocalDate.now());
-        brandRepository.save(brand);
+        this.brandRepository.save(brand);
+        this.brandRepository.delete(brand);
 
         return new SuccessResult(Message.DELETE.getMessage());
     }
