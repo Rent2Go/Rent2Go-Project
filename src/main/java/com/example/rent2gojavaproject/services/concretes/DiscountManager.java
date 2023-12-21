@@ -6,16 +6,22 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.Discount;
 import com.example.rent2gojavaproject.repositories.DiscountRepository;
 import com.example.rent2gojavaproject.services.abstracts.DiscountService;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.AddDiscountRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.UpdateDiscountRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountResponse;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +31,7 @@ public class DiscountManager implements DiscountService {
 
     private DiscountRepository discountRepository;
     private ModelMapperService mapperService;
+    private EntityManager entityManager;
 
 
     @Override
@@ -32,7 +39,20 @@ public class DiscountManager implements DiscountService {
         List<Discount> discounts = this.discountRepository.findAll();
         List<GetDiscountListResponse> responses = discounts.stream().map(discount -> this.mapperService.forResponse().map(discount, GetDiscountListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<List<GetDiscountListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterDiscount");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetDiscountListResponse> discounts = this.discountRepository.findAll()
+                .stream().map(discount -> this.mapperService.forResponse()
+                        .map(discount, GetDiscountListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterDiscount");
+        return new SuccessDataResult<>(discounts,Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -63,10 +83,12 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public Result deleteDiscount(int id) {
-        this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find discount id"));
+        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        discount.setDeletedAt(LocalDate.now());
+        this.discountRepository.save(discount);
+        this.discountRepository.delete(discount);
 
         return new SuccessResult(Message.DELETE.getMessage());
-
     }
 
     @Override
