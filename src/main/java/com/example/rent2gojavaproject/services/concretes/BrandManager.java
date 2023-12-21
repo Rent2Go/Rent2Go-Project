@@ -38,7 +38,7 @@ public class BrandManager implements BrandService {
 
         List<Brand> brands = this.brandRepository.findAll();
         List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetBrandListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class BrandManager implements BrandService {
         Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find brand id"));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
-        return new SuccessDataResult<GetBrandResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override

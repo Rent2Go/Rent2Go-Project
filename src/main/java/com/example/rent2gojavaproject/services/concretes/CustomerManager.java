@@ -36,7 +36,7 @@ public class CustomerManager implements CustomerService {
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
         List<Customer> customers = this.customerRepository.findAll();
         List<GetCustomerListResponse> responses = customers.stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetCustomerListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CustomerManager implements CustomerService {
     public DataResult<GetCustomerResponse> getById(int id) {
         Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found: " + id));
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
-        return new SuccessDataResult<GetCustomerResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
 
     }
 

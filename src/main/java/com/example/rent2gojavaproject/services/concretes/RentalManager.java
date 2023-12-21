@@ -7,6 +7,7 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Car;
+import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.Discount;
 import com.example.rent2gojavaproject.models.Rental;
 import com.example.rent2gojavaproject.repositories.CarRepository;
@@ -15,12 +16,17 @@ import com.example.rent2gojavaproject.repositories.RentalRepository;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
 import com.example.rent2gojavaproject.services.rules.RentalBusinessRules;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +38,26 @@ public class RentalManager implements RentalService {
     private final CarRepository carRepository;
     private final RentalBusinessRules businessRules;
     private final DiscountRepository discountRepository;
-
+    private EntityManager entityManager;
 
     @Override
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         List<Rental> rentals = this.rentalRepository.findAll();
         List<GetRentalListResponse> responses = rentals.stream().map(rental -> this.mapperService.forResponse().map(rental, GetRentalListResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetRentalListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<Iterable<GetRentalListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterRental");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetRentalListResponse> rentals = this.rentalRepository.findAll()
+                .stream().map(rental -> this.mapperService.forResponse()
+                        .map(rental, GetRentalListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterRental");
+        return new SuccessDataResult<>(rentals,Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -48,7 +67,7 @@ public class RentalManager implements RentalService {
         GetRentalResponse response = this.mapperService.forResponse().map(rental, GetRentalResponse.class);
 
 
-        return new SuccessDataResult<GetRentalResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -93,8 +112,11 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result deleteRental(int id) {
-        this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find rental id"));
-        this.rentalRepository.deleteById(id);
+        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        rental.setDeletedAt(LocalDate.now());
+        this.rentalRepository.save(rental);
+        this.rentalRepository.delete(rental);
+
         return new SuccessResult(Message.DELETE.getMessage());
     }
 }

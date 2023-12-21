@@ -58,7 +58,7 @@ public class ColorsController {
     }
 
     @GetMapping("/filteredgetall")
-    public DataResult<Iterable<Color>> findAll(@RequestParam boolean isDeleted) {
+    public DataResult<Iterable<GetColorListResponse>> findAll(@RequestParam boolean isDeleted) {
 
         return this.colorService.findAll(isDeleted);
     }

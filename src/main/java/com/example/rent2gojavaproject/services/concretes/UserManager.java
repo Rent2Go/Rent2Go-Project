@@ -6,16 +6,22 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +30,7 @@ import java.util.stream.Collectors;
 public class UserManager implements UserService {
     private final UserRepository userRepository;
     private ModelMapperService mapperService;
+    private EntityManager entityManager;
 
     @Override
     public DataResult<List<GetUserListResponse>> getAllUsers() {
@@ -33,7 +40,20 @@ public class UserManager implements UserService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetUserListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<Iterable<GetUserListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterUser");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetUserListResponse> users = this.userRepository.findAll()
+                .stream().map(user -> this.mapperService.forResponse()
+                        .map(user, GetUserListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterUser");
+        return new SuccessDataResult<>(users,Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -43,7 +63,7 @@ public class UserManager implements UserService {
         GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
 
 
-        return new SuccessDataResult<GetUserResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -65,8 +85,10 @@ public class UserManager implements UserService {
 
     @Override
     public Result deleteUser(int id) {
-        this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user id"));
-        this.userRepository.deleteById(id);
+        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        user.setDeletedAt(LocalDate.now());
+        this.userRepository.save(user);
+        this.userRepository.delete(user);
         return new SuccessResult(Message.DELETE.getMessage());
     }
 }

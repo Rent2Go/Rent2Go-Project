@@ -34,5 +34,5 @@ public class UpdateRentalRequest {
 
     @NotNull(message = "Employee ID must be entered !!")
     private int employeeId;
-
+    private boolean isActive;
 }

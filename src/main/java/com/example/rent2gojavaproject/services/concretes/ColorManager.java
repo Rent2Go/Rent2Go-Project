@@ -13,6 +13,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.AddCol
 import com.example.rent2gojavaproject.services.dtos.requests.colorRequest.UpdateColorRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.colorResponse.GetColorResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.rules.ColorBusinessRules;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
@@ -45,13 +46,16 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public DataResult<Iterable<Color>> findAll(boolean isDeleted){
+    public DataResult<Iterable<GetColorListResponse>> findAll(boolean isDeleted){
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterColor");
         filter.setParameter("isActive", isDeleted);
-        Iterable<Color> colors = this.colorRepository.findAll();
+        Iterable<GetColorListResponse> colors = this.colorRepository.findAll()
+                .stream().map(color -> this.mapperService.forResponse()
+                        .map(color, GetColorListResponse.class))
+                .collect(Collectors.toList());
         session.disableFilter("isActiveFilterColor");
-        return new SuccessDataResult<>(colors, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(colors,Message.GET_ALL.getMessage());
     }
 
 

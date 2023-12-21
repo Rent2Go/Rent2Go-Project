@@ -24,4 +24,5 @@ public class UpdateDiscountRequest {
     private Double percentage;
     @NotNull(message = "Rental Id can not be empty !")
     private int rentalId;
+    private boolean isActive;
 }

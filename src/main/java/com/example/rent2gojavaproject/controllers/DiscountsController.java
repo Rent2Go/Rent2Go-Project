@@ -5,6 +5,7 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.DiscountService;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.AddDiscountRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.UpdateDiscountRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
@@ -26,6 +27,10 @@ public class DiscountsController {
     @GetMapping("/getAll")
     public DataResult<List<GetDiscountListResponse>> getAllDiscounts(){
         return discountService.getAllDiscounts();
+    }
+    @GetMapping("/getAllActiveOrNot")
+    public DataResult<Iterable<GetDiscountListResponse>> findAll(@RequestParam boolean isDeleted) {
+        return this.discountService.findAll(isDeleted);
     }
 
     @GetMapping("/{id}")
