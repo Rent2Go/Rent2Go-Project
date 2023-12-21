@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.dtos.requests.employeeRequest.AddEmployeeRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.employeeRequest.UpdateEmployeeRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
 
@@ -20,7 +21,7 @@ public interface EmployeeService {
     Result updateEmployee(UpdateEmployeeRequest updateEmployeeRequest);
 
     Result deleteEmployee(int id);
-
+    DataResult<Iterable<GetEmployeeListResponse>> findAll(boolean isDeleted);
     boolean existsById(int id);
 
 }

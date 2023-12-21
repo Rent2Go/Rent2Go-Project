@@ -20,4 +20,5 @@ public class UpdateEmployeeRequest {
     @NotNull(message = "Salary cannot be null")
     @Positive(message = "Id must be a positive number.")
     private int userId;
+    private boolean isActive;
 }

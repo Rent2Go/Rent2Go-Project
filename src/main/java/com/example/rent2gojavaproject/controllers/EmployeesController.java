@@ -5,6 +5,7 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.EmployeeService;
 import com.example.rent2gojavaproject.services.dtos.requests.employeeRequest.AddEmployeeRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.employeeRequest.UpdateEmployeeRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
 import jakarta.validation.Valid;
@@ -25,6 +26,10 @@ public class EmployeesController {
         return employeeService.getAllEmployees();
     }
 
+    @GetMapping("/getAllActiveOrNot")
+    public DataResult<Iterable<GetEmployeeListResponse>> findAll(@RequestParam boolean isDeleted) {
+        return this.employeeService.findAll(isDeleted);
+    }
     @GetMapping("/{id}")
     public DataResult<GetEmployeeResponse> getEmployeeById(@PathVariable int id) {
         return employeeService.getById(id);

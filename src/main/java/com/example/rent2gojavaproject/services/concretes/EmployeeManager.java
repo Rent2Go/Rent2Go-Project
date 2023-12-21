@@ -6,16 +6,22 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.Employee;
 import com.example.rent2gojavaproject.repositories.EmployeeRepository;
 import com.example.rent2gojavaproject.services.abstracts.EmployeeService;
 import com.example.rent2gojavaproject.services.dtos.requests.employeeRequest.AddEmployeeRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.employeeRequest.UpdateEmployeeRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +31,27 @@ public class EmployeeManager implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private ModelMapperService mapperService;
-
+    private EntityManager entityManager;
     @Override
     public DataResult<List<GetEmployeeListResponse>> getAllEmployees() {
         List<Employee> employees = this.employeeRepository.findAll();
         List<GetEmployeeListResponse> responses = employees.stream().map(employee -> this.mapperService.forResponse().map(employee, GetEmployeeListResponse.class)).collect(Collectors.toList());
 
 
-        return new SuccessDataResult<List<GetEmployeeListResponse>>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<Iterable<GetEmployeeListResponse>> findAll(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("isActiveFilterEmployee");
+        filter.setParameter("isActive", isDeleted);
+        Iterable<GetEmployeeListResponse> employees = this.employeeRepository.findAll()
+                .stream().map(employee -> this.mapperService.forResponse()
+                        .map(employee, GetEmployeeListResponse.class))
+                .collect(Collectors.toList());
+        session.disableFilter("isActiveFilterEmployee");
+        return new SuccessDataResult<>(employees,Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -42,7 +61,7 @@ public class EmployeeManager implements EmployeeService {
         GetEmployeeResponse response = this.mapperService.forResponse().map(employee, GetEmployeeResponse.class);
 
 
-        return new SuccessDataResult<GetEmployeeResponse>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override
@@ -64,8 +83,11 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public Result deleteEmployee(int id) {
-        this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find employee id"));
-        this.employeeRepository.deleteById(id);
+        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("id not found"));
+        employee.setDeletedAt(LocalDate.now());
+        this.employeeRepository.save(employee);
+        this.employeeRepository.delete(employee);
+
         return new SuccessResult(Message.DELETE.getMessage());
     }
 
