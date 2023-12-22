@@ -29,6 +29,8 @@ public class Customer extends BaseEntity{
 
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
+    @Column(name = "city")
+    private City city;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
