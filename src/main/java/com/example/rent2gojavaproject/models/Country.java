@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Table(name = "counties")
+@Table(name = "countries")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class County {
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,7 +21,7 @@ public class County {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "county", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<City> cities;
 }
