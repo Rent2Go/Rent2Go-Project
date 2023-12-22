@@ -30,7 +30,14 @@ public class Company {
     @Column(name = "contact_phone", nullable = false)
     private String contactPhone;
 
-    @Column(name = "address", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "city")
+    private City city;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "address")
     private String address;
 
 
