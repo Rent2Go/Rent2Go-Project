@@ -25,16 +25,6 @@ public class Customer {
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "integer default 1")
-    private int isActive;
-
-    @Column(name = "is_deleted", nullable = false, columnDefinition = "integer default 0")
-    private int isDeleted;
-
-    @Column(name = "created_at" , nullable = false)
-    @CreationTimestamp
-    private LocalDate createdAt;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

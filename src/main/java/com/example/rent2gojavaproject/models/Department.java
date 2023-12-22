@@ -24,12 +24,6 @@ public class Department {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "integer default 1")
-    private int isActive;
-
-    @Column(name = "created_at", nullable = false)
-    @CreationTimestamp
-    private LocalDate createdAt;
 }
 
 

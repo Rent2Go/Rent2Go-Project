@@ -22,6 +22,4 @@ public class UserRole {
     @Column(name = "permissions", nullable = false)
     private String permissions;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "integer default 1")
-    private int isActive;
 }

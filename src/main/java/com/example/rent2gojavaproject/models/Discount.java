@@ -28,16 +28,6 @@ public class Discount {
     @Column(name = "percentage", nullable = false)
     private Double percentage;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "integer default 1")
-    private int isActive;
-
-    @Column(name = "is_deleted", nullable = false, columnDefinition = "integer default 0")
-    private int isDeleted;
-
-    @Column(name = "created_at" , nullable = false)
-    @CreationTimestamp
-    private LocalDate createdAt;
-
     @OneToMany(mappedBy = "discount")
     @JsonIgnore
     private List<Rental> rentals;
