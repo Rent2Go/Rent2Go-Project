@@ -41,6 +41,17 @@ public class Car extends BaseEntity{
     @Column(name = "plate", nullable = false, unique = true)
     private String plate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "body_type")
+    private BodyType bodyType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "fuel_type")
+    private FuelType fuelType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gear_type")
+    private GearType gearType;
 
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
@@ -49,6 +60,7 @@ public class Car extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
+
 
     @OneToMany(mappedBy = "car")
     @JsonIgnore
