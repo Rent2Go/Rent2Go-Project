@@ -9,7 +9,6 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
-
 import java.util.List;
 
 @Entity
@@ -34,7 +33,5 @@ public class Brand extends BaseEntity{
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Model> models;
-
-
 
 }
