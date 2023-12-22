@@ -9,8 +9,4 @@ import java.util.Optional;
 public interface BrandRepository extends JpaRepository<Brand,Integer> {
 
     boolean existsByNameAndIsActiveTrue(String name);
-    Optional<Brand> findByIdAndIsActiveTrue(int id);
-
-    List<Brand> findByIsActiveTrue();
-    List<Brand> findByIsActiveFalse();
 }
