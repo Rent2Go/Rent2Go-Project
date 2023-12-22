@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+@Entity
 @Table(name = "countries")
 @Data
 @AllArgsConstructor
