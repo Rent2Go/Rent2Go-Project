@@ -39,16 +39,6 @@ public class Employee extends BaseEntity{
     @ManyToOne(optional = true)
     @JoinColumn(name = "user_id", columnDefinition = "integer default 1",nullable = false)
     private User user;
-
-    /*@ManyToOne(optional = true)
-    @JoinColumn(name = "department_id", columnDefinition = "integer default 1",nullable = false)
-    private Department department;
-
-
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "county_id", nullable = false)
-    private County county;*/
-
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
     private List<Rental> rentals;
