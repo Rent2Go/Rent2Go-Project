@@ -1,5 +1,11 @@
 package com.example.rent2gojavaproject.services.dtos.requests.carRequest;
 
+import com.example.rent2gojavaproject.models.BodyType;
+import com.example.rent2gojavaproject.models.FuelType;
+import com.example.rent2gojavaproject.models.GearType;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,5 +35,11 @@ public class AddCarRequest {
     @NotNull(message = "The color id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int colorId;
+    @NotNull(message = "Body type cannot be null")
+    private BodyType bodyType;
+    @NotNull(message = "Fuel type cannot be null")
+    private FuelType fuelType;
+    @NotNull(message = "Gear type cannot be null")
+    private GearType gearType;
 
 }
