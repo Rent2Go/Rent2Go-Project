@@ -29,8 +29,13 @@ public class Customer extends BaseEntity{
 
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
+    @Enumerated(EnumType.STRING)
     @Column(name = "city")
     private City city;
+    @Column(name = "district")
+    private String district;
+    @Column(name = "address")
+    private String address;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

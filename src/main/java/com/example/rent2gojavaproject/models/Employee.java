@@ -29,7 +29,13 @@ public class Employee extends BaseEntity{
 
     @Column(name = "salary", nullable = false)
     private double salary;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "city")
+    private City city;
+    @Column(name = "district")
+    private String district;
+    @Column(name = "address")
+    private String address;
     @ManyToOne(optional = true)
     @JoinColumn(name = "user_id", columnDefinition = "integer default 1",nullable = false)
     private User user;
@@ -38,9 +44,6 @@ public class Employee extends BaseEntity{
     @JoinColumn(name = "department_id", columnDefinition = "integer default 1",nullable = false)
     private Department department;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "city_id", nullable = false)
-    private City city;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "county_id", nullable = false)
