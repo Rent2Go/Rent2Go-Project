@@ -42,15 +42,15 @@ public class Car extends BaseEntity{
     private String plate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "body_type")
+    @Column(name = "body_type", nullable = false)
     private BodyType bodyType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "fuel_type")
+    @Column(name = "fuel_type", nullable = false)
     private FuelType fuelType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gear_type")
+    @Column(name = "gear_type", nullable = false)
     private GearType gearType;
 
     @Column(name = "cylinder_count", nullable = false)

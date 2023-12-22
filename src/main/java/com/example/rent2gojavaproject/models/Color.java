@@ -26,7 +26,7 @@ public class Color extends BaseEntity{
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "color")
