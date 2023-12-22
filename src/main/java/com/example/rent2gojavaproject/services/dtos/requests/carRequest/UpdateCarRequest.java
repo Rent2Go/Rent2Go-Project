@@ -41,5 +41,9 @@ public class UpdateCarRequest {
     private FuelType fuelType;
     @NotNull(message = "Gear type cannot be null")
     private GearType gearType;
+    @Positive(message = "Cylinder Count value must be a positive number.")
+    private double cylinderCount;
+    @Positive(message = "Engine Power value must be a positive number.")
+    private int enginePower;
     private boolean isActive;
 }

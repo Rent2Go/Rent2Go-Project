@@ -18,4 +18,8 @@ public class City {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
 }
