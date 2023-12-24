@@ -2,11 +2,13 @@ package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
 import com.example.rent2gojavaproject.models.Brand;
+import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,9 +36,15 @@ public class BrandBusinessRules {
 
             });
         }
-
     }
 
-
+    public void changeDeleteDate(Brand brand) {
+        brand.setDeletedAt(LocalDate.now());
+        List<Model> existingModels = brand.getModels();
+        brand.getModels().forEach(model -> {
+            model.setDeletedAt(brand.getDeletedAt());
+            model.getCars().forEach(car -> car.setDeletedAt(model.getDeletedAt()));
+        });
+    }
 
 }
