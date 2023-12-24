@@ -9,6 +9,7 @@ import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Brand;
 import com.example.rent2gojavaproject.models.Color;
+import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.services.abstracts.BrandService;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
@@ -52,14 +53,14 @@ public class BrandManager implements BrandService {
                         .map(brand, GetBrandListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterBrand");
-        return new SuccessDataResult<>(brands,Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(brands, Message.GET_ALL.getMessage());
     }
 
 
     @Override
     public DataResult<GetBrandResponse> getById(int id) {
 
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find brand id : " + id ));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find brand id : " + id));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
         return new SuccessDataResult<>(response, Message.GET.getMessage());
@@ -77,11 +78,13 @@ public class BrandManager implements BrandService {
     @Override
     public Result updateBrand(UpdateBrandRequest updateBrandRequest) {
         String editName = businessRules.checkIfExistsByName(updateBrandRequest.getName());
-        this.brandRepository.findById(updateBrandRequest.getId()).orElseThrow(() -> new NotFoundException("Brand not found !"));
-        Brand brand = this.mapperService.forRequest().map(updateBrandRequest, Brand.class);
-        brand.setName(editName);
-        this.brandRepository.save(brand);
+        Brand existingBrand = this.brandRepository.findById(updateBrandRequest.getId())
+                .orElseThrow(() -> new NotFoundException("Brand not found !"));
 
+        existingBrand.setName(editName);
+        businessRules.changeIsActive(existingBrand, updateBrandRequest.isActive());
+
+        this.brandRepository.save(existingBrand);
         return new SuccessResult(Message.UPDATE.getMessage());
     }
 
