@@ -47,6 +47,10 @@ public class User extends BaseEntity{
     @JsonIgnore
     private List<Employee> employees;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Bill> bills;
+
     public User(int id) {
         this.id = id;
     }
