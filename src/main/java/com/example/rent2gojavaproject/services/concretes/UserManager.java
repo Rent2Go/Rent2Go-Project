@@ -18,6 +18,9 @@ import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +33,16 @@ public class UserManager implements UserService {
     private final UserRepository userRepository;
     private ModelMapperService mapperService;
     private EntityManager entityManager;
+
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return userRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            }
+        };
+    }
 
     @Override
     public DataResult<List<GetUserListResponse>> getAllUsers() {
@@ -66,11 +79,11 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public Result addUser(AddUserRequest addUserRequest) {
-        User user = this.mapperService.forRequest().map(addUserRequest, User.class);
+    public User addUser(User user) {
+
 
         this.userRepository.save(user);
-        return new SuccessResult(Message.ADD.getMessage());
+        return user;
     }
 
     @Override
