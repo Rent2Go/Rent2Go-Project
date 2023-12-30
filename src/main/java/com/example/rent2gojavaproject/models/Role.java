@@ -8,8 +8,17 @@ import lombok.NoArgsConstructor;
 
 public enum Role{
 
-    ROLE_ADMIN(),
-    ROLE_USER
+    ADMIN("ROLE_ADMIN"),
+    USER("ROLE_USER");
 
+    private final String roleName;
+
+    Role(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
 
 }

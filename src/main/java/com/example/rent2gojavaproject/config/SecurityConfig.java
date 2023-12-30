@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,15 +63,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sessionManagement-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers(HttpMethod.POST ,"api/v1/signup","api/v1/signin").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
+                        .requestMatchers(HttpMethod.GET, "api/v1/test/admins").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
 
                 )
+                .sessionManagement(sessionManagement-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -31,7 +31,7 @@ public class AuthenticationService {
                 .phoneNumber(request.getPhoneNumber())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_USER)
+                .role(Role.USER)
                 .build();
 
         user = userService.addUser(user);
