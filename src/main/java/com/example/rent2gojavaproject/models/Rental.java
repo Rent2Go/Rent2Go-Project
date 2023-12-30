@@ -55,7 +55,7 @@ public class Rental extends BaseEntity{
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "discount_id", nullable = false, columnDefinition = "BIGINT DEFAULT 0")
+    @JoinColumn(name = "discount_id", nullable = false)
     private Discount discount;
 
     public Rental() {

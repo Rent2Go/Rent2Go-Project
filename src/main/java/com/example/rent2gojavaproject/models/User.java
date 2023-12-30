@@ -61,6 +61,10 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     private List<Employee> employees;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Bill> bills;
+
     public User(int id) {
         this.id = id;
     }

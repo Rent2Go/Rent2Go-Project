@@ -21,6 +21,7 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class CarManager implements CarService {
                         .map(car, GetCarListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterCar");
-        return new SuccessDataResult<>(cars,Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(cars, Message.GET_ALL.getMessage());
     }
 
     @Override
@@ -105,7 +106,8 @@ public class CarManager implements CarService {
 
     @Override
     public Result deleteCar(int id) {
-        this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
+        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
+        car.setDeletedAt(LocalDate.now());
         this.carRepository.deleteById(id);
 
         return new SuccessResult(Message.DELETE.getMessage());

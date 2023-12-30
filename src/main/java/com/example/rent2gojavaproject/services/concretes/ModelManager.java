@@ -84,10 +84,11 @@ public class ModelManager implements ModelService {
 
         String editValue = modelBusinessRules.checkIfExistsByIdAndName(updateModelRequest.getBrandId(), updateModelRequest.getName());
 
-        this.modelRepository.findById(updateModelRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find model id!"));
+        Model existingModel = this.modelRepository.findById(updateModelRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find model id!"));
 
         Model model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
         updateModelRequest.setName(editValue);
+        modelBusinessRules.changeIsActive(existingModel, updateModelRequest.isActive());
 
         this.modelRepository.save(model);
 
@@ -97,7 +98,7 @@ public class ModelManager implements ModelService {
     @Override
     public Result deleteModel(int id) {
         Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
-        model.setDeletedAt(LocalDate.now());
+        modelBusinessRules.changeDeleteDate(model);
         this.modelRepository.save(model);
         this.modelRepository.delete(model);
 

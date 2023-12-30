@@ -7,13 +7,11 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
-import com.example.rent2gojavaproject.models.Brand;
 import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.repositories.CustomerRepository;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
-import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 import jakarta.persistence.EntityManager;
@@ -45,12 +43,9 @@ public class CustomerManager implements CustomerService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterCustomer");
         filter.setParameter("isActive", isActive);
-        Iterable<GetCustomerListResponse> customers = this.customerRepository.findAll()
-                .stream().map(customer -> this.mapperService.forResponse()
-                        .map(customer, GetCustomerListResponse.class))
-                .collect(Collectors.toList());
+        Iterable<GetCustomerListResponse> customers = this.customerRepository.findAll().stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
         session.disableFilter("isActiveFilterCustomer");
-        return new SuccessDataResult<>(customers,Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(customers, Message.GET_ALL.getMessage());
     }
 
     @Override
