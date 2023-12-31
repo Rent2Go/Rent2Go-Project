@@ -25,8 +25,8 @@ import java.util.List;
 @NoArgsConstructor
 @SQLDelete(sql = "update users SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterUser", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterUser", condition="IS_ACTIVE = :isActive")
+@FilterDef(name = "isActiveFilterUser", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterUser", condition = "IS_ACTIVE = :isActive")
 public class User extends BaseEntity implements UserDetails {
 
     @Id
@@ -75,6 +75,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Override
+
     public String getPassword() {
         return this.password;
     }
