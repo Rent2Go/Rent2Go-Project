@@ -1,17 +1,16 @@
 package com.example.rent2gojavaproject.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table(name = "bills")
@@ -20,30 +19,28 @@ import java.util.List;
 @NoArgsConstructor
 @SQLDelete(sql = "update bills SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterBill", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterBill", condition="IS_ACTIVE = :isActive")
+@FilterDef(name = "isActiveFilterBill", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterBill", condition = "IS_ACTIVE = :isActive")
 
 public class Bill extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
-
-    @Column(name = "price", nullable = false)
-    private double price;
-
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @Column(name = "bill_no", nullable = false, unique = true)
+    private String no;
+    @Column( name = "rental_start_date",nullable = false)
+    LocalDate rentalStartDate;
+    @Column( name = "rental_end_date", nullable = false)
+    LocalDate rentalEndDate;
+    @Column( name = "total_rental_date",nullable = false)
+    private short totalRentalDate;
+    @Column( name = "rental_price",nullable = false)
+    private double rentalPrice;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
-
-
 
 
 }
