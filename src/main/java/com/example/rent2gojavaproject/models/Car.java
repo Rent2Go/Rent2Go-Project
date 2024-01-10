@@ -59,6 +59,9 @@ public class Car extends BaseEntity{
     @Column(name = "engine_power", nullable = false)
     private int enginePower;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
     private Model model;

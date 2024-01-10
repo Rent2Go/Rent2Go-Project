@@ -49,6 +49,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
