@@ -17,11 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "cities")
-@SQLDelete(sql = "update cities SET IS_ACTIVE = false WHERE id=?")
-//@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterCity", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterCity", condition="IS_ACTIVE = :isActive")
-public class City extends BaseEntity{
+public class City{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
