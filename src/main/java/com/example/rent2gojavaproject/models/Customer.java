@@ -29,9 +29,6 @@ public class Customer extends BaseEntity{
 
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "city", nullable = false)
-    private City city;
     @Column(name = "district", nullable = false)
     private String district;
     @Column(name = "address", nullable = false)
@@ -40,6 +37,14 @@ public class Customer extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id", nullable = false)
+    private District district;
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
