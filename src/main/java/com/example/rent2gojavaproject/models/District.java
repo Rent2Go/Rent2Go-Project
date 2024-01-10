@@ -22,7 +22,7 @@ public class District{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "disctrict_name")
+    @Column(name = "district_name")
     private String districtName;
 
     @ManyToOne
