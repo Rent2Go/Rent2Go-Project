@@ -24,11 +24,11 @@ import java.time.LocalDate;
 public abstract class BaseEntity {
     @Column(name = "IS_ACTIVE", columnDefinition ="boolean default true")
     protected boolean isActive;
-    @Column(name = "CREATE_AT",updatable = false)
+    @Column(name = "CREATED_AT",updatable = false)
     protected LocalDate createdAt;
-    @Column(name = "UPDATE_AT")
+    @Column(name = "UPDATED_AT")
     protected LocalDate updatedAt;
-    @Column(name = "DELETE_AT")
+    @Column(name = "DELETED_AT")
     protected LocalDate deletedAt ;
 
 
