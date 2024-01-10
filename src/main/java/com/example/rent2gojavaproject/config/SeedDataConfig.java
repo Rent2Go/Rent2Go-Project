@@ -24,6 +24,16 @@ public class SeedDataConfig implements CommandLineRunner {
 
         if (userRepository.count() == 0) {
 
+            User defaultUser = User
+                    .builder()
+                    .name("default")
+                    .surname("default")
+                    .phoneNumber("11111111111")
+                    .email("default@default.com")
+                    .password("default")
+                    .role(Role.USER).build();
+
+
             User admin = User
                     .builder()
                     .name("admin")
@@ -34,8 +44,8 @@ public class SeedDataConfig implements CommandLineRunner {
                     .role(Role.ADMIN)
                     .build();
 
+            userService.addUser(defaultUser);
             userService.addUser(admin);
-            log.debug("created ADMIN user - {}", admin);
         }
     }
 }
