@@ -29,8 +29,6 @@ public class Customer extends BaseEntity{
 
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
-    @Column(name = "district", nullable = false)
-    private String district;
     @Column(name = "address", nullable = false)
     private String address;
 
