@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -30,4 +33,11 @@ public class District extends BaseEntity {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    @OneToMany(mappedBy = "district")
+    @JsonIgnore
+    private List<Customer> customers;
+
+    @OneToMany(mappedBy = "district")
+    @JsonIgnore
+    private List<Employee> employees;
 }
