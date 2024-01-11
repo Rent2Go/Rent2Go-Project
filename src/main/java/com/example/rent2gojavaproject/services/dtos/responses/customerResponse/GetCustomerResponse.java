@@ -16,7 +16,7 @@ public class GetCustomerResponse {
     private String phoneNumber;
     private String email;
     private String nationalityId;
-    private City city;
+    private String city;
     private String district;
     private String address;
 }
