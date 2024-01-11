@@ -17,7 +17,7 @@ public class GetEmployeeListResponse {
     private String surname;
     private String phoneNumber;
     private String email;
-    private City city;
+    private String city;
     private String district;
     private String address;
     private double salary;
