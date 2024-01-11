@@ -23,14 +23,20 @@ public class GetCarResponse {
 
     private String plate;
 
+    private String imageUrl;
+
     private String modelName;
 
     private String colorName ;
 
     private BodyType bodyType;
+
     private FuelType fuelType;
+
     private GearType gearType;
+
     private double cylinderCount;
+
     private int enginePower;
 
 }

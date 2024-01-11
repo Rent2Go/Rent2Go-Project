@@ -23,6 +23,7 @@ public class GetCarListResponse {
     private double dailyPrice;
 
     private String plate;
+    private String imageUrl;
 
     private String modelName;
 
