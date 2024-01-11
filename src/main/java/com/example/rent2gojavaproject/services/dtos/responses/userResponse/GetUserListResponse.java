@@ -17,4 +17,6 @@ public class GetUserListResponse {
     private String phoneNumber;
 
     private String email;
+
+    private String imageUrl;
 }
