@@ -19,8 +19,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 license = @License(
                         name = "Licence name",
                         url = "https://www.hosting.com.tr/"
-                ),
-                termsOfService = "Terms of service"
+                )
+
         ),
         servers = {
                 @Server(
