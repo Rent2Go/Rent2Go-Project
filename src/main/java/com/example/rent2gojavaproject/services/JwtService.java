@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services;
 
+import com.example.rent2gojavaproject.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,8 +28,15 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(User userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.putAll(Map.of(
+                "firstname",userDetails.getName(),
+                "lastname",userDetails.getSurname(),
+                "phoneNumber",userDetails.getPhoneNumber()
+
+        ));
+        return generateToken(claims, userDetails);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
