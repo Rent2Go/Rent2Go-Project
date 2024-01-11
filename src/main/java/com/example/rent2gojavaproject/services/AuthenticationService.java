@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
@@ -42,10 +43,12 @@ public class AuthenticationService {
 
 
     public JwtAuthenticationResponse signin(SignInRequest request) {
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new NotFoundException("Invalid email name"));
+        if(! passwordEncoder.matches(request.getPassword(),user.getPassword())) throw new NotFoundException("Invalid password ");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
