@@ -45,6 +45,7 @@ public class AddCarRequest {
     private double cylinderCount;
     @Positive(message = "Engine Power value must be a positive number.")
     private int enginePower;
+    private String imageUrl;
 
 
 }
