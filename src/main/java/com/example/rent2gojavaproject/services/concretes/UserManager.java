@@ -14,6 +14,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUser
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
+import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
@@ -33,13 +34,14 @@ public class UserManager implements UserService {
     private final UserRepository userRepository;
     private ModelMapperService mapperService;
     private EntityManager entityManager;
+    private UserBusinessRules businessRules;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
                 return userRepository.findByEmail(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                        .orElseThrow(() -> new NotFoundException("User " + username));
             }
         };
     }
@@ -80,6 +82,8 @@ public class UserManager implements UserService {
 
     @Override
     public User addUser(User user) {
+    businessRules.checkIfExistsByEmail(user.getEmail());
+    businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
 
 
         this.userRepository.save(user);
