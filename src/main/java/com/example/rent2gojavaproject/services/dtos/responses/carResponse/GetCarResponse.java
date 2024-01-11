@@ -35,8 +35,7 @@ public class GetCarResponse {
 
     private GearType gearType;
 
-    private double cylinderCount;
-
-    private int enginePower;
+    private String cylinderCount;
+    private String enginePower;
 
 }

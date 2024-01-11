@@ -31,6 +31,6 @@ public class GetCarListResponse {
     private BodyType bodyType;
     private FuelType fuelType;
     private GearType gearType;
-    private double cylinderCount;
-    private int enginePower;
+    private String cylinderCount;
+    private String enginePower;
 }
