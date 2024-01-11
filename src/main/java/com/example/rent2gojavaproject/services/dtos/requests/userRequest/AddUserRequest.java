@@ -26,4 +26,5 @@ public class AddUserRequest {
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
     private String email;
+    private String imageUrl;
 }
