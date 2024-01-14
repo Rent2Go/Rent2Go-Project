@@ -5,22 +5,29 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SQLDelete(sql = "update users SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterUser", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterUser", condition="IS_ACTIVE = :isActive")
-public class User extends BaseEntity{
+@FilterDef(name = "isActiveFilterUser", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterUser", condition = "IS_ACTIVE = :isActive")
+public class User extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +46,16 @@ public class User extends BaseEntity{
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Customer> customers;
@@ -53,5 +70,41 @@ public class User extends BaseEntity{
 
     public User(int id) {
         this.id = id;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.getRoleName()));
+    }
+
+    @Override
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

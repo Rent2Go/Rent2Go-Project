@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.abstracts;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.AddModelRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.modelRequest.UpdateModelRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
@@ -19,7 +20,7 @@ public interface UserService {
 
     DataResult<GetUserResponse> getById(int id);
 
-    Result addUser(AddUserRequest addUserRequest);
+    User addUser(User user);
 
     Result updateUser(UpdateUserRequest updateUserRequest);
 

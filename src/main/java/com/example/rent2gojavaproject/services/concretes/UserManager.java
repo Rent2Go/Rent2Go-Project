@@ -14,10 +14,14 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUser
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
+import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +34,17 @@ public class UserManager implements UserService {
     private final UserRepository userRepository;
     private ModelMapperService mapperService;
     private EntityManager entityManager;
+    private UserBusinessRules businessRules;
+
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return userRepository.findByEmail(username)
+                        .orElseThrow(() -> new NotFoundException("User " + username));
+            }
+        };
+    }
 
     @Override
     public DataResult<List<GetUserListResponse>> getAllUsers() {
@@ -66,11 +81,13 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public Result addUser(AddUserRequest addUserRequest) {
-        User user = this.mapperService.forRequest().map(addUserRequest, User.class);
+    public User addUser(User user) {
+    businessRules.checkIfExistsByEmail(user.getEmail());
+    businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
+
 
         this.userRepository.save(user);
-        return new SuccessResult(Message.ADD.getMessage());
+        return user;
     }
 
     @Override

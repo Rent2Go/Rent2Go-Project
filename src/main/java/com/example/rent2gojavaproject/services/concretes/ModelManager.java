@@ -73,7 +73,6 @@ public class ModelManager implements ModelService {
 
         Model model = this.mapperService.forRequest().map(addModelRequest, Model.class);
         model.setName(editValue);
-
         model.setId(0);
         this.modelRepository.save(model);
 

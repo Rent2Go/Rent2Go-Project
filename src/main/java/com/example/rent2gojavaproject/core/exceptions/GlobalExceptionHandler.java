@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    //RunTimeException
+   /* //RunTimeException
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponse.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 
     //ValidationException
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -32,18 +32,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException exception) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("error", "Validation failed");
-        errorResponse.put("message", "Request validation failed. Please check the provided data.");
+
         errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
         errorResponse.put("timestamp", LocalDateTime.now());
 
-        Map<String, String> errors = new HashMap<>();
+        String[] errors = new String[exception.getBindingResult().getAllErrors().size()];
         exception.getBindingResult().getFieldErrors().forEach((error) -> {
+            int index = 0;
             String fieldName = error.getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            errors[index]=fieldName + " :" + errorMessage;
+            index++;
         });
 
-        errorResponse.put("errors", errors);
+        errorResponse.put("message",errors);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

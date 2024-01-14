@@ -23,12 +23,12 @@ public class UpdateEmployeeRequest {
     @NotNull(message = "Salary cannot be null")
     @Positive(message = "Id must be a positive number.")
     private int userId;
-    @NotBlank(message = "District field cannot be blank")
-    @Size(max = 100, message = "District field cannot exceed 100 characters")
-    private String district;
+    @NotNull(message = "CityId cannot be null")
+    private int cityId;
+    @NotNull(message = "DistrictId cannot be null")
+    private int districtId;
     @NotBlank(message = "Address field cannot be blank")
     @Size(max = 300, message = "Address field cannot exceed 300 characters")
     private String address;
-    private City city;
     private boolean isActive;
 }

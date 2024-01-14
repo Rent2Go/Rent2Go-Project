@@ -54,10 +54,13 @@ public class Car extends BaseEntity{
     private GearType gearType;
 
     @Column(name = "cylinder_count", nullable = false)
-    private double cylinderCount;
+    private String cylinderCount;
 
     @Column(name = "engine_power", nullable = false)
-    private int enginePower;
+    private String enginePower;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)

@@ -34,11 +34,11 @@ public class UsersController {
         return userService.getById(id);
     }
 
-    @PostMapping("/add")
+   /* @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createUser(@RequestBody @Valid AddUserRequest addUserRequest) {
         return userService.addUser(addUserRequest);
-    }
+    }*/
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)

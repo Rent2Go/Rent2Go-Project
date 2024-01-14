@@ -64,7 +64,7 @@ public class BillManager implements BillService {
 
     @Override
     public Result updateBill(UpdateBillRequest updateBillRequest) {
-        this.billRepository.findById(updateBillRequest.getId()).orElseThrow(() -> new NotFoundException("Customer not found "));
+        this.billRepository.findById(updateBillRequest.getId()).orElseThrow(() -> new NotFoundException("Bill not found "));
         Bill bill = this.mapperService.forRequest().map(updateBillRequest, Bill.class);
         this.billRepository.save(bill);
 
