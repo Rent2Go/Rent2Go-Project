@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/V1/bills")
+@RequestMapping("/api/bills")
 @AllArgsConstructor
 public class BillsController {
     private final BillService billService;

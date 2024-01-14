@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/V1/models")
+@RequestMapping("/api/models")
 @AllArgsConstructor
 public class ModelsController {
     private final ModelService modelService;
