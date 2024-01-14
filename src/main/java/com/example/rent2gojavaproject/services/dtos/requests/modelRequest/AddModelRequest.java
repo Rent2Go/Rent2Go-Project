@@ -15,7 +15,9 @@ public class AddModelRequest {
     @NotNull(message = "The model name cannot be null.")
     @Size(min=2, max = 15, message = "The Model Name must be between 2 and 15 characters !")
     private String name;
+
     @NotNull(message = "The brand id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int brandId;
 }
+

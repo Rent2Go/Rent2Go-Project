@@ -10,7 +10,6 @@ import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetB
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +25,7 @@ public class BrandsController {
     public DataResult<List<GetBrandListResponse>> getAllActiveBrands() {
         return brandService.getAllBrands();
     }
+
     @GetMapping("/getAllActiveOrNot")
     public DataResult<Iterable<GetBrandListResponse>> findAll(@RequestParam boolean isActive) {
         return this.brandService.findAll(isActive);

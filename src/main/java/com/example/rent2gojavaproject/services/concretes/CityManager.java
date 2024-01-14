@@ -27,7 +27,7 @@ public class CityManager implements CityService {
         List<City> cities = this.cityRepository.findAll();
         List<GetCityListResponse> responses = cities.stream()
                 .map(city -> this.mapperService.forResponse()
-                        .map(city,GetCityListResponse.class)).collect(Collectors.toList());
+                        .map(city, GetCityListResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }

@@ -7,11 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
    /* //RunTimeException
@@ -32,20 +31,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException exception) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("error", "Validation failed");
-
         errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
         errorResponse.put("timestamp", LocalDateTime.now());
 
-        String[] errors = new String[exception.getBindingResult().getAllErrors().size()];
+        Map<String, Object> errors = new HashMap<>();
         exception.getBindingResult().getFieldErrors().forEach((error) -> {
-            int index = 0;
             String fieldName = error.getField();
             String errorMessage = error.getDefaultMessage();
-            errors[index]=fieldName + " :" + errorMessage;
-            index++;
+            errors.put(fieldName, errorMessage);
         });
 
-        errorResponse.put("message",errors);
+        errorResponse.put("message", errors);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,10 +18,10 @@ public class AddRentalRequest {
     @NotNull(message = "Start Date must be entered !!")
     @Future(message = "Start Date must be in the future !!")
     private LocalDate startDate;
+
     @NotNull(message = "End Date must be entered !!")
     @Future(message = "End Date must be in the future !!")
     private LocalDate endDate;
-
 
     @NotNull(message = "Car ID must be entered !!")
     private int carId;

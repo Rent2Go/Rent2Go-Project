@@ -3,10 +3,6 @@ package com.example.rent2gojavaproject.services.rules;
 import com.example.rent2gojavaproject.core.exceptions.BusinessRuleException;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.models.Discount;
-import com.example.rent2gojavaproject.repositories.CarRepository;
-import com.example.rent2gojavaproject.repositories.CustomerRepository;
-import com.example.rent2gojavaproject.repositories.DiscountRepository;
-import com.example.rent2gojavaproject.repositories.EmployeeRepository;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.abstracts.DiscountService;
@@ -27,6 +23,7 @@ public class RentalBusinessRules {
     private DiscountService discountService;
 
     public void checkIfExistsById(int carId, int customerId, int employeeId) {
+
         if (!(carService.existsById(carId))) {
             throw new NotFoundException("Car ID doesn't exist !");
         } else if (!(customerService.existsById(customerId))) {
@@ -34,18 +31,18 @@ public class RentalBusinessRules {
         } else if (!(employeeService.existsById(employeeId))) {
             throw new NotFoundException("Employee ID doesn't exist !");
         }
-
-
     }
 
     public void checkIfKilometer(int kilometer, Integer endKilometer) {
-       Integer newKilometer =Integer.valueOf(kilometer);
+
+        Integer newKilometer = Integer.valueOf(kilometer);
         if (newKilometer > endKilometer) {
             throw new BusinessRuleException("The last kilometer of the vehicle cannot be lower than the delivered mileage.");
         }
     }
 
     public void checkRentalPeriod(LocalDate startDate, LocalDate endDate) {
+
         Period period = Period.between(startDate, endDate);
         int rentalDays = period.getDays();
         if (startDate.isAfter(endDate)) {
@@ -54,16 +51,20 @@ public class RentalBusinessRules {
             throw new BusinessRuleException("Car can be rented for a maximum of 25 days.!");
         }
     }
+
     public Discount getDiscountByCodeOrDefault(String discountCode) {
+
         if (discountCode == null || discountCode.isEmpty()) {
             return discountService.findByDiscountCode("DEFAULT");
         }
 
         Discount selectedDiscount = discountService.findByDiscountCode(discountCode);
+
         return (selectedDiscount != null) ? selectedDiscount : discountService.findByDiscountCode("DEFAULT");
     }
 
     public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double dailyPrice, String discountCode) {
+
         Discount discount = getDiscountByCodeOrDefault(discountCode);
 
         double totalDiscount = (discount.getPercentage() / 100) * dailyPrice * (endDate.toEpochDay() - startDate.toEpochDay());

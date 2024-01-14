@@ -29,6 +29,7 @@ public class EmployeesController {
     public DataResult<Iterable<GetEmployeeListResponse>> findAll(@RequestParam boolean isActive) {
         return this.employeeService.findAll(isActive);
     }
+
     @GetMapping("/{id}")
     public DataResult<GetEmployeeResponse> getEmployeeById(@PathVariable int id) {
         return employeeService.getById(id);
@@ -42,7 +43,7 @@ public class EmployeesController {
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result updateEmployee(@RequestBody @Valid  UpdateEmployeeRequest updateEmployeeRequest) {
+    public Result updateEmployee(@RequestBody @Valid UpdateEmployeeRequest updateEmployeeRequest) {
         return employeeService.updateEmployee(updateEmployeeRequest);
     }
 

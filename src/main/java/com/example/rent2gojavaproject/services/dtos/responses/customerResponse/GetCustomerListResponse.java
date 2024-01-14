@@ -12,13 +12,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetCustomerListResponse {
+
     private int id;
+
     private String name;
+
     private String surname;
+
     private String phoneNumber;
+
     private String email;
+
     private String nationalityId;
+
     private String city;
+
     private String district;
+
     private String address;
 }

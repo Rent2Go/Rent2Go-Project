@@ -25,10 +25,12 @@ public class RentalsController {
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         return rentalService.getAllRentals();
     }
+
     @GetMapping("/getAllActiveOrNot")
     public DataResult<Iterable<GetRentalListResponse>> findAll(@RequestParam boolean isActive) {
         return this.rentalService.findAll(isActive);
     }
+
     @GetMapping("/{id}")
     public DataResult<GetRentalResponse> getRentalById(@PathVariable int id) {
         return rentalService.getById(id);

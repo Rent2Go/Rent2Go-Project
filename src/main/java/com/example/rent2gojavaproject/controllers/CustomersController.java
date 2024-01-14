@@ -19,11 +19,13 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomersController {
     private final CustomerService customerService;
+
     @GetMapping("/getall")
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
 
         return this.customerService.getAllCustomer();
     }
+
     @GetMapping("/getAllActiveOrNot")
     public DataResult<Iterable<GetCustomerListResponse>> findAll(@RequestParam boolean isActive) {
         return this.customerService.findAll(isActive);
@@ -34,6 +36,7 @@ public class CustomersController {
 
         return this.customerService.getById(id);
     }
+
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result addCustomer(@RequestBody @Valid AddCustomerRequest addCustomerRequest) {
@@ -46,6 +49,7 @@ public class CustomersController {
 
         return this.customerService.updateCustomer(updateCustomerRequest);
     }
+
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result DeleteCustomer(@PathVariable int id) {

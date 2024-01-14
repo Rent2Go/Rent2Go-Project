@@ -7,7 +7,6 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
-import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.ModelRepository;
 import com.example.rent2gojavaproject.services.abstracts.ModelService;
@@ -22,7 +21,6 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +34,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public DataResult<List<GetModelListResponse>> getAllModels() {
+
         List<Model> models = modelRepository.findAll();
         List<GetModelListResponse> responses = models.stream()
                 .map(model -> this.mapperService.forResponse()
@@ -47,22 +46,26 @@ public class ModelManager implements ModelService {
 
     @Override
     public DataResult<Iterable<GetModelListResponse>> findAll(boolean isActive) {
+
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterModel");
+
         filter.setParameter("isActive", isActive);
+
         Iterable<GetModelListResponse> models = this.modelRepository.findAll().stream()
                 .map(model -> this.mapperService.forResponse().map(model, GetModelListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterModel");
-        return new SuccessDataResult<>(models, Message.GET_ALL.getMessage());
 
+        return new SuccessDataResult<>(models, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetModelResponse> getById(int id) {
-        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
 
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
         GetModelResponse response = this.mapperService.forResponse().map(model, GetModelResponse.class);
+
         return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
@@ -82,9 +85,10 @@ public class ModelManager implements ModelService {
     @Override
     public Result updateModel(UpdateModelRequest updateModelRequest) {
 
-        String editValue = modelBusinessRules.checkIfExistsByIdAndName(updateModelRequest.getBrandId(), updateModelRequest.getName());
-
-        Model existingModel = this.modelRepository.findById(updateModelRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find model id!"));
+        String editValue = modelBusinessRules.checkIfExistsByIdAndName(updateModelRequest
+                .getBrandId(), updateModelRequest.getName());
+        Model existingModel = this.modelRepository.findById(updateModelRequest.getId())
+                .orElseThrow(() -> new NotFoundException("Couldn't find model id!"));
 
         Model model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
         updateModelRequest.setName(editValue);
@@ -97,8 +101,10 @@ public class ModelManager implements ModelService {
 
     @Override
     public Result deleteModel(int id) {
+
         Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
         modelBusinessRules.changeDeleteDate(model);
+
         this.modelRepository.save(model);
         this.modelRepository.delete(model);
 

@@ -9,6 +9,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
+
 import java.util.List;
 
 @Entity
@@ -18,9 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 @SQLDelete(sql = "update customers SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterCustomer", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterCustomer", condition="IS_ACTIVE = :isActive")
-public class Customer extends BaseEntity{
+@FilterDef(name = "isActiveFilterCustomer", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterCustomer", condition = "IS_ACTIVE = :isActive")
+public class Customer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

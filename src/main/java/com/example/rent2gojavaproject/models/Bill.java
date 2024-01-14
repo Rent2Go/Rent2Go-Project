@@ -10,7 +10,6 @@ import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "bills")
@@ -24,22 +23,22 @@ import java.util.Date;
 
 public class Bill extends BaseEntity {
 
+    @Column(name = "rental_start_date", nullable = false)
+    LocalDate rentalStartDate;
+    @Column(name = "rental_end_date", nullable = false)
+    LocalDate rentalEndDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Column(name = "bill_no", nullable = false, unique = true)
     private String no;
-    @Column( name = "rental_start_date",nullable = false)
-    LocalDate rentalStartDate;
-    @Column( name = "rental_end_date", nullable = false)
-    LocalDate rentalEndDate;
-    @Column( name = "total_rental_date",nullable = false)
+    @Column(name = "total_rental_date", nullable = false)
     private short totalRentalDate;
-    @Column( name = "rental_price",nullable = false)
+    @Column(name = "rental_price", nullable = false)
     private double rentalPrice;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 

@@ -31,9 +31,9 @@ public class JwtService {
     public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.putAll(Map.of(
-                "firstname",userDetails.getName(),
-                "lastname",userDetails.getSurname(),
-                "phoneNumber",userDetails.getPhoneNumber()
+                "firstname", userDetails.getName(),
+                "lastname", userDetails.getSurname(),
+                "phoneNumber", userDetails.getPhoneNumber()
 
         ));
         return generateToken(claims, userDetails);
@@ -64,7 +64,7 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60  * 30))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

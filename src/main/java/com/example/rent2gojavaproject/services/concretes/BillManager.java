@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class BillManager implements BillService {
@@ -33,7 +34,10 @@ public class BillManager implements BillService {
     @Override
     public DataResult<List<GetBillListResponse>> getAllBills() {
         List<Bill> bills = this.billRepository.findAll();
-        List<GetBillListResponse> responses = bills.stream().map(bill -> this.mapperService.forResponse().map(bill, GetBillListResponse.class)).collect(Collectors.toList());
+        List<GetBillListResponse> responses = bills.stream()
+                .map(bill -> this.mapperService.forResponse()
+                        .map(bill, GetBillListResponse.class))
+                .collect(Collectors.toList());
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
@@ -42,7 +46,10 @@ public class BillManager implements BillService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterBill");
         filter.setParameter("isActive", isActive);
-        Iterable<GetBillListResponse> bills = this.billRepository.findAll().stream().map(bill -> this.mapperService.forResponse().map(bill, GetBillListResponse.class)).collect(Collectors.toList());
+        Iterable<GetBillListResponse> bills = this.billRepository.findAll().stream()
+                .map(bill -> this.mapperService.forResponse()
+                        .map(bill, GetBillListResponse.class))
+                .collect(Collectors.toList());
         session.disableFilter("isActiveFilterBill");
         return new SuccessDataResult<>(bills, Message.GET_ALL.getMessage());
     }

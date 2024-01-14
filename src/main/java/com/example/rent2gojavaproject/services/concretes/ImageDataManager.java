@@ -16,6 +16,7 @@ import java.util.Optional;
 public class ImageDataManager implements ImageDataService {
 
     private final ImageDataRepository dataRepository;
+
     @Override
     public String uploadImage(MultipartFile file) throws IOException {
 
@@ -33,7 +34,7 @@ public class ImageDataManager implements ImageDataService {
     @Override
     public byte[] downloadImage(String fileName) {
         Optional<ImageData> dbImageData = dataRepository.findByName(fileName);
-        byte[] images=ImageUtils.decompressImage(dbImageData.get().getImageData());
+        byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
         return images;
 
     }

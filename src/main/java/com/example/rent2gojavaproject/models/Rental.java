@@ -7,6 +7,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
+
 import java.time.LocalDate;
 
 @Entity
@@ -15,9 +16,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SQLDelete(sql = "update rentals SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterRental", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterRental", condition="IS_ACTIVE = :isActive")
-public class Rental extends BaseEntity{
+@FilterDef(name = "isActiveFilterRental", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterRental", condition = "IS_ACTIVE = :isActive")
+public class Rental extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +62,7 @@ public class Rental extends BaseEntity{
     public Rental() {
         this.endKilometer = null;
         this.returnDate = null;
-        this.discount = new Discount(1,"DEFAULT",0);
+        this.discount = new Discount(1, "DEFAULT", 0);
     }
 
 }

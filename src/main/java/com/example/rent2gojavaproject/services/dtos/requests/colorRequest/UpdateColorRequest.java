@@ -12,6 +12,7 @@ public class UpdateColorRequest {
     @NotNull(message = "The color id cannot be null.")
     @Positive(message = "Id must be a positive number.")
     private int id;
+
     @NotNull(message = "The color name cannot be null.")
     @NotBlank(message = "The color name can't be empty.")
     @Size(min = 2, max = 15, message = "Color name should be between 2 and 15 digits.")
