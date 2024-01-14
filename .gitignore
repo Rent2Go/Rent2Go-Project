@@ -1,5 +1,4 @@
 HELP.md
-src/main/resources/application.properties
 src/main/resources/static/index.html
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -16,7 +15,6 @@ target/
 .sts4-cache
 
 # application properties
-application.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -34,7 +32,6 @@ application.properties
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-src/main/resources/*.properties
 
 ### VS Code ###
 .vscode/
