@@ -20,7 +20,7 @@ import java.util.List;
 public class DiscountsController {
     private final DiscountService discountService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getall")
     public DataResult<List<GetDiscountListResponse>> getAllDiscounts(){
         return discountService.getAllDiscounts();
     }
