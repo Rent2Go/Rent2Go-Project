@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
+    private static final String[] WHITE_LIST_URL = {"/api/auth/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -68,10 +68,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
 
-                        .requestMatchers(HttpMethod.POST ,"api/v1/signup","api/v1/signin").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/admins").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET ,"api/v1/test/anon").permitAll()
+                        .requestMatchers(HttpMethod.POST ,"api/signup","api/signin").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/test/users").hasAuthority("ROLE_USER")
+                        .requestMatchers(HttpMethod.GET, "api/test/admins").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET ,"api/test/anon").permitAll()
                         .anyRequest().authenticated()
 
                 )
