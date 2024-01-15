@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface FileUpload {
 
-    String uploadFile(MultipartFile multipartFile) throws IOException;
+    String uploadFile(MultipartFile multipartFile,int id) throws IOException;
 }

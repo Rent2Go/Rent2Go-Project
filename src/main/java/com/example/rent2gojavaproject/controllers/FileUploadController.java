@@ -20,9 +20,9 @@ public class FileUploadController {
 
 
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String uploadFile(@RequestParam("image") MultipartFile multipartFile
+    public String uploadFile(@RequestParam("image") MultipartFile multipartFile,@RequestParam("id") int id
                              ) throws IOException {
-        String imageURL = fileUpload.uploadFile(multipartFile);
+        String imageURL = fileUpload.uploadFile(multipartFile,id);
         return imageURL;
     }
 }
