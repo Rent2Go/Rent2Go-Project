@@ -8,8 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetDiscountResponse {
+
     private int id;
+
     private String discountCode;
+
     private Double percentage;
+
     private int rentalId;
 }

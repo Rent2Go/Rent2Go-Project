@@ -9,6 +9,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
+
 import java.util.List;
 
 @Entity
@@ -18,9 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 @SQLDelete(sql = "update discounts SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterDiscount", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterDiscount", condition="IS_ACTIVE = :isActive")
-public class Discount extends BaseEntity{
+@FilterDef(name = "isActiveFilterDiscount", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterDiscount", condition = "IS_ACTIVE = :isActive")
+public class Discount extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class Discount extends BaseEntity{
     @JsonIgnore
     private List<Rental> rentals;
 
-    public Discount(int id, String discountCode,double percentage) {
+    public Discount(int id, String discountCode, double percentage) {
         this.id = id;
         this.discountCode = discountCode;
         this.percentage = percentage;

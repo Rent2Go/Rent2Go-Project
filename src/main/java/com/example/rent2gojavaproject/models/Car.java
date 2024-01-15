@@ -10,6 +10,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
+
 import java.util.List;
 
 @Entity
@@ -17,12 +18,12 @@ import java.util.List;
 @Getter
 @SQLDelete(sql = "update cars SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
-@FilterDef(name="isActiveFilterCar", parameters=@ParamDef( name="isActive", type=Boolean.class ))
-@Filter(name="isActiveFilterCar", condition="IS_ACTIVE = :isActive")
+@FilterDef(name = "isActiveFilterCar", parameters = @ParamDef(name = "isActive", type = Boolean.class))
+@Filter(name = "isActiveFilterCar", condition = "IS_ACTIVE = :isActive")
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Car extends BaseEntity{
+public class Car extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,7 +75,6 @@ public class Car extends BaseEntity{
     @OneToMany(mappedBy = "car")
     @JsonIgnore
     private List<Rental> rentals;
-
 
 
 }

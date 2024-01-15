@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/V1/cars")
+@RequestMapping("/api/cars")
 @AllArgsConstructor
 public class CarsController {
 
@@ -32,31 +32,33 @@ public class CarsController {
 
         return this.carService.getById(id);
     }
+
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createCar(@RequestBody @Valid AddCarRequest addCarRequest) {
 
-        return  this.carService.addCar(addCarRequest);
+        return this.carService.addCar(addCarRequest);
     }
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result updateCar(@RequestBody @Valid  UpdateCarRequest updateCarRequest){
+    public Result updateCar(@RequestBody @Valid UpdateCarRequest updateCarRequest) {
 
-        return  this.carService.updateCar(updateCarRequest);
+        return this.carService.updateCar(updateCarRequest);
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public Result deleteCar(@PathVariable  int id) {
+    public Result deleteCar(@PathVariable int id) {
 
         return this.carService.deleteCar(id);
     }
+
     @GetMapping("/getallsoftdelete")
     public DataResult<Iterable<GetCarListResponse>> findAll(@RequestParam boolean isActive) {
 
         return this.carService.findAll(isActive);
     }
-
 
 
 }

@@ -33,31 +33,46 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
+
         List<Customer> customers = this.customerRepository.findAll();
-        List<GetCustomerListResponse> responses = customers.stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
+        List<GetCustomerListResponse> responses = customers.stream()
+                .map(customer -> this.mapperService.forResponse()
+                        .map(customer, GetCustomerListResponse.class))
+                .collect(Collectors.toList());
+
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isActive) {
+
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterCustomer");
+
         filter.setParameter("isActive", isActive);
-        Iterable<GetCustomerListResponse> customers = this.customerRepository.findAll().stream().map(customer -> this.mapperService.forResponse().map(customer, GetCustomerListResponse.class)).collect(Collectors.toList());
+
+        Iterable<GetCustomerListResponse> customers = this.customerRepository
+                .findAll().stream().map(customer -> this.mapperService.forResponse()
+                        .map(customer, GetCustomerListResponse.class))
+                .collect(Collectors.toList());
         session.disableFilter("isActiveFilterCustomer");
+
         return new SuccessDataResult<>(customers, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetCustomerResponse> getById(int id) {
-        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found: " + id));
-        GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        Customer customer = this.customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer not found: " + id));
 
+        GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
+
+        return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
 
     @Override
     public Result addCustomer(AddCustomerRequest addCustomerRequest) {
+
         Customer customer = this.mapperService.forRequest().map(addCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
@@ -66,18 +81,23 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public Result updateCustomer(UpdateCustomerRequest updateCustomerRequest) {
-        this.customerRepository.findById(updateCustomerRequest.getId()).orElseThrow(() -> new NotFoundException("Customer not found "));
+
+        this.customerRepository.findById(updateCustomerRequest.getId())
+                .orElseThrow(() -> new NotFoundException("Customer not found "));
+
         Customer customer = this.mapperService.forRequest().map(updateCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
-
 
         return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result DeleteCustomer(int id) {
-        Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
+
+        Customer customer = this.customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("id not found : " + id));
         customer.setDeletedAt(LocalDate.now());
+
         this.customerRepository.save(customer);
         this.customerRepository.delete(customer);
 

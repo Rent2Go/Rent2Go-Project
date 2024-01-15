@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetBillResponse {
+
     private int id;
 
     private String name;
@@ -17,5 +18,6 @@ public class GetBillResponse {
     private LocalDate date;
 
     private double price;
+
     private int userId;
 }

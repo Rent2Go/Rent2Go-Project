@@ -40,6 +40,7 @@ public class CarManager implements CarService {
 
     @Override
     public DataResult<List<GetCarListResponse>> getAllCars() {
+
         List<Car> cars = this.carRepository.findAll();
         List<GetCarListResponse> responses = cars.stream().map(car -> this.mapperService
                         .forResponse()
@@ -52,23 +53,26 @@ public class CarManager implements CarService {
 
     @Override
     public DataResult<Iterable<GetCarListResponse>> findAll(boolean isActive) {
+
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterCar");
+
         filter.setParameter("isActive", isActive);
+
         Iterable<GetCarListResponse> cars = this.carRepository.findAll()
                 .stream().map(car -> this.mapperService.forResponse()
                         .map(car, GetCarListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterCar");
+
         return new SuccessDataResult<>(cars, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetCarResponse> getById(int id) {
+
         Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find car id : " + id));
-
         GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
-
 
         return new SuccessDataResult<>(response, Message.GET.getMessage());
     }
@@ -78,10 +82,10 @@ public class CarManager implements CarService {
 
         String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
         addCarRequest.setPlate(editPlate);
+
         this.businessRules.updateCarMethod(addCarRequest.getModelId(), addCarRequest.getColorId());
 
         Car car = this.mapperService.forRequest().map(addCarRequest, Car.class);
-
         this.carRepository.save(car);
 
         return new SuccessResult(Message.ADD.getMessage());
@@ -97,17 +101,17 @@ public class CarManager implements CarService {
         this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new NotFoundException("Car not found"));
 
         Car car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
-
         this.carRepository.save(car);
-
 
         return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteCar(int id) {
+
         Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
         car.setDeletedAt(LocalDate.now());
+
         this.carRepository.deleteById(id);
 
         return new SuccessResult(Message.DELETE.getMessage());

@@ -16,33 +16,35 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/V1/discounts")
+@RequestMapping("/api/discounts")
 public class DiscountsController {
     private final DiscountService discountService;
 
-    @GetMapping("/getAll")
-    public DataResult<List<GetDiscountListResponse>> getAllDiscounts(){
+    @GetMapping("/getall")
+    public DataResult<List<GetDiscountListResponse>> getAllDiscounts() {
         return discountService.getAllDiscounts();
     }
+
     @GetMapping("/getAllActiveOrNot")
     public DataResult<Iterable<GetDiscountListResponse>> findAll(@RequestParam boolean isActive) {
         return this.discountService.findAll(isActive);
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetDiscountResponse> getDiscountById(@PathVariable int id){
+    public DataResult<GetDiscountResponse> getDiscountById(@PathVariable int id) {
         return discountService.getById(id);
     }
 
     @PostMapping("/add")
-    public Result createDiscount(@RequestBody @Valid AddDiscountRequest addDiscountRequest){
+    public Result createDiscount(@RequestBody @Valid AddDiscountRequest addDiscountRequest) {
         return discountService.addDiscount(addDiscountRequest);
     }
 
     @PutMapping("/update")
-    public Result updateDiscount(@RequestBody @Valid UpdateDiscountRequest updateDiscountRequest){
+    public Result updateDiscount(@RequestBody @Valid UpdateDiscountRequest updateDiscountRequest) {
         return discountService.updateDiscount(updateDiscountRequest);
     }
+
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteDiscount(@PathVariable int id) {

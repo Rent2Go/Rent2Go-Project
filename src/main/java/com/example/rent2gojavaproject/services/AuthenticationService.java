@@ -5,9 +5,9 @@ import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
-import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
+import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,7 +45,8 @@ public class AuthenticationService {
     public JwtAuthenticationResponse signin(SignInRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("Invalid email name"));
-        if(! passwordEncoder.matches(request.getPassword(),user.getPassword())) throw new NotFoundException("Invalid password ");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
+            throw new NotFoundException("Invalid password ");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 

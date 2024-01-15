@@ -12,16 +12,17 @@ public class UserBusinessRules {
     private final UserRepository userRepository;
 
 
-    public void checkIfExistsByEmail(String email){
+    public void checkIfExistsByEmail(String email) {
 
-        if(userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email)) {
             throw new AlreadyExistsException("Email  already exists");
         }
 
     }
-    public void checkIfExistsPhoneNumber(String phoneNumber){
 
-        if(userRepository.existsByPhoneNumber(phoneNumber)){
+    public void checkIfExistsPhoneNumber(String phoneNumber) {
+
+        if (userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new AlreadyExistsException("PhoneNumber  already exists");
         }
 

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/V1/colors")
+@RequestMapping("/api/colors")
 @AllArgsConstructor
 public class ColorsController {
 
     private final ColorService colorService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getall")
     public DataResult<List<GetColorListResponse>> getAllColor() {
 
         return this.colorService.getAllColors();

@@ -35,28 +35,38 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public DataResult<List<GetDiscountListResponse>> getAllDiscounts() {
+
         List<Discount> discounts = this.discountRepository.findAll();
-        List<GetDiscountListResponse> responses = discounts.stream().map(discount -> this.mapperService.forResponse().map(discount, GetDiscountListResponse.class)).collect(Collectors.toList());
+        List<GetDiscountListResponse> responses = discounts.stream()
+                .map(discount -> this.mapperService.forResponse()
+                        .map(discount, GetDiscountListResponse.class))
+                .collect(Collectors.toList());
 
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isActive) {
+
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterDiscount");
+
         filter.setParameter("isActive", isActive);
+
         Iterable<GetDiscountListResponse> discounts = this.discountRepository.findAll()
                 .stream().map(discount -> this.mapperService.forResponse()
                         .map(discount, GetDiscountListResponse.class))
                 .collect(Collectors.toList());
         session.disableFilter("isActiveFilterDiscount");
-        return new SuccessDataResult<>(discounts,Message.GET_ALL.getMessage());
+
+        return new SuccessDataResult<>(discounts, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetDiscountResponse> getById(int id) {
-        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find discount id : " + id));
+
+        Discount discount = this.discountRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Couldn't find discount id : " + id));
         GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
 
         return new SuccessDataResult<>(response, Message.GET.getMessage());
@@ -64,14 +74,17 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public Result addDiscount(AddDiscountRequest addDiscountRequest) {
+
         Discount discount = this.mapperService.forRequest().map(addDiscountRequest, Discount.class);
 
         this.discountRepository.save(discount);
+
         return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
     public Result updateDiscount(UpdateDiscountRequest updateDiscountRequest) {
+
         this.discountRepository.findById(updateDiscountRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find discount id"));
 
         Discount discount = this.mapperService.forRequest().map(updateDiscountRequest, Discount.class);

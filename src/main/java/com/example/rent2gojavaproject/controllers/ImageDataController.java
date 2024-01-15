@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/v1/imagedata")
+@RequestMapping("/api/imagedata")
 @AllArgsConstructor
 @CrossOrigin
 public class ImageDataController {
@@ -21,16 +21,15 @@ public class ImageDataController {
     @ResponseStatus(HttpStatus.OK)
     public String uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
 
-        return  dataService.uploadImage(file);
+        return dataService.uploadImage(file);
 
     }
+
     @GetMapping("/{fileName}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity< byte[]> downloadImage(@PathVariable String fileName) {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable String fileName) {
 
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/png"))
-                .body(dataService.downloadImage(fileName));
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(dataService.downloadImage(fileName));
     }
 }

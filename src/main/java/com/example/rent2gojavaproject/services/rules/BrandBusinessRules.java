@@ -2,7 +2,6 @@ package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
 import com.example.rent2gojavaproject.models.Brand;
-import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import lombok.AllArgsConstructor;
@@ -17,15 +16,17 @@ public class BrandBusinessRules {
 
     private BrandRepository brandRepository;
 
-    public String checkIfExistsByName(String name){
+    public String checkIfExistsByName(String name) {
+
         String value = name.toLowerCase().trim();
-        if(brandRepository.existsByNameAndIsActiveTrue(value)){
+        if (brandRepository.existsByNameAndIsActiveTrue(value)) {
             throw new AlreadyExistsException("Brand name already exists");
         }
         return value;
     }
 
     public void changeIsActive(Brand brand, boolean isActive) {
+
         brand.setActive(isActive);
 
         List<Model> existingModels = brand.getModels();
@@ -33,14 +34,16 @@ public class BrandBusinessRules {
             existingModels.forEach(model -> {
                 model.setActive(brand.isActive());
                 model.getCars().forEach(car -> car.setActive(model.isActive()));
-
             });
         }
     }
 
     public void changeDeleteDate(Brand brand) {
+
         brand.setDeletedAt(LocalDate.now());
+
         List<Model> existingModels = brand.getModels();
+
         brand.getModels().forEach(model -> {
             model.setDeletedAt(brand.getDeletedAt());
             model.getCars().forEach(car -> car.setDeletedAt(model.getDeletedAt()));

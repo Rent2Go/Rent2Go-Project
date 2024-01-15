@@ -2,8 +2,6 @@ package com.example.rent2gojavaproject.services.abstracts;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
-import com.example.rent2gojavaproject.models.Brand;
-import com.example.rent2gojavaproject.models.Color;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.UpdateBrandRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
@@ -21,6 +19,8 @@ public interface BrandService {
     Result updateBrand(UpdateBrandRequest updateBrandRequest);
 
     Result deleteBrand(int id);
+
     DataResult<Iterable<GetBrandListResponse>> findAll(boolean isActive);
+
     boolean existsById(int id);
 }

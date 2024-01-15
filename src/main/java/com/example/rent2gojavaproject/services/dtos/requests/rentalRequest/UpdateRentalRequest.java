@@ -16,10 +16,13 @@ public class UpdateRentalRequest {
     @NotNull(message = "Rental ID must be entered !!")
     @Positive(message = "Rental ID must be bigger than 0 !!")
     private int id;
+
     @NotNull(message = "Start Date must be entered !!")
     private LocalDate startDate;
+
     @NotNull(message = "End Date must be entered !!")
     private LocalDate endDate;
+
     private LocalDate returnDate;
 
     @Positive(message = "End Kilometer must be bigger than 0 !!")
@@ -34,5 +37,6 @@ public class UpdateRentalRequest {
 
     @NotNull(message = "Employee ID must be entered !!")
     private int employeeId;
+
     private boolean isActive;
 }

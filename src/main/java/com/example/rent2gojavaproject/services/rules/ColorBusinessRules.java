@@ -12,11 +12,13 @@ public class ColorBusinessRules {
 
     private ColorRepository colorRepository;
 
-    public String checkIfExistsByName(String name){
+    public String checkIfExistsByName(String name) {
+
         String value = name.toLowerCase().trim();
-        if(colorRepository.existsByName(value)){
+        if (colorRepository.existsByName(value)) {
             throw new AlreadyExistsException("Color already exists");
         }
+
         return value;
     }
 

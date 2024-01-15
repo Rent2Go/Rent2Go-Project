@@ -4,7 +4,6 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
-import com.example.rent2gojavaproject.services.dtos.responses.brandResponse.GetBrandListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 
@@ -21,6 +20,7 @@ public interface CustomerService {
     Result updateCustomer(UpdateCustomerRequest updateCustomerRequest);
 
     Result DeleteCustomer(int customerId);
+
     DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isActive);
 
     boolean existsById(int id);

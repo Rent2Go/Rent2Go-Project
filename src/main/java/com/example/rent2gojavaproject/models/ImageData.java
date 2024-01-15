@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Super;
 
 @Entity
-@Table(name ="images")
+@Table(name = "images")
 @Data
 @SuperBuilder
 @AllArgsConstructor

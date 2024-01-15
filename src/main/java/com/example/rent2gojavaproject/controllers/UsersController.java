@@ -3,7 +3,6 @@ package com.example.rent2gojavaproject.controllers;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/V1/users")
+@RequestMapping("/api/users")
 @AllArgsConstructor
 public class UsersController {
     private final UserService userService;
@@ -24,6 +23,7 @@ public class UsersController {
     public DataResult<List<GetUserListResponse>> getAllUsers() {
         return userService.getAllUsers();
     }
+
     @GetMapping("/getAllActiveOrNot")
     public DataResult<Iterable<GetUserListResponse>> findAll(@RequestParam boolean isActive) {
         return this.userService.findAll(isActive);

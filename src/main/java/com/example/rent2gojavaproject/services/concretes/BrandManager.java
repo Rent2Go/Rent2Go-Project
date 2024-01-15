@@ -8,8 +8,6 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Brand;
-import com.example.rent2gojavaproject.models.Color;
-import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
 import com.example.rent2gojavaproject.services.abstracts.BrandService;
 import com.example.rent2gojavaproject.services.dtos.requests.brandRequest.AddBrandRequest;
@@ -23,7 +21,6 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,15 +36,22 @@ public class BrandManager implements BrandService {
     public DataResult<List<GetBrandListResponse>> getAllBrands() {
 
         List<Brand> brands = this.brandRepository.findAll();
-        List<GetBrandListResponse> responses = brands.stream().map(brand -> this.mapperService.forResponse().map(brand, GetBrandListResponse.class)).collect(Collectors.toList());
+        List<GetBrandListResponse> responses = brands.stream()
+                .map(brand -> this.mapperService.forResponse()
+                        .map(brand, GetBrandListResponse.class))
+                .collect(Collectors.toList());
+
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetBrandListResponse>> findAll(boolean isActive) {
+
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("isActiveFilterBrand");
+
         filter.setParameter("isActive", isActive);
+
         Iterable<GetBrandListResponse> brands = this.brandRepository.findAll()
                 .stream().map(brand -> this.mapperService.forResponse()
                         .map(brand, GetBrandListResponse.class))
@@ -68,15 +72,19 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result addBrand(AddBrandRequest addBrandRequest) {
+
         String editName = businessRules.checkIfExistsByName(addBrandRequest.getName());
         Brand brand = this.mapperService.forRequest().map(addBrandRequest, Brand.class);
+
         brand.setName(editName);
         this.brandRepository.save(brand);
+
         return new SuccessResult(Message.ADD.getMessage());
     }
 
     @Override
     public Result updateBrand(UpdateBrandRequest updateBrandRequest) {
+
         String editName = businessRules.checkIfExistsByName(updateBrandRequest.getName());
         Brand existingBrand = this.brandRepository.findById(updateBrandRequest.getId())
                 .orElseThrow(() -> new NotFoundException("Brand not found !"));
@@ -85,13 +93,16 @@ public class BrandManager implements BrandService {
         businessRules.changeIsActive(existingBrand, updateBrandRequest.isActive());
 
         this.brandRepository.save(existingBrand);
+
         return new SuccessResult(Message.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteBrand(int id) {
+
         Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
         businessRules.changeDeleteDate(brand);
+
         this.brandRepository.save(brand);
         this.brandRepository.delete(brand);
 

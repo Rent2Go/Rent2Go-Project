@@ -27,7 +27,7 @@ public class DistrictManager implements DistrictService {
         List<District> districts = this.districtRepository.findAll();
         List<GetDistrictListResponse> responses = districts.stream()
                 .map(district -> this.mapperService.forResponse()
-                        .map(district,GetDistrictListResponse.class)).collect(Collectors.toList());
+                        .map(district, GetDistrictListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
     }
 }

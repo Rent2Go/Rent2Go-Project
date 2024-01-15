@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/V1/rentals")
+@RequestMapping("/api/rentals")
 @AllArgsConstructor
 public class RentalsController {
 
@@ -25,10 +25,12 @@ public class RentalsController {
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         return rentalService.getAllRentals();
     }
+
     @GetMapping("/getAllActiveOrNot")
     public DataResult<Iterable<GetRentalListResponse>> findAll(@RequestParam boolean isActive) {
         return this.rentalService.findAll(isActive);
     }
+
     @GetMapping("/{id}")
     public DataResult<GetRentalResponse> getRentalById(@PathVariable int id) {
         return rentalService.getById(id);
