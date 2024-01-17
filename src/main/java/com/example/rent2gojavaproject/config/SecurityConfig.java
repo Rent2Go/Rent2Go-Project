@@ -39,8 +39,37 @@ public class SecurityConfig {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/**",
-            "/swagger-ui.html"};
+            "/swagger-ui.html",
+            "/api/signin",
+            "/api/signup"};
+    private static final String[] GET_USER_WHITE_LIST_URL = {
+            "/api/brands/**",
+            "/api/cars/**",
+            "/api/cities/**",
+            "/api/colors/**",
+            "/api/discounts/**",
+            "/api/districts/**",
+            "/api/models/**",
+            "/api/rentals/**"
+    };
+    private static final String[] GET_ADMIN_WHITE_LIST_URL = {
+
+            "/api/brands/filteredgetall",
+            "/api/cars/filteredgetall",
+            "/api/colors/filteredgetall",
+            "/api/discounts/filteredgetall",
+            "/api/models/filteredgetall",
+            "/api/rentals/filteredgetall"
+    };
+    private static final String[] POST_ADMIN_WHITE_LIST_URL = {};
+    private static final String[] POST_USER_WHITE_LIST_URL = {};
+    private static final String[] PUT_ADMIN_WHITE_LIST_URL = {};
+    private static final String[] PUT_USER_WHITE_LIST_URL = {};
+    private static final String[] DELETE_ADMIN_WHITE_LIST_URL = {};
+    private static final String[] DELETE_USER_WHITE_LIST_URL = {};
+
+
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserManager userService ;
     private final PasswordEncoder passwordEncoder;
@@ -67,8 +96,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
-
-                        .requestMatchers(HttpMethod.POST ,"api/signup","api/signin").permitAll()
+                        .requestMatchers(HttpMethod.GET , GET_ADMIN_WHITE_LIST_URL).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET , GET_USER_WHITE_LIST_URL).hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
+                       // .requestMatchers(HttpMethod.POST ,"api/signup","api/signin").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.GET, "api/test/admins").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET ,"api/test/anon").permitAll()
@@ -81,10 +111,6 @@ public class SecurityConfig {
 
 
                 return http.build();
-
-
-
-
 
     }
 
