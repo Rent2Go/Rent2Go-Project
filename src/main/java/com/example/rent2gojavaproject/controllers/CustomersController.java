@@ -25,7 +25,7 @@ public class CustomersController {
 
         return this.customerService.getAllCustomer();
     }
-    @GetMapping("/getAllActiveOrNot")
+    @GetMapping("/filteredgetall")
     public DataResult<Iterable<GetCustomerListResponse>> findAll(@RequestParam boolean isActive) {
         return this.customerService.findAll(isActive);
     }

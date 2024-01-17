@@ -25,7 +25,7 @@ public class UsersController {
     public DataResult<List<GetUserListResponse>> getAllUsers() {
         return userService.getAllUsers();
     }
-    @GetMapping("/getAllActiveOrNot")
+    @GetMapping("/filteredgetall")
     public DataResult<Iterable<GetUserListResponse>> findAll(@RequestParam boolean isActive) {
         return this.userService.findAll(isActive);
     }

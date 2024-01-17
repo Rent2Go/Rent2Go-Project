@@ -27,7 +27,7 @@ public class BrandsController {
     public DataResult<List<GetBrandListResponse>> getAllActiveBrands() {
         return brandService.getAllBrands();
     }
-    @GetMapping("/getAllActiveOrNot")
+    @GetMapping("/filteredgetall")
     public DataResult<Iterable<GetBrandListResponse>> findAll(@RequestParam boolean isActive) {
         return this.brandService.findAll(isActive);
     }
