@@ -98,7 +98,7 @@ public class SecurityConfig {
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers(HttpMethod.GET , GET_ADMIN_WHITE_LIST_URL).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET , GET_USER_WHITE_LIST_URL).hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
-                       // .requestMatchers(HttpMethod.POST ,"api/signup","api/signin").permitAll()
+                        .requestMatchers(HttpMethod.POST ,"api/signup","api/signin").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.GET, "api/test/admins").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET ,"api/test/anon").permitAll()
