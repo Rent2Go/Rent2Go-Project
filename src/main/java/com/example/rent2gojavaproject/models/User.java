@@ -2,14 +2,13 @@ package com.example.rent2gojavaproject.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +42,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "phone_number", unique = true, nullable = false)
     private String phoneNumber;
 
+    @NaturalId(mutable = true)
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
