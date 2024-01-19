@@ -19,12 +19,12 @@ public class FileUploadManager implements FileUpload {
     private final Cloudinary cloudinary;
 
     @Override
-    public String uploadFile(MultipartFile multipartFile,int id) throws IOException {
-        String publicId = "rent2go/carImages/" + String.valueOf(id);
+    public String uploadFile(MultipartFile multipartFile,String uniqColumn) throws IOException {
+        String publicId = "rent2go/carImages/" + uniqColumn;
 
         Map params1 = ObjectUtils.asMap(
                 "use_filename", multipartFile.getName(),
-                "unique_filename", false,
+                "unique_filename", true,
                 "overwrite", true,
                 "public_id", publicId
         );

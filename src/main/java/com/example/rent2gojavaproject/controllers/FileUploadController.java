@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/V1/files")
+@RequestMapping("/api/files")
 
 public class FileUploadController {
 
@@ -20,9 +20,10 @@ public class FileUploadController {
 
 
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String uploadFile(@RequestParam("image") MultipartFile multipartFile,@RequestParam("id") int id
+    public String uploadFile(@RequestParam("image") MultipartFile multipartFile,
+                              @RequestParam("uniqColumn") String uniqColumn
                              ) throws IOException {
-        String imageURL = fileUpload.uploadFile(multipartFile,id);
+        String imageURL = fileUpload.uploadFile(multipartFile, uniqColumn);
         return imageURL;
     }
 }

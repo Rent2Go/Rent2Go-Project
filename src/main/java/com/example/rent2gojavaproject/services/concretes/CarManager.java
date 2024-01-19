@@ -10,6 +10,7 @@ import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
+import com.example.rent2gojavaproject.services.abstracts.FileUpload;
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
@@ -20,7 +21,9 @@ import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +39,8 @@ public class CarManager implements CarService {
     private CarBusinessRules businessRules;
 
     private EntityManager entityManager;
+
+    private FileUpload  fileUpload;
 
 
     @Override
@@ -78,7 +83,9 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public Result addCar(AddCarRequest addCarRequest) {
+    public Result addCar(AddCarRequest addCarRequest, MultipartFile file) throws IOException {
+
+        String imageUrl= fileUpload.uploadFile(file,addCarRequest.getPlate());
 
         String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
         addCarRequest.setPlate(editPlate);
@@ -86,11 +93,13 @@ public class CarManager implements CarService {
         this.businessRules.updateCarMethod(addCarRequest.getModelId(), addCarRequest.getColorId());
 
         Car car = this.mapperService.forRequest().map(addCarRequest, Car.class);
+        car.setImageUrl(imageUrl);
         this.carRepository.save(car);
 
         return new SuccessResult(Message.ADD.getMessage());
 
     }
+
 
     @Override
     public Result updateCar(UpdateCarRequest updateCarRequest) {

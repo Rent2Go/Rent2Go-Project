@@ -32,6 +32,7 @@ public class BrandManager implements BrandService {
     private BrandBusinessRules businessRules;
     private EntityManager entityManager;
 
+
     @Override
     public DataResult<List<GetBrandListResponse>> getAllBrands() {
 

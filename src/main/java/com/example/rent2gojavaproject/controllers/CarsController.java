@@ -1,22 +1,29 @@
 package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.ErrorsResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/cars")
 @AllArgsConstructor
+@CrossOrigin
 public class CarsController {
 
     private final CarService carService;
@@ -33,12 +40,13 @@ public class CarsController {
         return this.carService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add" )
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Result createCar(@RequestBody @Valid AddCarRequest addCarRequest) {
+    public Result createCar(@RequestPart("addCarRequest") AddCarRequest addCarRequest, @RequestPart("file") MultipartFile file) throws IOException {
 
-        return this.carService.addCar(addCarRequest);
+        return this.carService.addCar(addCarRequest,file);
     }
+
 
     @PutMapping("/update")
     @ResponseStatus(code = HttpStatus.OK)

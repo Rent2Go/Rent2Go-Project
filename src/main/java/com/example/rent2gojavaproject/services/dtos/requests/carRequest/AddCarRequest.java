@@ -3,10 +3,13 @@ package com.example.rent2gojavaproject.services.dtos.requests.carRequest;
 import com.example.rent2gojavaproject.models.BodyType;
 import com.example.rent2gojavaproject.models.FuelType;
 import com.example.rent2gojavaproject.models.GearType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -39,13 +42,13 @@ public class AddCarRequest {
     private int colorId;
 
     @NotNull(message = "Body type cannot be null")
-    private BodyType bodyType;
+    private String bodyType;
 
     @NotNull(message = "Fuel type cannot be null")
-    private FuelType fuelType;
+    private String fuelType;
 
     @NotNull(message = "Gear type cannot be null")
-    private GearType gearType;
+    private String gearType;
 
     @NotBlank(message = "The cylinder count field can't be empty.")
     private String cylinderCount;
@@ -53,7 +56,6 @@ public class AddCarRequest {
     @NotBlank(message = "The engine power field can't be empty.")
     private String enginePower;
 
-    private String imageUrl;
 
 
 }

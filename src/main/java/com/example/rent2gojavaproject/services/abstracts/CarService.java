@@ -7,7 +7,9 @@ import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRe
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CarService {
@@ -16,7 +18,8 @@ public interface CarService {
 
     DataResult<GetCarResponse> getById(int id);
 
-    Result addCar(AddCarRequest addCarRequest);
+    Result addCar(AddCarRequest addCarRequest, MultipartFile file) throws IOException;
+
 
     Result updateCar(UpdateCarRequest updateCarRequest);
 

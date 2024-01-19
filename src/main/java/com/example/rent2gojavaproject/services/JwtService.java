@@ -33,7 +33,8 @@ public class JwtService {
         claims.putAll(Map.of(
                 "firstname", userDetails.getName(),
                 "lastname", userDetails.getSurname(),
-                "phoneNumber", userDetails.getPhoneNumber()
+                "phoneNumber", userDetails.getPhoneNumber(),
+                "role",userDetails.getRole()
 
         ));
         return generateToken(claims, userDetails);
