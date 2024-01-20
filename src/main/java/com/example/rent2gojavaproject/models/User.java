@@ -52,6 +52,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "enabled")
+    private boolean isEnabled = false;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
@@ -105,6 +108,6 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 }
