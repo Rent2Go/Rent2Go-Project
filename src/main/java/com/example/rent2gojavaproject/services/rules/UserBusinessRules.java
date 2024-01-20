@@ -15,7 +15,7 @@ public class UserBusinessRules {
     public void checkIfExistsByEmail(String email) {
 
         if (userRepository.existsByEmail(email)) {
-            throw new AlreadyExistsException("Email  already exists");
+            throw new AlreadyExistsException("User with email " + email + " already exists");
         }
 
     }
@@ -23,7 +23,7 @@ public class UserBusinessRules {
     public void checkIfExistsPhoneNumber(String phoneNumber) {
 
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new AlreadyExistsException("PhoneNumber  already exists");
+            throw new AlreadyExistsException(phoneNumber + " already exists");
         }
 
     }
