@@ -29,9 +29,10 @@ public class SeedDataConfig implements CommandLineRunner {
                     .name("default")
                     .surname("default")
                     .phoneNumber("11111111111")
-                    .email("default@default.com")
-                    .password("default")
-                    .role(Role.USER).build();
+                    .email("default@rentogo.com.tr")
+                    .password(passwordEncoder.encode("password"))
+                    .role(Role.USER)
+                    .isEnabled(true).build();
 
 
             User admin = User
@@ -42,6 +43,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("admin@admin.com")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
+                    .isEnabled(true)
                     .build();
 
             userService.addUser(defaultUser);
