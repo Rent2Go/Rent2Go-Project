@@ -8,6 +8,8 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.User;
+import com.example.rent2gojavaproject.registration.token.ConfirmationToken;
+import com.example.rent2gojavaproject.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
@@ -23,16 +25,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserManager implements UserService {
     private final UserRepository userRepository;
-    private ModelMapperService mapperService;
-    private EntityManager entityManager;
-    private UserBusinessRules businessRules;
+    private final ModelMapperService mapperService;
+    private final EntityManager entityManager;
+    private final UserBusinessRules businessRules;
+    private final ConfirmationTokenService tokenService;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -83,14 +88,26 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public User addUser(User user) {
+    public String  addUser(User user) {
 
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
-
         this.userRepository.save(user);
+        String token = UUID.randomUUID().toString();
 
-        return user;
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+        );
+
+        tokenService.saveConfirmationToken(
+                confirmationToken);
+
+
+
+        return token;
     }
 
     @Override
@@ -114,5 +131,10 @@ public class UserManager implements UserService {
         this.userRepository.delete(user);
 
         return new SuccessResult(Message.DELETE.getMessage());
+    }
+
+    @Override
+    public int enableAppUser(String email) {
+        return userRepository.enableAppUser(email);
     }
 }

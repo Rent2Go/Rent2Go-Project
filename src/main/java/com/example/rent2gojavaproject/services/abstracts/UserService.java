@@ -14,11 +14,13 @@ public interface UserService {
 
     DataResult<GetUserResponse> getById(int id);
 
-    User addUser(User user);
+    String  addUser(User user);
 
     Result updateUser(UpdateUserRequest updateUserRequest);
 
     Result deleteUser(int id);
 
     DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive);
+
+    public int enableAppUser(String email) ;
 }
