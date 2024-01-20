@@ -17,12 +17,17 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public JwtAuthenticationResponse signup(@Valid @RequestBody SignUpRequest request) {
+    public String signup(@Valid @RequestBody SignUpRequest request) {
         return authenticationService.signup(request);
     }
 
     @PostMapping("/signin")
-    public JwtAuthenticationResponse signin(@Valid @RequestBody SignInRequest request) {
+    public JwtAuthenticationResponse signin(@Valid @RequestBody SignInRequest request) throws Exception {
         return authenticationService.signin(request);
+    }
+
+    @GetMapping(path = "/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return authenticationService.confirmToken(token);
     }
 }
