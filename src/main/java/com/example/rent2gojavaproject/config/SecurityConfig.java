@@ -18,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -60,16 +61,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
+                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "api/signup", "api/signin").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/admins").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers( "api/signup", "api/signin","api/verifyEmail").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/test/anon").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/test/users").hasAuthority("ROLE_USER")
+                        .requestMatchers(HttpMethod.GET, "api/users/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                        .requestMatchers(HttpMethod.GET, "api/test/admins").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.POST, "api/cars/add").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "createcar").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/anon").permitAll()
                         .anyRequest().authenticated()
 
                 )
