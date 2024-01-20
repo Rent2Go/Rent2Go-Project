@@ -3,7 +3,6 @@ package com.example.rent2gojavaproject.controllers;
 import com.example.rent2gojavaproject.services.abstracts.FileUpload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +11,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/files")
-
+@CrossOrigin
 public class FileUploadController {
 
     private final FileUpload fileUpload;
@@ -23,7 +22,6 @@ public class FileUploadController {
     public String uploadFile(@RequestParam("image") MultipartFile multipartFile,
                               @RequestParam("uniqColumn") String uniqColumn
                              ) throws IOException {
-        String imageURL = fileUpload.uploadFile(multipartFile, uniqColumn);
-        return imageURL;
+        return fileUpload.uploadFile(multipartFile, uniqColumn);
     }
 }
