@@ -41,4 +41,6 @@ public class SignUpRequest {
                     "Does not contain spaces, tabs, etc.")
 
     String password;
+
+    String role;
 }

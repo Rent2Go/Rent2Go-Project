@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.abstracts;
 
+import com.example.rent2gojavaproject.core.token.VerificationToken;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.models.User;
@@ -21,4 +22,8 @@ public interface UserService {
     Result deleteUser(int id);
 
     DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive);
+
+    void saveUserVerificationToken(User theUser, String verificationToken);
+
+    String validateToken(String theToken);
 }

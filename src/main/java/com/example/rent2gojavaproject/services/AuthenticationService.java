@@ -14,6 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -24,8 +27,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationResponse signup(SignUpRequest request) {
-        var user = User
+    public User signup(SignUpRequest request) {
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        var newUser = User
                 .builder()
                 .name(request.getFirstName())
                 .surname(request.getLastName())
@@ -33,12 +37,13 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .createdAt(LocalDate.now())
                 .build();
 
-        user = userService.addUser(user);
-        var jwt = jwtService.generateToken(user);
+        newUser = userService.addUser(newUser);
+        var jwt = jwtService.generateToken(newUser);
 
-        return JwtAuthenticationResponse.builder().token(jwt).build();
+        return newUser;
     }
 
 
