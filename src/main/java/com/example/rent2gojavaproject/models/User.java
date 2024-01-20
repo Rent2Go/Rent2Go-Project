@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterUser", parameters = @ParamDef(name = "isActive", type = Boolean.class))
 @Filter(name = "isActiveFilterUser", condition = "IS_ACTIVE = :isActive")
-public class User extends BaseEntity implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +56,18 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @Column(name = "IS_ACTIVE")
+    private boolean isEnabled = false;
+
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDate createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDate updatedAt;
+
+    @Column(name = "DELETED_AT")
+    private LocalDate deletedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -103,8 +116,4 @@ public class User extends BaseEntity implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

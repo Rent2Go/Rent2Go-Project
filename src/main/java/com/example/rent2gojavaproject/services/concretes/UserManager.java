@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
+import com.example.rent2gojavaproject.core.token.VerificationToken;
 import com.example.rent2gojavaproject.core.utilities.alerts.Message;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -9,6 +10,7 @@ import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
+import com.example.rent2gojavaproject.repositories.VerificationTokenRepository;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
@@ -23,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,7 @@ public class UserManager implements UserService {
     private ModelMapperService mapperService;
     private EntityManager entityManager;
     private UserBusinessRules businessRules;
+    private final VerificationTokenRepository tokenRepository;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -88,8 +92,8 @@ public class UserManager implements UserService {
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
 
+        user.setCreatedAt(LocalDate.now());
         this.userRepository.save(user);
-
         return user;
     }
 
@@ -99,6 +103,8 @@ public class UserManager implements UserService {
         this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find user id"));
 
         User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
+
+        user.setUpdatedAt(LocalDate.now());
         this.userRepository.save(user);
 
         return new SuccessResult(Message.UPDATE.getMessage());
@@ -114,5 +120,33 @@ public class UserManager implements UserService {
         this.userRepository.delete(user);
 
         return new SuccessResult(Message.DELETE.getMessage());
+    }
+
+    @Override
+    public void saveUserVerificationToken(User theUser, String token) {
+
+        var verificationToken = new VerificationToken(token, theUser);
+        tokenRepository.save(verificationToken);
+    }
+
+    @Override
+    public String validateToken(String theToken) {
+        VerificationToken token = tokenRepository.findByToken(theToken);
+        if (token == null){
+            return "Invalid verification token!";
+        }
+
+        User user = token.getUser();
+        Calendar calendar = Calendar.getInstance();
+
+        if ((token.getExpirationTime().getTime() - calendar.getTime().getTime()) <= 0){
+            tokenRepository.delete(token);
+
+            return "Token has already expired!";
+        }
+
+        user.setEnabled(true);
+        userRepository.save(user);
+        return "valid";
     }
 }
