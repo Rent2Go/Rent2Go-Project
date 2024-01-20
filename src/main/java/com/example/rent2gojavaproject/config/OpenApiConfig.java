@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         info = @Info(
                 contact = @Contact(
                         name = "Rent2Go",
-                        url = "https://rent2go.feyzaerat.com.tr/"
+                        url = "https://rentogo.com.tr/"
                 ),
                 description = "Rent a car application",
                 version = "1.0",
@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "PROD ENV",
-                        url = "https://rent2go.feyzaerat.com.tr/"
+                        url = "https://api.rentogo.com.tr/"
                 )
         },
         security = {
