@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.registration;
+package com.example.rent2gojavaproject.core.registration;
 
 import org.springframework.stereotype.Service;
 

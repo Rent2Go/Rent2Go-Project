@@ -1,6 +1,6 @@
-package com.example.rent2gojavaproject.registration;
+package com.example.rent2gojavaproject.core.registration;
 
-import com.example.rent2gojavaproject.registration.token.ConfirmationTokenService;
+import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

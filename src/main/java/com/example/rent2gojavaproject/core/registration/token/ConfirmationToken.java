@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.registration.token;
+package com.example.rent2gojavaproject.core.registration.token;
 
 import com.example.rent2gojavaproject.models.User;
 import jakarta.persistence.*;
