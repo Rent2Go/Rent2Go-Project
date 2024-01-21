@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.services;
+package com.example.rent2gojavaproject.core.services;
 
 import com.example.rent2gojavaproject.models.User;
 import io.jsonwebtoken.Claims;

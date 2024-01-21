@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.config;
+package com.example.rent2gojavaproject.core.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;

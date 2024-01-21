@@ -1,6 +1,6 @@
-package com.example.rent2gojavaproject.filter;
+package com.example.rent2gojavaproject.core.filter;
 
-import com.example.rent2gojavaproject.services.JwtService;
+import com.example.rent2gojavaproject.core.services.JwtService;
 import com.example.rent2gojavaproject.services.concretes.UserManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

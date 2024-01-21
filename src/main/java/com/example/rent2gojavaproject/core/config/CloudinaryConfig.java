@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.config;
+package com.example.rent2gojavaproject.core.config;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.context.annotation.Bean;

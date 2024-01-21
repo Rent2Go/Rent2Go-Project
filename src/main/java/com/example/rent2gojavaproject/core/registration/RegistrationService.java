@@ -1,17 +1,9 @@
 package com.example.rent2gojavaproject.registration;
 
-import com.example.rent2gojavaproject.models.Role;
-import com.example.rent2gojavaproject.models.User;
-import com.example.rent2gojavaproject.registration.token.ConfirmationToken;
 import com.example.rent2gojavaproject.registration.token.ConfirmationTokenService;
-import com.example.rent2gojavaproject.services.AuthenticationService;
-import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor

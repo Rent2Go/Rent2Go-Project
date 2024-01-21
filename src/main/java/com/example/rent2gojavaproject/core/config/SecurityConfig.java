@@ -1,6 +1,6 @@
-package com.example.rent2gojavaproject.config;
+package com.example.rent2gojavaproject.core.config;
 
-import com.example.rent2gojavaproject.filter.JwtAuthenticationFilter;
+import com.example.rent2gojavaproject.core.filter.JwtAuthenticationFilter;
 import com.example.rent2gojavaproject.services.concretes.UserManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
