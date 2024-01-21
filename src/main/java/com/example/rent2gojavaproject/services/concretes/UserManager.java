@@ -11,10 +11,17 @@ import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.registration.token.ConfirmationToken;
 import com.example.rent2gojavaproject.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.repositories.UserRepository;
+import com.example.rent2gojavaproject.services.AuthenticationService;
+import com.example.rent2gojavaproject.services.JwtService;
+import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
@@ -22,7 +29,9 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +47,9 @@ public class UserManager implements UserService {
     private final EntityManager entityManager;
     private final UserBusinessRules businessRules;
     private final ConfirmationTokenService tokenService;
+    private final EmailSenderService emailSenderService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -108,6 +120,32 @@ public class UserManager implements UserService {
 
 
         return token;
+    }
+
+
+    public String resetPassword(ResetPasswordRequest resetPasswordRequest) throws Exception {
+
+        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(), resetPasswordRequest.getFirstname()).orElseThrow(()->new NotFoundException("User not found"));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String token =  jwtService.generateToken(user);
+
+        String link = "http://localhost:3000/passwordchange?token=" + token ;
+
+        emailSenderService.send(user.getEmail(), link);
+
+
+
+        return link;
+    }
+
+    public String changePassword(ChangePasswordRequest changePasswordRequest){
+
+        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException("Email not found"));
+        userRepository.passwordChange(changePasswordRequest.getEmail(),passwordEncoder.encode(changePasswordRequest.getPassword()));
+
+
+        return "Success";
+
     }
 
     @Override
