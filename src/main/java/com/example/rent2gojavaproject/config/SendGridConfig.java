@@ -10,8 +10,7 @@ public class SendGridConfig {
 
 
         @Value("${sendgrid.key}")
-        private String key;
-       String SENDGRID_API_KEY= "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";
+        String SENDGRID_API_KEY;
 
         @Bean
         public SendGrid getSendgrid()
