@@ -10,6 +10,7 @@ import com.example.rent2gojavaproject.registration.token.ConfirmationTokenServic
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +84,10 @@ public class AuthenticationService implements  AuthenticationManager {
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
-    @Transactional
+
+
+
+
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
