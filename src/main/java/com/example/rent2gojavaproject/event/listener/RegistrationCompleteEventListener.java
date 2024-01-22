@@ -51,16 +51,20 @@ public class RegistrationCompleteEventListener
 
         String htmlContent =
                 "<html>" +
-                        "<body>" +
-                        "<div style='font-family: Arial, sans-serif;'>" +
-                        "<h1 style='color: #445566;'>Welcome to Rent2Go!</h1>" +
+                        "<body style='font-family: \"Roboto\", sans-serif; margin:0; padding:0;'>" +
+                        "<div style='padding: 50px;'>" +
+                        "<div style='max-width: 600px; margin: auto; background-color: white; border-radius: 5px; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);'>" +
+                        "<h1 style='color: #445566; text-align:center;'>Welcome to Rent2Go!</h1>" +
                         "<p>Dear " + theUser.getName() + " " + theUser.getSurname() + ",</p>" +
                         "<p>Thank you for registering with us. To complete your registration, please click the button below:</p>" +
-                        "<a href=\"" + url + "\" style='background-color: #5D9CEC; color: white; text-decoration: none; padding: 10px 20px; margin: 10px 0; display: inline-block;'>Verify Your Email</a>" +
+                        "<div style='text-align:center; margin-bottom:20px;'>" +
+                        "<a href=\"" + url + "\" style='background-color: #5D9CEC; color: white; text-decoration: none; padding: 10px 20px; border-radius:5px; box-shadow: 0px 3px 6px rgba(0,0,0,0.1); display: inline-block;'>Verify Your Email</a>" +
+                        "</div>" +
                         "<p>If the button doesn't work, you can also copy and paste the following link into your web browser:</p>" +
-                        "<p><a href=\"" + url + "\">" + url + "</a></p>" +
+                        "<p><a href=\"" + url + "\" style='color:#5D9CEC'>" + url + "</a></p>" +
                         "<p>Once your email is verified, you'll be able to start browsing our vast selection of vehicles and make your first reservation. We're excited to have you on board!</p>" +
-                        "<p>Best Regards,<br>The Rent2Go Team</p>" +
+                        "<p style='border-top: 1px solid #DDDDDD; padding-top:20px; color:#888888'>Best Regards,<br>The Rent2Go Team</p>" +
+                        "</div>" +
                         "</div>" +
                         "</body>" +
                         "</html>";
@@ -75,7 +79,7 @@ public class RegistrationCompleteEventListener
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 
-        messageHelper.setFrom("support@rentogo.com.tr", senderName);
+        messageHelper.setFrom("noreply@rentogo.com.tr", senderName);
         messageHelper.setTo(theUser.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(textContent, htmlContent);
