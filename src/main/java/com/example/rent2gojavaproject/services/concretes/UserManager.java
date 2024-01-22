@@ -102,15 +102,15 @@ public class UserManager implements UserService {
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
         this.userRepository.save(user);
-        String token = UUID.randomUUID().toString();
 
+
+        String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
+                LocalDateTime.now().plusMinutes(1),
                 user
         );
-
         tokenService.saveConfirmationToken(
                 confirmationToken);
 

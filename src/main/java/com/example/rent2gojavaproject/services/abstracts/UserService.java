@@ -9,6 +9,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateU
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,5 +35,5 @@ public interface UserService {
 
     String resetPassword(ResetPasswordRequest resetPasswordRequest) throws Exception;
 
-    String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
+    String changePassword(ChangePasswordRequest changePasswordRequest);
 }

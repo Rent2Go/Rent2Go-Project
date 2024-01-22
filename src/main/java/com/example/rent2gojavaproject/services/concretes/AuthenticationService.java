@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService implements AuthenticationManager {
+public class AuthenticationService  {
 
 
     private final UserService userService;
@@ -31,13 +31,10 @@ public class AuthenticationService implements AuthenticationManager {
     private final JwtService jwtService;
     private final EmailSenderService emailSender;
     private final ConfirmationTokenService confirmationTokenService;
+    private final AuthenticationManager authenticationManager;
 
 
     public String signup(SignUpRequest request) {
-        boolean isValidEmail = userService.existsByEmail(request.getEmail());
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
-        }
         var user = User
                 .builder()
                 .name(request.getFirstName())
@@ -68,7 +65,7 @@ public class AuthenticationService implements AuthenticationManager {
         }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new NotFoundException("Invalid password ");
-        authenticate(
+       authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         var jwt = jwtService.generateToken(user);
@@ -83,24 +80,22 @@ public class AuthenticationService implements AuthenticationManager {
                         new IllegalStateException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            return "token already confirmed";
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            return "token expired";
+
         }
 
         confirmationTokenService.setConfirmedAt(token);
         userService.enableAppUser(
                 confirmationToken.getUser().getEmail());
+
         return "confirmed";
     }
 
-    @Override
-    public Authentication authenticate(Authentication authentication)
-            throws AuthenticationException {
-        return authentication;
-    }
+
 }
