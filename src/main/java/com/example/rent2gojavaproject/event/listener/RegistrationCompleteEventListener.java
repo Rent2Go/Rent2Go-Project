@@ -128,4 +128,6 @@ public class RegistrationCompleteEventListener
 
         mailSender.send(message);
     }
+
+                
 }
