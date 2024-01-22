@@ -1,14 +1,11 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.models.Role;
-import com.example.rent2gojavaproject.models.User;
-import com.example.rent2gojavaproject.core.registration.EmailValidator;
-import com.example.rent2gojavaproject.core.registration.RegistrationService;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
-import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.core.services.JwtService;
+import com.example.rent2gojavaproject.models.Role;
+import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
@@ -26,22 +23,18 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService implements  AuthenticationManager {
+public class AuthenticationService implements AuthenticationManager {
 
-    private final UserRepository userRepository;
+
     private final UserService userService;
-    private final EmailValidator emailValidator;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final EmailSenderService emailSender;
-    private final RegistrationService registrationService;
     private final ConfirmationTokenService confirmationTokenService;
 
 
     public String signup(SignUpRequest request) {
-        boolean isValidEmail = emailValidator.
-                test(request.getEmail());
-
+        boolean isValidEmail = userService.existsByEmail(request.getEmail());
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
@@ -56,12 +49,11 @@ public class AuthenticationService implements  AuthenticationManager {
                 .build();
 
 
-
         String token = userService.addUser(user);
         String link = "http://localhost:8080/api/confirm?token=" + token;
         emailSender.send(
                 request.getEmail(),
-                registrationService.buildEmail(request.getFirstName(), link));
+                emailSender.buildEmail(request.getFirstName(), link));
 
 
         return token;
@@ -69,9 +61,9 @@ public class AuthenticationService implements  AuthenticationManager {
 
 
     public JwtAuthenticationResponse signin(SignInRequest request) throws Exception {
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new NotFoundException("Invalid email name"));
-        if(!user.isEnabled()){
+        var user = userService.findByEmail(request.getEmail());
+
+        if (!user.isEnabled()) {
             throw new Exception("User not enabled");
         }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
@@ -82,8 +74,6 @@ public class AuthenticationService implements  AuthenticationManager {
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
-
-
 
 
     public String confirmToken(String token) {

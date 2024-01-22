@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -127,11 +128,12 @@ public class UserManager implements UserService {
 
         String link = "http://localhost:3000/passwordchange?token=" + token ;
 
-        emailSenderService.send(user.getEmail(), link);
+        emailSenderService.send(user.getEmail(),
+                emailSenderService.buildEmail(resetPasswordRequest.getFirstname(),link));
 
 
 
-        return link;
+        return "Successful Reset Password";
     }
 
     public String changePassword(ChangePasswordRequest changePasswordRequest){
@@ -170,5 +172,18 @@ public class UserManager implements UserService {
     @Override
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+
+      User user =   userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("email not found"));
+
+        return user;
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

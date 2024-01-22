@@ -11,6 +11,7 @@ import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUs
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     DataResult<List<GetUserListResponse>> getAllUsers();
@@ -25,9 +26,13 @@ public interface UserService {
 
     DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive);
 
-    public int enableAppUser(String email);
+    int enableAppUser(String email);
 
-    public String resetPassword(ResetPasswordRequest resetPasswordRequest) throws Exception;
+    User findByEmail(String email);
 
-    public String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
+    boolean existsByEmail(String email);
+
+    String resetPassword(ResetPasswordRequest resetPasswordRequest) throws Exception;
+
+    String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
 }
