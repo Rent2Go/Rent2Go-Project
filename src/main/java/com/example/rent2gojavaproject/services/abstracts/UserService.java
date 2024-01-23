@@ -8,6 +8,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPa
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,11 +30,15 @@ public interface UserService {
 
     int enableAppUser(String email);
 
+     String applicationUrl(HttpServletRequest request) ;
+
     User findByEmail(String email);
 
     boolean existsByEmail(String email);
 
-    String resetPassword(ResetPasswordRequest resetPasswordRequest) throws Exception;
+    String resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception;
 
     String changePassword(ChangePasswordRequest changePasswordRequest);
+
+
 }

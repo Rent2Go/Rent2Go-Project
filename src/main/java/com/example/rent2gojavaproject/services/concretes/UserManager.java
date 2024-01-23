@@ -21,9 +21,13 @@ import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUs
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +41,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserManager implements UserService {
     private final UserRepository userRepository;
     private final ModelMapperService mapperService;
@@ -47,6 +51,10 @@ public class UserManager implements UserService {
     private final EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+
+    @Value("${client.server}")
+    String clientServer;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -120,16 +128,19 @@ public class UserManager implements UserService {
     }
 
 
-    public String resetPassword(ResetPasswordRequest resetPasswordRequest) throws Exception {
+    public String resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
 
-        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(), resetPasswordRequest.getFirstname()).orElseThrow(()->new NotFoundException("User not found"));
+        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
+                resetPasswordRequest.getFirstname())
+                .orElseThrow(()->new NotFoundException("User not found"));
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         String token =  jwtService.generateToken(user);
 
-        String link = "http://localhost:3000/passwordchange?token=" + token ;
+        String link = clientServer + "passwordchange?token=" + token;
 
         emailSenderService.send(user.getEmail(),
-                emailSenderService.buildEmail(resetPasswordRequest.getFirstname(),link));
+                emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname()  ,link));
 
 
 
@@ -144,6 +155,10 @@ public class UserManager implements UserService {
 
         return "Success";
 
+    }
+
+    public String applicationUrl(HttpServletRequest request) {
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPa
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,9 +57,9 @@ public class UsersController {
     }
 
     @PostMapping("/resetpassword")
-    public String resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws Exception {
+    public String resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest, final HttpServletRequest httpRequest) throws Exception {
 
-        return userService.resetPassword(resetPasswordRequest);
+        return userService.resetPassword(resetPasswordRequest, httpRequest);
     }
 
     @PostMapping("/changepassword")
@@ -66,6 +67,8 @@ public class UsersController {
 
         return userService.changePassword(changePasswordRequest);
     }
+
+
 }
 
 

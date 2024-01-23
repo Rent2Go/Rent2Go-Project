@@ -11,11 +11,10 @@ import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService  {
+public class AuthenticationService {
 
 
     private final UserService userService;
@@ -34,7 +33,7 @@ public class AuthenticationService  {
     private final AuthenticationManager authenticationManager;
 
 
-    public String signup(SignUpRequest request) {
+    public String signup(SignUpRequest request, HttpServletRequest servletRequest) {
         var user = User
                 .builder()
                 .name(request.getFirstName())
@@ -47,10 +46,10 @@ public class AuthenticationService  {
 
 
         String token = userService.addUser(user);
-        String link = "http://localhost:8080/api/confirm?token=" + token;
+        String link = userService.applicationUrl(servletRequest) + "/api/confirm?token=" + token;
         emailSender.send(
                 request.getEmail(),
-                emailSender.buildEmail(request.getFirstName(), link));
+                emailSender.buildEmail(user.getName() + " " + user.getSurname(), link));
 
 
         return token;
@@ -65,7 +64,7 @@ public class AuthenticationService  {
         }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new NotFoundException("Invalid password ");
-       authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         var jwt = jwtService.generateToken(user);
