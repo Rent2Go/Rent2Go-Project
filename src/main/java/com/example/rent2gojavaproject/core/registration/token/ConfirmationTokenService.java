@@ -8,4 +8,6 @@ public interface ConfirmationTokenService {
     public Optional<ConfirmationToken> getToken(String token);
 
     public int setConfirmedAt(String token);
+
+    public void deleteConfirmationToken(String token);
 }
