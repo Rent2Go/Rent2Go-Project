@@ -3,6 +3,8 @@ package com.example.rent2gojavaproject.services.dtos.responses.carResponse;
 import com.example.rent2gojavaproject.models.BodyType;
 import com.example.rent2gojavaproject.models.FuelType;
 import com.example.rent2gojavaproject.models.GearType;
+import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelListResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,7 @@ public class GetCarListResponse {
 
     private String imageUrl;
 
-    private String modelName;
+    private GetModelListResponse model;
 
     private String colorName;
 
