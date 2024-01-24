@@ -79,5 +79,28 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Map<String, Object>> handleAlreadyExistsException(InvalidPasswordException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error", "invalid_password");
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("status", HttpStatus.UNAUTHORIZED.value());
+        errorResponse.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserNotEnabledException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Map<String, Object>> handleAlreadyExistsException(UserNotEnabledException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error", "user_not_enabled");
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("status", HttpStatus.UNAUTHORIZED.value());
+        errorResponse.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+
 
 }
