@@ -29,8 +29,8 @@ public class SeedDataConfig implements CommandLineRunner {
                     .name("default")
                     .surname("default")
                     .phoneNumber("11111111111")
-                    .email("default@default.com")
-                    .password("default")
+                    .email("default@rentogo.com.tr")
+                    .password(passwordEncoder.encode("password"))
                     .role(Role.USER).build();
 
 
@@ -39,13 +39,14 @@ public class SeedDataConfig implements CommandLineRunner {
                     .name("admin")
                     .surname("admin")
                     .phoneNumber("5436751431")
-                    .email("admin@admin.com")
+                    .email("admin@rentogo.com.tr")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
+                    .isEnabled(true)
                     .build();
 
-            //userService.addUser(defaultUser);
-            //userService.addUser(admin);
+            userService.addUser(defaultUser);
+            userService.addUser(admin);
         }
     }
 }
