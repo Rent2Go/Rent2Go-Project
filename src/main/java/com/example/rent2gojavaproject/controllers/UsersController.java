@@ -64,7 +64,7 @@ public class UsersController {
     }
 
     @PostMapping("/changepassword")
-    public String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) throws Exception {
+    public String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
 
         return userService.changePassword(changePasswordRequest);
     }

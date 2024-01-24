@@ -191,9 +191,7 @@ public class UserManager implements UserService {
     @Override
     public User findByEmail(String email) {
 
-      User user =   userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("email not found"));
-
-        return user;
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("email not found"));
     }
 
     @Override

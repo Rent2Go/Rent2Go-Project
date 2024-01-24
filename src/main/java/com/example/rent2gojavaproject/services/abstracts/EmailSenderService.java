@@ -10,7 +10,7 @@ public interface EmailSenderService {
 
     void sendEmail(String name, String email, String link, String subject, String htmlContent, String textContent) throws MessagingException, UnsupportedEncodingException;
 
-    public String applicationUrl(HttpServletRequest request);
+    String applicationUrl(HttpServletRequest request);
 
     void buildEmail(String name,String email, String link) throws MessagingException, UnsupportedEncodingException;
 
