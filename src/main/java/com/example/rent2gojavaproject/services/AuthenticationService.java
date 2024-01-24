@@ -24,5 +24,32 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    public JwtAuthenticationResponse signup(SignUpRequest request) {
+        var user = User
+                .builder()
+                .name(request.getFirstName())
+                .surname(request.getLastName())
+                .phoneNumber(request.getPhoneNumber())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
 
+        user = userService.addUser(user);
+        var jwt = jwtService.generateToken(user);
+
+        return JwtAuthenticationResponse.builder().token(jwt).build();
+    }
+
+
+    public JwtAuthenticationResponse signin(SignInRequest request) {
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new NotFoundException("Invalid email name"));
+        if(! passwordEncoder.matches(request.getPassword(),user.getPassword())) throw new NotFoundException("Invalid password ");
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+        var jwt = jwtService.generateToken(user);
+        return JwtAuthenticationResponse.builder().token(jwt).build();
+    }
 }
