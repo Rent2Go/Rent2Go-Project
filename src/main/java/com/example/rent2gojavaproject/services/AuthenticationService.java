@@ -47,6 +47,7 @@ public class AuthenticationService {
     }
 
 
+
     public JwtAuthenticationResponse signin(SignInRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("Invalid email name"));
