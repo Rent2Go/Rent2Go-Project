@@ -60,10 +60,10 @@ public class AuthenticationService {
         var user = userService.findByEmail(request.getEmail());
 
         if (!user.isEnabled()) {
-            throw new Exception("User not enabled");
+            throw new NotFoundException("User not enabled");
         }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
-            throw new NotFoundException("Invalid password ");
+            throw new NotFoundException(    "Invalid password ");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 

@@ -72,6 +72,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "api/cars/add").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "createcar").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "api/v1/test/anon").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/cars/getall").permitAll()
                         .anyRequest().authenticated()
 
                 )
