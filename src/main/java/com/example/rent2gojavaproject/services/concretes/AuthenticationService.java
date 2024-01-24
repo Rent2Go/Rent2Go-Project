@@ -1,6 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.InvalidPasswordException;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
+import com.example.rent2gojavaproject.core.exceptions.UserNotEnabledException;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.core.services.JwtService;
@@ -11,6 +13,7 @@ import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 @Service
@@ -33,7 +37,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public String signup(SignUpRequest request, HttpServletRequest servletRequest) {
+    public String signup(SignUpRequest request, HttpServletRequest servletRequest) throws MessagingException, UnsupportedEncodingException {
         var user = User
                 .builder()
                 .name(request.getFirstName())
@@ -47,12 +51,10 @@ public class AuthenticationService {
 
         String token = userService.addUser(user);
         String link = userService.applicationUrl(servletRequest) + "/api/confirm?token=" + token;
-        emailSender.send(
-                request.getEmail(),
-                emailSender.buildEmail(user.getName() + " " + user.getSurname(), link));
+        emailSender.buildEmail(user.getName()+ " " + user.getSurname(),request.getEmail(), link);
 
 
-        return token;
+        return "Success! Please, check your email to confirm your account.";
     }
 
 
@@ -60,10 +62,10 @@ public class AuthenticationService {
         var user = userService.findByEmail(request.getEmail());
 
         if (!user.isEnabled()) {
-            throw new NotFoundException("User not enabled");
+            throw new UserNotEnabledException("User not enabled. ");
         }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
-            throw new NotFoundException(    "Invalid password ");
+            throw new InvalidPasswordException("Invalid password.");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
@@ -76,16 +78,19 @@ public class AuthenticationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                        new NotFoundException("Token not found!"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            return "token already confirmed";
+            return "Your email address has already been verified, please log in.";
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            return "token expired";
+
+           confirmationTokenService.deleteConfirmationToken(token);
+           userService.hardDeleteUser(confirmationToken.getUser().getId());
+            return "Your email verification link is invalid or has expired. Please, sign up again.";
 
         }
 
@@ -93,7 +98,9 @@ public class AuthenticationService {
         userService.enableAppUser(
                 confirmationToken.getUser().getEmail());
 
-        return "confirmed";
+        confirmationTokenService.deleteConfirmationToken(token);
+
+        return "Email verification successful! Now you can log in to your account.";
     }
 
 
