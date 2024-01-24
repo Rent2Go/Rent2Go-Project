@@ -58,7 +58,7 @@ public class AuthenticationService {
     }
 
 
-    public JwtAuthenticationResponse signin(SignInRequest request) throws Exception {
+    public JwtAuthenticationResponse signin(SignInRequest request){
         var user = userService.findByEmail(request.getEmail());
 
         if (!user.isEnabled()) {
