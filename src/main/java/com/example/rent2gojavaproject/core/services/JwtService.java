@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.services;
+package com.example.rent2gojavaproject.core.services;
 
 import com.example.rent2gojavaproject.models.User;
 import io.jsonwebtoken.Claims;
@@ -56,7 +56,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 20))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

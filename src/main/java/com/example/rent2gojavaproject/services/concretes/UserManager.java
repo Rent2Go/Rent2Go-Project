@@ -8,31 +8,53 @@ import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.User;
+import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
+import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.repositories.UserRepository;
+import com.example.rent2gojavaproject.core.services.JwtService;
+import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserManager implements UserService {
     private final UserRepository userRepository;
-    private ModelMapperService mapperService;
-    private EntityManager entityManager;
-    private UserBusinessRules businessRules;
+    private final ModelMapperService mapperService;
+    private final EntityManager entityManager;
+    private final UserBusinessRules businessRules;
+    private final ConfirmationTokenService tokenService;
+    private final EmailSenderService emailSenderService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
+
+    @Value("${client.server}")
+    String clientServer;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -83,14 +105,60 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public User addUser(User user) {
+    public String  addUser(User user) {
 
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
-
         this.userRepository.save(user);
 
-        return user;
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(1),
+                user
+        );
+        tokenService.saveConfirmationToken(
+                confirmationToken);
+
+
+
+        return token;
+    }
+
+
+    public String resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
+
+        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
+                resetPasswordRequest.getFirstname())
+                .orElseThrow(()->new NotFoundException("User not found"));
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String token =  jwtService.generateToken(user);
+
+        String link = clientServer + "passwordchange?token=" + token;
+
+        emailSenderService.send(user.getEmail(),
+                emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname()  ,link));
+
+
+
+        return "Successful Reset Password";
+    }
+
+    public String changePassword(ChangePasswordRequest changePasswordRequest){
+
+        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException("Email not found"));
+        userRepository.passwordChange(changePasswordRequest.getEmail(),passwordEncoder.encode(changePasswordRequest.getPassword()));
+
+
+        return "Success";
+
+    }
+
+    public String applicationUrl(HttpServletRequest request) {
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 
     @Override
@@ -114,5 +182,23 @@ public class UserManager implements UserService {
         this.userRepository.delete(user);
 
         return new SuccessResult(Message.DELETE.getMessage());
+    }
+
+    @Override
+    public int enableAppUser(String email) {
+        return userRepository.enableAppUser(email);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+
+      User user =   userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("email not found"));
+
+        return user;
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

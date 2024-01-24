@@ -3,7 +3,10 @@ package com.example.rent2gojavaproject.services.dtos.responses.carResponse;
 import com.example.rent2gojavaproject.models.BodyType;
 import com.example.rent2gojavaproject.models.FuelType;
 import com.example.rent2gojavaproject.models.GearType;
+<<<<<<< HEAD
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelListResponse;
+=======
+>>>>>>> b46abc4e1cf81bc61f85f18aef9fdb4ed59a60a6
 import com.example.rent2gojavaproject.services.dtos.responses.modelResponse.GetModelResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.config;
+package com.example.rent2gojavaproject.core.config;
 
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
@@ -44,8 +44,8 @@ public class SeedDataConfig implements CommandLineRunner {
                     .role(Role.ADMIN)
                     .build();
 
-            userService.addUser(defaultUser);
-            userService.addUser(admin);
+            //userService.addUser(defaultUser);
+            //userService.addUser(admin);
         }
     }
 }
