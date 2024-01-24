@@ -22,12 +22,10 @@ import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUs
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +34,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -116,19 +113,17 @@ public class UserManager implements UserService {
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(1),
+                LocalDateTime.now().plusMinutes(30),
                 user
         );
         tokenService.saveConfirmationToken(
                 confirmationToken);
 
-
-
         return token;
     }
 
 
-    public String resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
 
         User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
                 resetPasswordRequest.getFirstname())
@@ -139,12 +134,7 @@ public class UserManager implements UserService {
 
         String link = clientServer + "passwordchange?token=" + token;
 
-        emailSenderService.send(user.getEmail(),
-                emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname()  ,link));
-
-
-
-        return "Successful Reset Password";
+        emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname(),resetPasswordRequest.getEmail(), link);
     }
 
     public String changePassword(ChangePasswordRequest changePasswordRequest){
@@ -177,11 +167,20 @@ public class UserManager implements UserService {
 
         User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
         user.setDeletedAt(LocalDate.now());
+        user.setActive(false);
+        user.setEnabled(false);
 
         this.userRepository.save(user);
-        this.userRepository.delete(user);
 
         return new SuccessResult(Message.DELETE.getMessage());
+    }
+
+    @Override
+    public void hardDeleteUser(int id) {
+
+            User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
+
+            this.userRepository.delete(user);
     }
 
     @Override

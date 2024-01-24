@@ -9,11 +9,8 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateU
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
     DataResult<List<GetUserListResponse>> getAllUsers();
@@ -26,6 +23,8 @@ public interface UserService {
 
     Result deleteUser(int id);
 
+    void hardDeleteUser(int id);
+
     DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive);
 
     int enableAppUser(String email);
@@ -36,7 +35,7 @@ public interface UserService {
 
     boolean existsByEmail(String email);
 
-    String resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception;
+    void resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception;
 
     String changePassword(ChangePasswordRequest changePasswordRequest);
 

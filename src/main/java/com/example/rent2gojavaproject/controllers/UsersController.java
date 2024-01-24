@@ -59,7 +59,8 @@ public class UsersController {
     @PostMapping("/resetpassword")
     public String resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest, final HttpServletRequest httpRequest) throws Exception {
 
-        return userService.resetPassword(resetPasswordRequest, httpRequest);
+        userService.resetPassword(resetPasswordRequest, httpRequest);
+        return "Success! Please, check your email to reset your password.";
     }
 
     @PostMapping("/changepassword")
