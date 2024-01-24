@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/models")
 @AllArgsConstructor
+@CrossOrigin
 public class ModelsController {
     private final ModelService modelService;
 

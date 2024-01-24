@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/bills")
 @AllArgsConstructor
+@CrossOrigin
 public class BillsController {
     private final BillService billService;
 

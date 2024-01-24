@@ -12,7 +12,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/files")
-
+@CrossOrigin
 public class FileUploadController {
 
     private final FileUpload fileUpload;
