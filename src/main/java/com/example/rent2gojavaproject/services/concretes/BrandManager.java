@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -42,33 +43,34 @@ public class BrandManager implements BrandService {
                         .map(brand, GetBrandListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetBrandListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterBrand");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_BRAND.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetBrandListResponse> brands = this.brandRepository.findAll()
                 .stream().map(brand -> this.mapperService.forResponse()
                         .map(brand, GetBrandListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterBrand");
-        return new SuccessDataResult<>(brands, Message.GET_ALL.getMessage());
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_BRAND.getValue());
+        return new SuccessDataResult<>(brands, MessageConstants.GET_ALL.getMessage());
     }
 
 
     @Override
     public DataResult<GetBrandResponse> getById(int id) {
 
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find brand id : " + id));
+        Brand brand = this.brandRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.BRAND.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
 
         GetBrandResponse response = this.mapperService.forResponse().map(brand, GetBrandResponse.class);
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -80,7 +82,7 @@ public class BrandManager implements BrandService {
         brand.setName(editName);
         this.brandRepository.save(brand);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
     @Override
@@ -88,26 +90,26 @@ public class BrandManager implements BrandService {
 
         String editName = businessRules.checkIfExistsByName(updateBrandRequest.getName());
         Brand existingBrand = this.brandRepository.findById(updateBrandRequest.getId())
-                .orElseThrow(() -> new NotFoundException("Brand not found !"));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.BRAND.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
 
         existingBrand.setName(editName);
         businessRules.changeIsActive(existingBrand, updateBrandRequest.isActive());
 
         this.brandRepository.save(existingBrand);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteBrand(int id) {
 
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         businessRules.changeDeleteDate(brand);
 
         this.brandRepository.save(brand);
         this.brandRepository.delete(brand);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override
