@@ -10,6 +10,7 @@ import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.RefreshTokenRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
@@ -51,14 +52,14 @@ public class AuthenticationService {
 
         String token = userService.addUser(user);
         String link = userService.applicationUrl(servletRequest) + "/api/confirm?token=" + token;
-        emailSender.buildEmail(user.getName()+ " " + user.getSurname(),request.getEmail(), link);
+        emailSender.buildEmail(user.getName() + " " + user.getSurname(), request.getEmail(), link);
 
 
         return "Success! Please, check your email to confirm your account.";
     }
 
 
-    public JwtAuthenticationResponse signin(SignInRequest request){
+    public JwtAuthenticationResponse signin(SignInRequest request) {
         var user = userService.findByEmail(request.getEmail());
 
         if (!user.isEnabled()) {
@@ -69,8 +70,27 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        var jwt = jwtService.generateToken(user);
-        return JwtAuthenticationResponse.builder().token(jwt).build();
+        var jwtToken = jwtService.generateToken(user);
+        var jwtRefreshToken = jwtService.generateRefreshToken(user);
+        return JwtAuthenticationResponse.builder().token(jwtToken).refreshToken(jwtRefreshToken).build();
+    }
+
+    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
+
+        User user = userService.findByEmail(userEmail);
+        if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
+
+            var jwt = jwtService.generateToken(user);
+
+            return JwtAuthenticationResponse.builder().token(jwt).refreshToken(refreshTokenRequest.getToken()).build();
+
+
+        }
+
+
+        return null;
+
     }
 
 
@@ -88,8 +108,8 @@ public class AuthenticationService {
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
 
-           confirmationTokenService.deleteConfirmationToken(token);
-           userService.hardDeleteUser(confirmationToken.getUser().getId());
+            confirmationTokenService.deleteConfirmationToken(token);
+            userService.hardDeleteUser(confirmationToken.getUser().getId());
             return "Your email verification link is invalid or has expired. Please, sign up again.";
 
         }
