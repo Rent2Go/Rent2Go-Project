@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.ModelRepository;
@@ -24,11 +25,11 @@ public class ModelBusinessRules {
         String value = name.toLowerCase().trim();
         if (!(brandService.existsById(brandId))) {
 
-            throw new NotFoundException("Brand ID doesn't exist !");
+            throw new NotFoundException(MessageConstants.BRAND.getMessage() + MessageConstants.NOT_FOUND.getMessage());
 
         } else if (modelRepository.existsByName(value)) {
 
-            throw new AlreadyExistsException("Model already exists");
+            throw new AlreadyExistsException(name + MessageConstants.ALREADY_EXISTS.getMessage());
         }
 
         return value;
