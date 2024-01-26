@@ -148,7 +148,7 @@ public class UserManager implements UserService {
     }
 
     public String applicationUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        return "https://api.rentogo.com.tr" + request.getContextPath();
     }
 
     @Override
