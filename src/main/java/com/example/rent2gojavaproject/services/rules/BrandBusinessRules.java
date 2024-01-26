@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.models.Brand;
 import com.example.rent2gojavaproject.models.Model;
 import com.example.rent2gojavaproject.repositories.BrandRepository;
@@ -20,7 +21,7 @@ public class BrandBusinessRules {
 
         String value = name.toLowerCase().trim();
         if (brandRepository.existsByNameAndIsActiveTrue(value)) {
-            throw new AlreadyExistsException("Brand name already exists");
+            throw new AlreadyExistsException(name + MessageConstants.ALREADY_EXISTS.getMessage());
         }
         return value;
     }

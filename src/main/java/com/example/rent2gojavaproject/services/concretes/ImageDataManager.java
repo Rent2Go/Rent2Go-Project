@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.ImageDataUtils.ImageUtils;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.models.ImageData;
 import com.example.rent2gojavaproject.repositories.ImageDataRepository;
 import com.example.rent2gojavaproject.services.abstracts.ImageDataService;
@@ -25,7 +26,7 @@ public class ImageDataManager implements ImageDataService {
                 .type(file.getContentType())
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
         if (imageData != null) {
-            return "file uploaded successfully : " + file.getOriginalFilename();
+            return MessageConstants.FILE_UPLOAD_SUCCESS.getMessage() + file.getOriginalFilename();
         }
         return null;
 

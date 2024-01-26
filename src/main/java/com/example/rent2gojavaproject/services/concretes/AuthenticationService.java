@@ -6,6 +6,8 @@ import com.example.rent2gojavaproject.core.exceptions.UserNotEnabledException;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.core.services.JwtService;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.UrlPathConstants;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
@@ -14,6 +16,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.Refresh
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
+import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -52,11 +55,11 @@ public class AuthenticationService {
 
 
         String token = userService.addUser(user);
-        String link = userService.applicationUrl(servletRequest) + "/api/confirm?token=" + token;
+        String link = userService.applicationUrl(servletRequest) + UrlPathConstants.CONFIRMATION_URL.getPath() + token;
         emailSender.buildEmail(user.getName() + " " + user.getSurname(), request.getEmail(), link);
 
 
-        return "Success! Please, check your email to confirm your account.";
+        return MessageConstants.SIGNUP_SUCCESS.getMessage();
     }
 
 
@@ -64,10 +67,10 @@ public class AuthenticationService {
         var user = userService.findByEmail(request.getEmail());
 
         if (!user.isEnabled()) {
-            throw new UserNotEnabledException("User not enabled. ");
+            throw new UserNotEnabledException(MessageConstants.USER_NOT_ENABLED.getMessage());
         }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
-            throw new InvalidPasswordException("Invalid password.");
+            throw new InvalidPasswordException(MessageConstants.INVALID_PASSWORD.getMessage());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
@@ -123,10 +126,10 @@ public class AuthenticationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new NotFoundException("Token not found!"));
+                        new NotFoundException(MessageConstants.TOKEN_NOT_FOUND.getMessage()));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            return "Your email address has already been verified, please log in.";
+            return MessageConstants.EMAIL_ALREADY_VERIFIED.getMessage();
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
@@ -135,7 +138,7 @@ public class AuthenticationService {
 
             confirmationTokenService.deleteConfirmationToken(token);
             userService.hardDeleteUser(confirmationToken.getUser().getId());
-            return "Your email verification link is invalid or has expired. Please, sign up again.";
+            return MessageConstants.TOKEN_EXPIRED.getMessage();
 
         }
 
@@ -145,7 +148,7 @@ public class AuthenticationService {
 
         confirmationTokenService.deleteConfirmationToken(token);
 
-        return "Email verification successful! Now you can log in to your account.";
+        return MessageConstants.EMAIL_VERIFICATION_SUCCESS.getMessage();
     }
 
 
