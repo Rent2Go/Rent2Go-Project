@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class UserBusinessRules {
     public void checkIfExistsByEmail(String email) {
 
         if (userRepository.existsByEmail(email)) {
-            throw new AlreadyExistsException("User with email " + email + " already exists");
+            throw new AlreadyExistsException(email + MessageConstants.ALREADY_EXISTS.getMessage());
         }
 
     }
@@ -23,7 +24,7 @@ public class UserBusinessRules {
     public void checkIfExistsPhoneNumber(String phoneNumber) {
 
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new AlreadyExistsException(phoneNumber + " already exists");
+            throw new AlreadyExistsException(phoneNumber + MessageConstants.ALREADY_EXISTS.getMessage());
         }
 
     }
