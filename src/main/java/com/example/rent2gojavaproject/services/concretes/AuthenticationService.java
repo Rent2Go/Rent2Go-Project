@@ -20,6 +20,7 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,6 +77,30 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var jwtRefreshToken = jwtService.generateRefreshToken(user);
         return JwtAuthenticationResponse.builder().token(jwtToken).refreshToken(jwtRefreshToken).build();
+    }
+
+    public JwtAuthenticationResponse adminSignin(SignInRequest request) {
+        var user = userService.findByEmail(request.getEmail());
+
+        if (!user.isEnabled()) {
+            throw new UserNotEnabledException("User not enabled. ");
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("Invalid password.");
+        }
+
+        // Kullanıcının rolünü kontrol et
+        if (Role.ADMIN.name().equals( user.getRole().toString())) {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+            var jwtToken = jwtService.generateToken(user);
+            var jwtRefreshToken = jwtService.generateRefreshToken(user);
+            return JwtAuthenticationResponse.builder().token(jwtToken).refreshToken(jwtRefreshToken).build();
+        } else {
+            throw new AccessDeniedException("Admin privileges required.");
+        }
     }
 
     public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {

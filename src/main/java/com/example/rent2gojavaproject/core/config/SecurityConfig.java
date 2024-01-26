@@ -67,14 +67,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "api/signup", "api/signin","api/users/resetpassword").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/signup", "api/signin","api/users/resetpassword","api/admins/signin").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/confirm/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/admins").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.POST, "api/cars/add").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "createcar").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/anon").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/cars/getall").permitAll()
                         .anyRequest().authenticated()
 
