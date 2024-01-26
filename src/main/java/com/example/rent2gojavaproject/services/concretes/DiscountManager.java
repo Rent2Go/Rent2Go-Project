@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -42,34 +43,34 @@ public class DiscountManager implements DiscountService {
                         .map(discount, GetDiscountListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetDiscountListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterDiscount");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_DISCOUNT.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetDiscountListResponse> discounts = this.discountRepository.findAll()
                 .stream().map(discount -> this.mapperService.forResponse()
                         .map(discount, GetDiscountListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterDiscount");
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_DISCOUNT.getValue());
 
-        return new SuccessDataResult<>(discounts, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(discounts, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetDiscountResponse> getById(int id) {
 
         Discount discount = this.discountRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Couldn't find discount id : " + id));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.DISCOUNT.getMessage()+ MessageConstants.NOT_FOUND.getMessage()));
         GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
 
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -79,30 +80,30 @@ public class DiscountManager implements DiscountService {
 
         this.discountRepository.save(discount);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
     @Override
     public Result updateDiscount(UpdateDiscountRequest updateDiscountRequest) {
 
-        this.discountRepository.findById(updateDiscountRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find discount id"));
+        this.discountRepository.findById(updateDiscountRequest.getId()).orElseThrow(() -> new NotFoundException(MessageConstants.DISCOUNT.getMessage()+ MessageConstants.NOT_FOUND.getMessage()));
 
         Discount discount = this.mapperService.forRequest().map(updateDiscountRequest, Discount.class);
         this.discountRepository.save(discount);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteDiscount(int id) {
 
-        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
+        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         discount.setDeletedAt(LocalDate.now());
         this.discountRepository.save(discount);
         this.discountRepository.delete(discount);
 
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override
