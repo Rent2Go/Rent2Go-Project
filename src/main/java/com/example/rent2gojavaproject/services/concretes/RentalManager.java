@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -47,34 +48,34 @@ public class RentalManager implements RentalService {
                         .map(rental, GetRentalListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetRentalListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterRental");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_RENTAL.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetRentalListResponse> rentals = this.rentalRepository.findAll()
                 .stream().map(rental -> this.mapperService.forResponse()
                         .map(rental, GetRentalListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterRental");
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_RENTAL.getValue());
 
-        return new SuccessDataResult<>(rentals, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(rentals, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetRentalResponse> getById(int id) {
 
         Rental rental = this.rentalRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Couldn't find rental id : " + id));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.RENTAL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         GetRentalResponse response = this.mapperService.forResponse().map(rental, GetRentalResponse.class);
 
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -98,7 +99,7 @@ public class RentalManager implements RentalService {
         rental.setStartKilometer(car.getKilometer());
         rentalRepository.save(rental);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
     @Override
@@ -106,7 +107,8 @@ public class RentalManager implements RentalService {
 
         Car car = carRepository.findById(updateRentalRequest.getCarId()).orElseThrow();
 
-        this.rentalRepository.findById(updateRentalRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find rental id"));
+        this.rentalRepository.findById(updateRentalRequest.getId())
+                .orElseThrow(() -> new NotFoundException(MessageConstants.RENTAL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         this.businessRules.checkIfExistsById(updateRentalRequest.getCarId(), updateRentalRequest.getCustomerId(), updateRentalRequest.getEmployeeId());
         this.businessRules.checkRentalPeriod(updateRentalRequest.getStartDate(), updateRentalRequest.getEndDate());
         this.businessRules.checkIfKilometer(car.getKilometer(), updateRentalRequest.getEndKilometer());
@@ -115,18 +117,18 @@ public class RentalManager implements RentalService {
         car.setKilometer(rental.getEndKilometer());
         this.rentalRepository.save(rental);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteRental(int id) {
 
-        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
+        Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         rental.setDeletedAt(LocalDate.now());
 
         this.rentalRepository.save(rental);
         this.rentalRepository.delete(rental);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 }

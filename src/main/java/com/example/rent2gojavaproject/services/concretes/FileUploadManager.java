@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.concretes;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.rent2gojavaproject.core.utilities.constants.CloudinaryConstants;
 import com.example.rent2gojavaproject.services.abstracts.FileUpload;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +21,18 @@ public class FileUploadManager implements FileUpload {
 
     @Override
     public String uploadFile(MultipartFile multipartFile,String uniqColumn) throws IOException {
-        String publicId = "rent2go/carImages/" + uniqColumn;
+        String publicId = CloudinaryConstants.BASE_PUBLIC_ID.getValue() + uniqColumn;
 
         Map params1 = ObjectUtils.asMap(
-                "use_filename", multipartFile.getName(),
-                "unique_filename", true,
-                "overwrite", true,
-                "public_id", publicId
+                CloudinaryConstants.USE_FILENAME.getValue(), multipartFile.getName(),
+                CloudinaryConstants.UNIQUE_FILENAME.getValue(), true,
+                CloudinaryConstants.OVERWRITE.getValue(), true,
+                CloudinaryConstants.PUBLIC_ID.getValue(), publicId
         );
 
         return cloudinary.uploader()
-                .upload(  multipartFile.getBytes(),params1)
-
-                .get("url")
+                .upload(multipartFile.getBytes(),params1)
+                .get(CloudinaryConstants.URL.getValue())
                 .toString();
     }
 }

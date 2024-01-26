@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -40,7 +41,7 @@ public class ModelManager implements ModelService {
                 .map(model -> this.mapperService.forResponse()
                         .map(model, GetModelListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
 
     }
 
@@ -48,25 +49,25 @@ public class ModelManager implements ModelService {
     public DataResult<Iterable<GetModelListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterModel");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_MODEL.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetModelListResponse> models = this.modelRepository.findAll().stream()
                 .map(model -> this.mapperService.forResponse().map(model, GetModelListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterModel");
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_MODEL.getValue());
 
-        return new SuccessDataResult<>(models, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(models, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetModelResponse> getById(int id) {
 
-        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.MODEL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         GetModelResponse response = this.mapperService.forResponse().map(model, GetModelResponse.class);
 
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -79,7 +80,7 @@ public class ModelManager implements ModelService {
         model.setId(0);
         this.modelRepository.save(model);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class ModelManager implements ModelService {
         String editValue = modelBusinessRules.checkIfExistsByIdAndName(updateModelRequest
                 .getBrandId(), updateModelRequest.getName());
         Model existingModel = this.modelRepository.findById(updateModelRequest.getId())
-                .orElseThrow(() -> new NotFoundException("Couldn't find model id!"));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.MODEL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
 
         Model model = this.mapperService.forRequest().map(updateModelRequest, Model.class);
         updateModelRequest.setName(editValue);
@@ -96,19 +97,19 @@ public class ModelManager implements ModelService {
 
         this.modelRepository.save(model);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteModel(int id) {
 
-        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find model id : " + id));
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         modelBusinessRules.changeDeleteDate(model);
 
         this.modelRepository.save(model);
         this.modelRepository.delete(model);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override

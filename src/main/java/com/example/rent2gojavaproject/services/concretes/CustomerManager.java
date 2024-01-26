@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -40,34 +41,34 @@ public class CustomerManager implements CustomerService {
                         .map(customer, GetCustomerListResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetCustomerListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterCustomer");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_CUSTOMER.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetCustomerListResponse> customers = this.customerRepository
                 .findAll().stream().map(customer -> this.mapperService.forResponse()
                         .map(customer, GetCustomerListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterCustomer");
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_CUSTOMER.getValue());
 
-        return new SuccessDataResult<>(customers, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(customers, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetCustomerResponse> getById(int id) {
         Customer customer = this.customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Customer not found: " + id));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.CUSTOMER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
 
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
 
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -76,32 +77,31 @@ public class CustomerManager implements CustomerService {
         Customer customer = this.mapperService.forRequest().map(addCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
     @Override
     public Result updateCustomer(UpdateCustomerRequest updateCustomerRequest) {
 
         this.customerRepository.findById(updateCustomerRequest.getId())
-                .orElseThrow(() -> new NotFoundException("Customer not found "));
-
+                .orElseThrow(() -> new NotFoundException(MessageConstants.CUSTOMER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         Customer customer = this.mapperService.forRequest().map(updateCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result DeleteCustomer(int id) {
 
         Customer customer = this.customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("id not found : " + id));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         customer.setDeletedAt(LocalDate.now());
 
         this.customerRepository.save(customer);
         this.customerRepository.delete(customer);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.BusinessRuleException;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.models.Discount;
 import com.example.rent2gojavaproject.services.abstracts.CarService;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
@@ -25,11 +26,11 @@ public class RentalBusinessRules {
     public void checkIfExistsById(int carId, int customerId, int employeeId) {
 
         if (!(carService.existsById(carId))) {
-            throw new NotFoundException("Car ID doesn't exist !");
+            throw new NotFoundException(MessageConstants.CAR.getMessage() + MessageConstants.NOT_FOUND.getMessage());
         } else if (!(customerService.existsById(customerId))) {
-            throw new NotFoundException("Customer ID doesn't exist !");
+            throw new NotFoundException(MessageConstants.CUSTOMER.getMessage() + MessageConstants.NOT_FOUND.getMessage());
         } else if (!(employeeService.existsById(employeeId))) {
-            throw new NotFoundException("Employee ID doesn't exist !");
+            throw new NotFoundException(MessageConstants.EMPLOYEE.getMessage() + MessageConstants.NOT_FOUND.getMessage());
         }
     }
 
@@ -37,7 +38,7 @@ public class RentalBusinessRules {
 
         Integer newKilometer = Integer.valueOf(kilometer);
         if (newKilometer > endKilometer) {
-            throw new BusinessRuleException("The last kilometer of the vehicle cannot be lower than the delivered mileage.");
+            throw new BusinessRuleException(MessageConstants.KILOMETER_ERROR.getMessage());
         }
     }
 
@@ -46,9 +47,9 @@ public class RentalBusinessRules {
         Period period = Period.between(startDate, endDate);
         int rentalDays = period.getDays();
         if (startDate.isAfter(endDate)) {
-            throw new BusinessRuleException("Start date must be before rental end date");
+            throw new BusinessRuleException(MessageConstants.START_DATE_ERROR.getMessage());
         } else if (rentalDays > 25) {
-            throw new BusinessRuleException("Car can be rented for a maximum of 25 days.!");
+            throw new BusinessRuleException(MessageConstants.MAX_RENTAL_DAYS_ERROR.getMessage());
         }
     }
 

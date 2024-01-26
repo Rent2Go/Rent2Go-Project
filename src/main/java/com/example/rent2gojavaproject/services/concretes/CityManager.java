@@ -1,6 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
@@ -29,6 +29,6 @@ public class CityManager implements CityService {
                 .map(city -> this.mapperService.forResponse()
                         .map(city, GetCityListResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 }
