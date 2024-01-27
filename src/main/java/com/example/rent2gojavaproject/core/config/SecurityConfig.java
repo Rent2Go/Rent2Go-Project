@@ -76,13 +76,11 @@ public class SecurityConfig {
                                 "api/users/resetpassword",
                                 "api/admins/signin",
                                 "api/refreshtoken").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/confirm/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/confirm/**", "api/cars/getall","api/cars/").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/cars/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "api/getall","api/").permitAll()
-
-                        .anyRequest().authenticated()
+                       .anyRequest().authenticated()
 
                 )
                 .authenticationProvider(authenticationProvider())
