@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.core.config;
 
 import com.example.rent2gojavaproject.core.filter.JwtAuthenticationFilter;
+import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.services.concretes.UserManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -67,7 +68,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "api/signup", "api/signin","api/users/resetpassword").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/signup", "api/signin","api/users/resetpassword","api/refreshtoken").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/confirm/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
@@ -75,7 +76,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "api/cars/add").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "createcar").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "api/v1/test/anon").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/cars/getall").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/cars/getall").hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
 
                 )
