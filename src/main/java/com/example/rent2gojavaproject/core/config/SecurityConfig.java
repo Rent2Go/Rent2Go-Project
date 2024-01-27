@@ -38,7 +38,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/**"};
+            };
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserManager userService;
     private final PasswordEncoder passwordEncoder;
@@ -71,13 +71,16 @@ public class SecurityConfig {
 
 
 
-                        .requestMatchers(HttpMethod.POST, "api/signup", "api/signin","api/users/resetpassword","api/admins/signin").permitAll()
-
+                        .requestMatchers(HttpMethod.POST, "api/signup",
+                                "api/signin",
+                                "api/users/resetpassword",
+                                "api/admins/signin",
+                                "api/refreshtoken").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/confirm/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/cars/add").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "createcar").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "api/cars/**").hasAuthority("ROLE_ADMIN")
+
                         .anyRequest().authenticated()
 
                 )
