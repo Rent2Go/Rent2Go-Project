@@ -85,8 +85,9 @@ public class AuthenticationService {
         if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
 
             var jwt = jwtService.generateToken(user);
+            var refreshJwt = jwtService.generateRefreshToken(user);
 
-            return JwtAuthenticationResponse.builder().token(jwt).refreshToken(refreshTokenRequest.getToken()).build();
+            return JwtAuthenticationResponse.builder().token(jwt).refreshToken(refreshJwt).build();
 
 
         }
