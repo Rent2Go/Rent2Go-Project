@@ -80,7 +80,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/cars/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "api/getall","api/").permitAll()git
+                        .requestMatchers(HttpMethod.GET, "api/getall","api/").permitAll()
 
                         .anyRequest().authenticated()
 
