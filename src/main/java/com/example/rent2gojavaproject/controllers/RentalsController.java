@@ -22,7 +22,7 @@ public class RentalsController {
 
     private final RentalService rentalService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetRentalListResponse>> getAllRentals() {
         return rentalService.getAllRentals();
     }
@@ -37,19 +37,19 @@ public class RentalsController {
         return rentalService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createRental(@RequestBody @Valid AddRentalRequest addRentalRequest) {
         return rentalService.addRental(addRentalRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateRental(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
         return rentalService.updateRental(updateRentalRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteRental(@PathVariable int id) {
         return rentalService.deleteRental(id);
