@@ -55,7 +55,7 @@ public class AuthenticationService {
 
 
         String token = userService.addUser(user);
-        String link = userService.applicationUrl(servletRequest) + UrlPathConstants.CONFIRMATION_URL.getPath() + token;
+        String link = UrlPathConstants.BACKEND_URL.getPath() + UrlPathConstants.CONFIRMATION_URL.getPath() + token;
         emailSender.buildEmail(user.getName() + " " + user.getSurname(), request.getEmail(), link);
 
 
