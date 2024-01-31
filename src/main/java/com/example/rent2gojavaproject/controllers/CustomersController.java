@@ -21,7 +21,7 @@ import java.util.List;
 public class CustomersController {
     private final CustomerService customerService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetCustomerListResponse>> getAllCustomer() {
 
         return this.customerService.getAllCustomer();
@@ -38,20 +38,20 @@ public class CustomersController {
         return this.customerService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result addCustomer(@RequestBody @Valid AddCustomerRequest addCustomerRequest) {
         return this.customerService.addCustomer(addCustomerRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateCustomer(@RequestBody @Valid UpdateCustomerRequest updateCustomerRequest) {
 
         return this.customerService.updateCustomer(updateCustomerRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result DeleteCustomer(@PathVariable int id) {
 

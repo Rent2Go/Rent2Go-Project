@@ -21,7 +21,7 @@ import java.util.List;
 public class ModelsController {
     private final ModelService modelService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetModelListResponse>> getAllModels() {
         return modelService.getAllModels();
     }
@@ -31,19 +31,19 @@ public class ModelsController {
         return modelService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createModel(@RequestBody @Valid AddModelRequest addModelRequest) {
         return modelService.addModel(addModelRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateModel(@RequestBody @Valid UpdateModelRequest updateModelRequest) {
         return modelService.updateModel(updateModelRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteModel(@PathVariable int id) {
         return modelService.deleteModel(id);
