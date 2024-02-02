@@ -27,7 +27,7 @@ public class BillsController {
         return this.billService.getAllBills();
     }
 
-    @GetMapping()
+    @GetMapping("/{id}")
     public DataResult<GetBillResponse> getById(@PathVariable int id) {
 
         return this.billService.getById(id);
