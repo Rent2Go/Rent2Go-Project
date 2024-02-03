@@ -1,7 +1,9 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.UrlPathConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -58,7 +60,7 @@ public class UserManager implements UserService {
             @Override
             public UserDetails loadUserByUsername(String username) {
                 return userRepository.findByEmail(username)
-                        .orElseThrow(() -> new NotFoundException("User " + username));
+                        .orElseThrow(() -> new NotFoundException(username + MessageConstants.NOT_FOUND.getMessage()));
             }
         };
     }
@@ -72,33 +74,34 @@ public class UserManager implements UserService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetUserListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterUser");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_USER.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetUserListResponse> users = this.userRepository.findAll()
                 .stream().map(user -> this.mapperService.forResponse()
                         .map(user, GetUserListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterUser");
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_USER.getValue());
 
-        return new SuccessDataResult<>(users, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(users, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetUserResponse> getById(int id) {
 
-        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find user id: " + id));
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.USER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
 
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -123,64 +126,65 @@ public class UserManager implements UserService {
     }
 
 
-    public void resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
-
-        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
-                resetPasswordRequest.getFirstname())
-                .orElseThrow(()->new NotFoundException("User not found"));
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        String token =  jwtService.generateToken(user);
-
-        String link = clientServer + "passwordchange?token=" + token;
-
-        emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname(),resetPasswordRequest.getEmail(), link);
-    }
-
-    public String changePassword(ChangePasswordRequest changePasswordRequest){
-
-        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException("Email not found"));
-        userRepository.passwordChange(changePasswordRequest.getEmail(),passwordEncoder.encode(changePasswordRequest.getPassword()));
-
-
-        return "Success";
-
-    }
-
-    public String applicationUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-    }
-
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
 
-        this.userRepository.findById(updateUserRequest.getId()).orElseThrow(() -> new NotFoundException("Couldn't find user id"));
+        this.userRepository.findById(updateUserRequest.getId())
+                .orElseThrow(() -> new NotFoundException(MessageConstants.USER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
 
         User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteUser(int id) {
 
-        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         user.setDeletedAt(LocalDate.now());
         user.setActive(false);
         user.setEnabled(false);
 
         this.userRepository.save(user);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override
     public void hardDeleteUser(int id) {
 
-            User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
+            User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
 
             this.userRepository.delete(user);
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
+
+        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
+                        resetPasswordRequest.getFirstname())
+                .orElseThrow(()->new NotFoundException(resetPasswordRequest.getFirstname() + MessageConstants.NOT_FOUND.getMessage()));
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String token =  jwtService.generateToken(user);
+
+        String link = clientServer + UrlPathConstants.PASSWORD_CHANGE_PATH.getPath() + token;
+
+        emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname(),resetPasswordRequest.getEmail(), link);
+    }
+
+    public String changePassword(ChangePasswordRequest changePasswordRequest){
+
+        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() ));
+        userRepository.passwordChange(changePasswordRequest.getEmail(),passwordEncoder.encode(changePasswordRequest.getPassword()));
+
+
+        return MessageConstants.PASSWORD_CHANGED.getMessage();
+
+    }
+
+    public String applicationUrl(HttpServletRequest request) {
+        return UrlPathConstants.BACKEND_URL.getPath() + request.getContextPath();
     }
 
     @Override
@@ -191,7 +195,7 @@ public class UserManager implements UserService {
     @Override
     public User findByEmail(String email) {
 
-        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("email not found"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
     }
 
     @Override

@@ -28,7 +28,7 @@ public class CarsController {
 
     private final CarService carService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetCarListResponse>> getAllCar() {
 
         return this.carService.getAllCars();
@@ -40,7 +40,7 @@ public class CarsController {
         return this.carService.getById(id);
     }
 
-    @PostMapping("/add" )
+    @PostMapping("/" )
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createCar(@RequestPart("addCarRequest") AddCarRequest addCarRequest, @RequestPart("file") MultipartFile file) throws IOException {
 
@@ -48,7 +48,7 @@ public class CarsController {
     }
 
 
-    @PutMapping("/update")
+    @PutMapping("/")
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateCar(@RequestBody @Valid UpdateCarRequest updateCarRequest) {
 

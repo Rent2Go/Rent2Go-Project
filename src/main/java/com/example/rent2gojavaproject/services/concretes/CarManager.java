@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -53,33 +54,34 @@ public class CarManager implements CarService {
                 .collect(Collectors.toList());
 
 
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetCarListResponse>> findAll(boolean isActive) {
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterCar");
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_CAR.getValue());
 
-        filter.setParameter("isActive", isActive);
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
 
         Iterable<GetCarListResponse> cars = this.carRepository.findAll()
                 .stream().map(car -> this.mapperService.forResponse()
                         .map(car, GetCarListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterCar");
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_CAR.getValue());
 
-        return new SuccessDataResult<>(cars, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(cars, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetCarResponse> getById(int id) {
 
-        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find car id : " + id));
+        Car car = this.carRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.CAR.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         GetCarResponse response = this.mapperService.forResponse().map(car, GetCarResponse.class);
 
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -96,7 +98,7 @@ public class CarManager implements CarService {
         car.setImageUrl(imageUrl);
         this.carRepository.save(car);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
 
     }
 
@@ -107,23 +109,24 @@ public class CarManager implements CarService {
         String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
         updateCarRequest.setPlate(editPlate);
         this.businessRules.updateCarMethod(updateCarRequest.getModelId(), updateCarRequest.getColorId());
-        this.carRepository.findById(updateCarRequest.getId()).orElseThrow(() -> new NotFoundException("Car not found"));
+        this.carRepository.findById(updateCarRequest.getId())
+                .orElseThrow(() -> new NotFoundException(MessageConstants.CAR.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
 
         Car car = this.mapperService.forRequest().map(updateCarRequest, Car.class);
         this.carRepository.save(car);
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteCar(int id) {
 
-        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
+        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         car.setDeletedAt(LocalDate.now());
 
         this.carRepository.deleteById(id);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override

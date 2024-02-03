@@ -21,7 +21,7 @@ import java.util.List;
 public class EmployeesController {
     private final EmployeeService employeeService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetEmployeeListResponse>> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
@@ -36,19 +36,19 @@ public class EmployeesController {
         return employeeService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createEmployee(@RequestBody @Valid AddEmployeeRequest addEmployeeRequest) {
         return employeeService.addEmployee(addEmployeeRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateEmployee(@RequestBody @Valid UpdateEmployeeRequest updateEmployeeRequest) {
         return employeeService.updateEmployee(updateEmployeeRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteEmployee(@PathVariable int id) {
         return employeeService.deleteEmployee(id);

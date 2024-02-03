@@ -38,7 +38,21 @@ public class JwtService {
 
         ));
         return generateToken(claims, userDetails);
+
     }
+
+    public String generateRefreshToken(User userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.putAll(Map.of(
+                "firstname", userDetails.getName(),
+                "lastname", userDetails.getSurname(),
+                "phoneNumber", userDetails.getPhoneNumber(),
+                "role", userDetails.getRole()
+
+        ));
+        return generateRefreshToken(claims, userDetails);
+    }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
@@ -56,16 +70,17 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        return Jwts.builder()
+    public String generateRefreshToken(Map<String, Object> extraClaims,UserDetails userDetails) {
+        return Jwts .builder()
+                .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

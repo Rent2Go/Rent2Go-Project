@@ -1,7 +1,8 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.alerts.Message;
+import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
@@ -38,27 +39,28 @@ public class BillManager implements BillService {
                 .map(bill -> this.mapperService.forResponse()
                         .map(bill, GetBillListResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(responses, Message.GET_ALL.getMessage());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<Iterable<GetBillListResponse>> findAll(boolean isActive) {
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("isActiveFilterBill");
-        filter.setParameter("isActive", isActive);
+        Filter filter = session.enableFilter(HibernateConstants.IS_ACTIVE_FILTER_BILL.getValue());
+        filter.setParameter(HibernateConstants.IS_ACTIVE.getValue(), isActive);
         Iterable<GetBillListResponse> bills = this.billRepository.findAll().stream()
                 .map(bill -> this.mapperService.forResponse()
                         .map(bill, GetBillListResponse.class))
                 .collect(Collectors.toList());
-        session.disableFilter("isActiveFilterBill");
-        return new SuccessDataResult<>(bills, Message.GET_ALL.getMessage());
+        session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_BILL.getValue());
+        return new SuccessDataResult<>(bills, MessageConstants.GET_ALL.getMessage());
     }
 
     @Override
     public DataResult<GetBillResponse> getById(int id) {
-        Bill bill = this.billRepository.findById(id).orElseThrow(() -> new NotFoundException("Bill not found: " + id));
+        Bill bill = this.billRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.BILL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         GetBillResponse response = this.mapperService.forResponse().map(bill, GetBillResponse.class);
-        return new SuccessDataResult<>(response, Message.GET.getMessage());
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
@@ -66,27 +68,27 @@ public class BillManager implements BillService {
         Bill bill = this.mapperService.forRequest().map(addBillRequest, Bill.class);
         this.billRepository.save(bill);
 
-        return new SuccessResult(Message.ADD.getMessage());
+        return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
     @Override
     public Result updateBill(UpdateBillRequest updateBillRequest) {
-        this.billRepository.findById(updateBillRequest.getId()).orElseThrow(() -> new NotFoundException("Bill not found "));
+        this.billRepository.findById(updateBillRequest.getId()).orElseThrow(() -> new NotFoundException(MessageConstants.BILL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         Bill bill = this.mapperService.forRequest().map(updateBillRequest, Bill.class);
         this.billRepository.save(bill);
 
 
-        return new SuccessResult(Message.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result deleteBill(int id) {
-        Bill bill = this.billRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found : " + id));
+        Bill bill = this.billRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         bill.setDeletedAt(LocalDate.now());
         this.billRepository.save(bill);
         this.billRepository.delete(bill);
 
-        return new SuccessResult(Message.DELETE.getMessage());
+        return new SuccessResult(MessageConstants.DELETE.getMessage());
     }
 
     @Override

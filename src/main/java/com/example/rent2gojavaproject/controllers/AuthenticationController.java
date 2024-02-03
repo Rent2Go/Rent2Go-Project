@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.services.concretes.AuthenticationService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.RefreshTokenRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignUpRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.JwtAuthenticationResponse;
@@ -22,7 +23,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody SignUpRequest request, HttpServletRequest servletRequest) throws MessagingException, UnsupportedEncodingException {
-        return authenticationService.signup(request,servletRequest);
+        return authenticationService.signup(request, servletRequest);
     }
 
     @PostMapping("/signin")
@@ -36,4 +37,8 @@ public class AuthenticationController {
     }
 
 
+    @PostMapping("/refreshtoken")
+    public JwtAuthenticationResponse refreshToken(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return authenticationService.refreshToken(refreshTokenRequest);
+    }
 }

@@ -19,7 +19,7 @@ public class DistrictsController {
 
     private final DistrictService districtService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetDistrictListResponse>> getAllActiveDistricts() {
         return districtService.getAllDistricts();
     }
