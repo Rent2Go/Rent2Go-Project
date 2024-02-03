@@ -12,4 +12,6 @@ public class GetColorListResponse {
     private int id;
 
     private String name;
+
+    private String hexCode;
 }

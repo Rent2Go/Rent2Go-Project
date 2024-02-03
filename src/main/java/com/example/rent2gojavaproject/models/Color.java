@@ -32,6 +32,9 @@ public class Color extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "hex_code", nullable = false)
+    private String hexCode;
+
     @OneToMany(mappedBy = "color")
     @JsonIgnore
     private List<Car> cars;
