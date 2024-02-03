@@ -76,7 +76,7 @@ public class SecurityConfig {
                                 "api/users/resetpassword",
                                 "api/admins/signin",
                                 "api/refreshtoken").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/confirm/**", "api/cars", "api/colors", "api/cars/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/confirm/**", "api/cars", "api/colors", "api/brands", "api/cars/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/cars/**").hasAuthority("ROLE_ADMIN")
