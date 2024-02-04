@@ -46,6 +46,11 @@ public class CarsController {
 
         return this.carService.addCar(addCarRequest,file);
     }
+    @PatchMapping("/imageupdate")
+    public Result updateCarImage(@RequestParam("plate") String carPlate , @RequestParam("file") MultipartFile file) throws IOException {
+
+        return  this.carService.updateCarImage(carPlate,file);
+    }
 
 
     @PutMapping("/")

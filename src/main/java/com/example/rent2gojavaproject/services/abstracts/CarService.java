@@ -20,6 +20,7 @@ public interface CarService {
 
     Result addCar(AddCarRequest addCarRequest, MultipartFile file) throws IOException;
 
+    Result updateCarImage(String carPlate , MultipartFile file) throws IOException ;
 
     Result updateCar(UpdateCarRequest updateCarRequest);
 

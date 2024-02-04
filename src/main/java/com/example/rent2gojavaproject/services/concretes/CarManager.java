@@ -117,6 +117,19 @@ public class CarManager implements CarService {
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
+    @Override
+     public Result updateCarImage(String carPlate , MultipartFile file) throws IOException {
+        Car car = this.carRepository.findByPlate(carPlate).orElseThrow(()-> new NotFoundException(MessageConstants.CAR.getMessage()));
+
+        String carImageUrl = this.fileUpload.uploadFile(file, carPlate);
+
+        car.setImageUrl(carImageUrl);
+
+        this.carRepository.save(car);
+
+         return new SuccessResult(MessageConstants.UPDATE.getMessage());
+
+    }
 
     @Override
     public Result deleteCar(int id) {
