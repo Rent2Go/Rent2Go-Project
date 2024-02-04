@@ -17,4 +17,5 @@ public class AddColorRequest {
     @Size(min = 2, max = 15, message = "Color name should be between 2 and 15 digits.")
     @Pattern(regexp = "^[a-zA-Z]*$", message = "The color name should only contain letters.")
     private String name;
+    private String hexCode;
 }
