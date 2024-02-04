@@ -2,10 +2,12 @@ package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.constants.EmailConstants;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
+import com.example.rent2gojavaproject.services.dtos.requests.contactFormRequest.ContactFormRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,21 @@ public class EmailManager implements EmailSenderService {
 
         sendEmail(name, email, link, subject, htmlContent, textContent);
 
+    }
+
+    public void sendContactEmail(ContactFormRequest form) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("support@rentogo.com.tr");
+        message.setTo("contact.rent2go@gmail.com");
+        message.setSubject("New Contact Form Submission");
+        message.setText(
+                "Name: " + form.getFirstName() + " " + form.getLastName() + "\n" +
+                        "Email: " + form.getEmail() + "\n" +
+                        "Phone: " + form.getPhone() + "\n" +
+                        "Message: " + form.getMessage()
+        );
+
+        mailSender.send(message);
     }
 
 

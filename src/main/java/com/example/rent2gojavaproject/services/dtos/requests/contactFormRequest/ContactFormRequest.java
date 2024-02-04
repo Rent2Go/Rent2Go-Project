@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.models;
+package com.example.rent2gojavaproject.services.dtos.requests.contactFormRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContactForm {
+public class ContactFormRequest {
     private String firstName;
     private String lastName;
     private String email;
