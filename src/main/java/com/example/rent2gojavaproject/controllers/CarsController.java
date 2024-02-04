@@ -40,7 +40,7 @@ public class CarsController {
         return this.carService.getById(id);
     }
 
-    @PostMapping("/" )
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createCar(@RequestPart("addCarRequest") AddCarRequest addCarRequest, @RequestPart("file") MultipartFile file) throws IOException {
 
