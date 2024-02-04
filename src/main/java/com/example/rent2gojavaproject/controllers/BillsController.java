@@ -21,7 +21,7 @@ import java.util.List;
 public class BillsController {
     private final BillService billService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetBillListResponse>> getAllCar() {
 
         return this.billService.getAllBills();
@@ -33,14 +33,14 @@ public class BillsController {
         return this.billService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createCar(@RequestBody @Valid AddBillRequest addBillRequest) {
 
         return this.billService.addBill(addBillRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateCar(@RequestBody @Valid UpdateBillRequest updateBillRequest) {
 

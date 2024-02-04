@@ -22,7 +22,7 @@ public class ColorsController {
 
     private final ColorService colorService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetColorListResponse>> getAllColor() {
 
         return this.colorService.getAllColors();
@@ -34,7 +34,7 @@ public class ColorsController {
         return this.colorService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createColor(@RequestBody @Valid AddColorRequest addColorRequest) {
 
@@ -42,7 +42,7 @@ public class ColorsController {
     }
 
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateColor(@RequestBody @Valid UpdateColorRequest updateColorRequest) {
 
@@ -50,7 +50,7 @@ public class ColorsController {
     }
 
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteColor(@PathVariable int id) {
 

@@ -15,6 +15,8 @@ public enum MessageConstants {
     ID_NOT_FOUND("Id not found : "),
     NOT_FOUND(" not found"),
     ALREADY_EXISTS(" already exists"),
+    EMAIL_ALREADY_EXISTS(" Email already exists"),
+    PHONE_NUMBER_ALREADY_EXISTS(" Phone number already exists"),
     KILOMETER_ERROR("The last kilometer of the vehicle cannot be lower than the delivered mileage."),
     START_DATE_ERROR("Start date must be before rental end date"),
     MAX_RENTAL_DAYS_ERROR("Car can be rented for a maximum of 25 days.!"),

@@ -21,7 +21,7 @@ import java.util.List;
 public class DiscountsController {
     private final DiscountService discountService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetDiscountListResponse>> getAllDiscounts() {
         return discountService.getAllDiscounts();
     }
@@ -36,17 +36,17 @@ public class DiscountsController {
         return discountService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public Result createDiscount(@RequestBody @Valid AddDiscountRequest addDiscountRequest) {
         return discountService.addDiscount(addDiscountRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     public Result updateDiscount(@RequestBody @Valid UpdateDiscountRequest updateDiscountRequest) {
         return discountService.updateDiscount(updateDiscountRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteDiscount(@PathVariable int id) {
         return discountService.deleteDiscount(id);

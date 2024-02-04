@@ -175,7 +175,7 @@ public class UserManager implements UserService {
 
     public String changePassword(ChangePasswordRequest changePasswordRequest){
 
-        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() + changePasswordRequest.getEmail()));
+        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() ));
         userRepository.passwordChange(changePasswordRequest.getEmail(),passwordEncoder.encode(changePasswordRequest.getPassword()));
 
 
@@ -195,7 +195,7 @@ public class UserManager implements UserService {
     @Override
     public User findByEmail(String email) {
 
-        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() + email));
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
     }
 
     @Override

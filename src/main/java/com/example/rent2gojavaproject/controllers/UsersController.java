@@ -23,7 +23,7 @@ import java.util.List;
 public class UsersController {
     private final UserService userService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetUserListResponse>> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -44,13 +44,13 @@ public class UsersController {
         return userService.addUser(addUserRequest);
     }*/
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         return userService.updateUser(updateUserRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteUser(@PathVariable int id) {
         return userService.deleteUser(id);

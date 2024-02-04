@@ -19,7 +19,7 @@ public class CitiesController {
 
     private final CityService cityService;
 
-    @GetMapping("/getall")
+    @GetMapping()
     public DataResult<List<GetCityListResponse>> getAllActiveCities() {
         return cityService.getAllCities();
     }
