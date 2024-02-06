@@ -54,7 +54,7 @@ public class BillsController {
         return this.billService.deleteBill(id);
     }
 
-    @GetMapping("/getallsoftdelete")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetBillListResponse>> findAll(@RequestParam boolean isActive) {
 
         return this.billService.findAll(isActive);

@@ -57,7 +57,7 @@ public class ColorsController {
         return this.colorService.deleteColor(id);
     }
 
-    @GetMapping("/filteredgetall")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetColorListResponse>> findAll(@RequestParam boolean isActive) {
 
         return this.colorService.findAll(isActive);

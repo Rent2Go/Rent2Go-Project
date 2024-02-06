@@ -49,7 +49,7 @@ public class ModelsController {
         return modelService.deleteModel(id);
     }
 
-    @GetMapping("/filteredgetall")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetModelListResponse>> findAll(@RequestParam boolean isActive) {
 
         return this.modelService.findAll(isActive);

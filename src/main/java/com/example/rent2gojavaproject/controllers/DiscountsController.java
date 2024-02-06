@@ -26,7 +26,7 @@ public class DiscountsController {
         return discountService.getAllDiscounts();
     }
 
-    @GetMapping("/getAllActiveOrNot")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetDiscountListResponse>> findAll(@RequestParam boolean isActive) {
         return this.discountService.findAll(isActive);
     }

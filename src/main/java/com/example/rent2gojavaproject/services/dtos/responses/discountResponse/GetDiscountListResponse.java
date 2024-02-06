@@ -14,6 +14,4 @@ public class GetDiscountListResponse {
     private String discountCode;
 
     private Double percentage;
-
-    private int rentalId;
 }

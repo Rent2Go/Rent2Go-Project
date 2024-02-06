@@ -26,8 +26,5 @@ public class UpdateDiscountRequest {
     @DecimalMax(value = "0.99", message = "Please enter a value less than or equal to 0.99")
     private Double percentage;
 
-    @NotNull(message = "Rental Id can not be empty !")
-    private int rentalId;
-
     private boolean isActive;
 }
