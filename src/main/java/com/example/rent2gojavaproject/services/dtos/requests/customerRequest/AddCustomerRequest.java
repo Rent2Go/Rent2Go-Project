@@ -25,10 +25,10 @@ public class AddCustomerRequest {
     private int districtId;
 
     @NotNull(message = "First Name can not be null ..")
-    private String firstName;
+    private String name;
 
     @NotNull(message = "Last Name can not be null ..")
-    private String lastName;
+    private String surname;
 
     @NotNull(message = "Mail Address can not be null ..")
     private String email;
