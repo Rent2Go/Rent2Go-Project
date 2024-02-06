@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.dtos.responses.customerResponse;
 
+import com.example.rent2gojavaproject.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,14 +12,6 @@ public class GetCustomerResponse {
 
     private int id;
 
-    private String name;
-
-    private String surname;
-
-    private String phoneNumber;
-
-    private String email;
-
     private String nationalityId;
 
     private String city;
@@ -26,4 +19,7 @@ public class GetCustomerResponse {
     private String district;
 
     private String address;
+
+    private User user;
+
 }

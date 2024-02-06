@@ -6,7 +6,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest
 import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest.UpdateSettingRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsResponse.GetPageSettingListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsResponse.GetPageSettingResponse;
-import io.jsonwebtoken.io.IOException;
+import java.io.IOException;
 
 
 import java.util.List;
