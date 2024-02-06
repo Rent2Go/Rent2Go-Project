@@ -21,7 +21,4 @@ public interface PageSettingsService {
 
     Result updateSetting(UpdateSettingRequest updateSettingRequest);
 
-
-
-
 }
