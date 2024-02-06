@@ -30,6 +30,19 @@ public class Customer extends BaseEntity {
 
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "phone_number", nullable = false, unique = true)
+    private String phoneNumber;
+
     @Column(name = "address", nullable = false)
     private String address;
 
