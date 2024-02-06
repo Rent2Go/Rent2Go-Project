@@ -62,7 +62,7 @@ public class CarsController {
         return this.carService.deleteCar(id);
     }
 
-    @GetMapping("/getallsoftdelete")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetCarListResponse>> findAll(@RequestParam boolean isActive) {
 
         return this.carService.findAll(isActive);

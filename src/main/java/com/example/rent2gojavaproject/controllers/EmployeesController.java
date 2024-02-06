@@ -26,7 +26,7 @@ public class EmployeesController {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping("/getAllActiveOrNot")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetEmployeeListResponse>> findAll(@RequestParam boolean isActive) {
         return this.employeeService.findAll(isActive);
     }

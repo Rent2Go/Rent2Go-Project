@@ -27,7 +27,7 @@ public class RentalsController {
         return rentalService.getAllRentals();
     }
 
-    @GetMapping("/getAllActiveOrNot")
+    @GetMapping("/getallisactive")
     public DataResult<Iterable<GetRentalListResponse>> findAll(@RequestParam boolean isActive) {
         return this.rentalService.findAll(isActive);
     }
