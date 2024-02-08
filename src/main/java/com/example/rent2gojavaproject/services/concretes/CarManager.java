@@ -106,7 +106,7 @@ public class CarManager implements CarService {
     @Override
     public Result updateCar(UpdateCarRequest updateCarRequest) {
 
-        String editPlate = this.businessRules.plateUniqueness(updateCarRequest.getPlate());
+        String editPlate = this.businessRules.checkPlate(updateCarRequest.getId(),updateCarRequest.getPlate());
         updateCarRequest.setPlate(editPlate);
         this.businessRules.updateCarMethod(updateCarRequest.getModelId(), updateCarRequest.getColorId());
         this.carRepository.findById(updateCarRequest.getId())
@@ -129,6 +129,16 @@ public class CarManager implements CarService {
 
          return new SuccessResult(MessageConstants.UPDATE.getMessage());
 
+    }
+
+    @Override
+    public Result updateCarIsActive(int id, boolean isActive) {
+       Car car =  this.carRepository.findById(id).orElseThrow(()-> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+
+       car.setActive(isActive);
+       this.carRepository.save(car);
+
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override

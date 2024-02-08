@@ -22,6 +22,8 @@ public interface CarService {
 
     Result updateCarImage(String carPlate , MultipartFile file) throws IOException ;
 
+    Result updateCarIsActive(int id, boolean isActive) ;
+
     Result updateCar(UpdateCarRequest updateCarRequest);
 
     Result deleteCar(int id);
