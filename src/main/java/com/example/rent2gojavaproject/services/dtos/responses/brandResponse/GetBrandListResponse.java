@@ -12,4 +12,7 @@ public class GetBrandListResponse {
     private int id;
 
     private String name;
+
+    private GetBrandResponse brand;
+
 }

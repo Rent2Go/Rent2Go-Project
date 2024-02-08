@@ -63,8 +63,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                //proje deploy etmeden önce cors u sil
-                //.cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
@@ -77,10 +76,11 @@ public class SecurityConfig {
                                 "api/users/resetpassword",
                                 "api/admins/signin",
                                 "api/refreshtoken").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "api/cars/isactive/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/confirm/**", "api/cars", "api/colors", "api/brands", "api/models", "api/cars/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/cars/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "api/cars").permitAll()
                        .anyRequest().authenticated()
 
                 )
