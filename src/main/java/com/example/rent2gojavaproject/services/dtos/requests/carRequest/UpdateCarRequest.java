@@ -57,8 +57,8 @@ public class UpdateCarRequest {
 
     @NotBlank(message = "The engine power field can't be empty.")
     private String enginePower;
-
+    @NotBlank(message = "The image url field can't be empty.")
     private String imageUrl;
 
-    private boolean isActive;
+
 }
