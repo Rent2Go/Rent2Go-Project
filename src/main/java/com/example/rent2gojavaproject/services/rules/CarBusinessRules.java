@@ -3,11 +3,14 @@ package com.example.rent2gojavaproject.services.rules;
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
+import com.example.rent2gojavaproject.models.Car;
 import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.services.abstracts.ColorService;
 import com.example.rent2gojavaproject.services.abstracts.ModelService;
 import jakarta.mail.Message;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +30,18 @@ public class CarBusinessRules {
         }
 
         return licensePlate;
+    }
+
+    public String checkPlate(int id ,String plate){
+
+        Car carExists = this.carRepository.findById(id).orElseThrow();
+        if(!carExists.getPlate().equals( plate)){
+           return plateUniqueness(plate);
+
+        }
+
+        return plate.replace(" ", "").toUpperCase();
+
     }
 
     public void updateCarMethod(int modelId, int colorId) {
