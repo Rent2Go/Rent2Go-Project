@@ -23,7 +23,7 @@ public class FileUploadController {
     public String uploadFile(@RequestParam("image") MultipartFile multipartFile,
                               @RequestParam("uniqColumn") String uniqColumn
                              ) throws IOException {
-        String imageURL = fileUpload.uploadFile(multipartFile, uniqColumn);
+        String imageURL = fileUpload.uploadFileCar(multipartFile, uniqColumn);
         return imageURL;
     }
 }
