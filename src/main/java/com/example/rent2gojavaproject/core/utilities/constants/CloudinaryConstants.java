@@ -6,7 +6,8 @@ public enum CloudinaryConstants {
     OVERWRITE("overwrite"),
     PUBLIC_ID("public_id"),
     URL("url"),
-    BASE_PUBLIC_ID("rent2go/carImages/");
+    BASE_PUBLIC_ID_CAR("rent2go/carImages/"),
+    BASE_PUBLIC_ID_USER("rent2go/userImages/");
 
     private final String value;
 
