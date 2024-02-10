@@ -2,7 +2,9 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
@@ -13,7 +15,9 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -38,17 +42,38 @@ public class UsersController {
         return userService.getById(id);
     }
 
-   /* @PostMapping("/add")
+    @GetMapping("/email")
+    public DataResult<GetUserResponse> getUserByEmail(@RequestParam("email") String email) {
+        return userService.getByEmail(email);
+    }
+    @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Result createUser(@RequestBody @Valid AddUserRequest addUserRequest) {
-        return userService.addUser(addUserRequest);
-    }*/
+    public Result  createUser(@RequestPart("addUserRequest")AddUserRequest user, @RequestPart("file") MultipartFile file) throws IOException {
 
-    @PutMapping()
+        return this.userService.createUser(user,file);
+    }
+
+
+    @PatchMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         return userService.updateUser(updateUserRequest);
     }
+
+    @PostMapping("/imageupdate")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result updateUserImage(@RequestParam("email") String email , @RequestParam("file") MultipartFile file) throws IOException {
+
+        return  this.userService.updateUserImage(email,file);
+    }
+    @PatchMapping("/isactive/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result updateUserIsActive(@PathVariable("id") int id, @RequestParam("active") boolean isActive) {
+
+        return this.userService.updateUserIsActive(id,isActive);
+    }
+
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
