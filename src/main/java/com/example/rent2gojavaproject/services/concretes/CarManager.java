@@ -87,7 +87,7 @@ public class CarManager implements CarService {
     @Override
     public Result addCar(AddCarRequest addCarRequest, MultipartFile file) throws IOException {
 
-        String imageUrl= fileUpload.uploadFile(file,addCarRequest.getPlate());
+        String imageUrl= fileUpload.uploadFileCar(file,addCarRequest.getPlate());
 
         String editPlate = this.businessRules.plateUniqueness(addCarRequest.getPlate());
         addCarRequest.setPlate(editPlate);
@@ -121,7 +121,7 @@ public class CarManager implements CarService {
      public Result updateCarImage(String carPlate , MultipartFile file) throws IOException {
         Car car = this.carRepository.findByPlate(carPlate).orElseThrow(()-> new NotFoundException(MessageConstants.CAR.getMessage()));
 
-        String carImageUrl = this.fileUpload.uploadFile(file, carPlate);
+        String carImageUrl = this.fileUpload.uploadFileCar(file, carPlate);
 
         car.setImageUrl(carImageUrl);
 
