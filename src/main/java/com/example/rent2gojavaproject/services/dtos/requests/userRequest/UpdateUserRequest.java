@@ -29,8 +29,8 @@ public class UpdateUserRequest {
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email address format")
     private String email;
+    private String password;
 
-    private String imageUrl;
-
-    private boolean isActive;
+    @NotBlank(message = "Role cannot be blank")
+    private String role;
 }
