@@ -6,5 +6,6 @@ import java.io.IOException;
 
 public interface FileUpload {
 
-    String uploadFile(MultipartFile multipartFile,String uniqColumn) throws IOException;
+    String uploadFileCar(MultipartFile multipartFile,String uniqColumn) throws IOException;
+    String uploadFileUser(MultipartFile multipartFile,String uniqColumn) throws IOException;
 }

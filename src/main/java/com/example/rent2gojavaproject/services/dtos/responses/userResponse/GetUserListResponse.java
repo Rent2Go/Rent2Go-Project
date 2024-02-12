@@ -19,5 +19,7 @@ public class GetUserListResponse {
 
     private String email;
 
+    private boolean isActive;
+
     private String imageUrl;
 }

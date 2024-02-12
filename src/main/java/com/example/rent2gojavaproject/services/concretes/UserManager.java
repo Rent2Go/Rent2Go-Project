@@ -9,13 +9,16 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
 import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.core.services.JwtService;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
+import com.example.rent2gojavaproject.services.abstracts.FileUpload;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
@@ -32,7 +35,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,6 +55,8 @@ public class UserManager implements UserService {
     private final EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final FileUpload fileUpload;
+
 
 
     @Value("${client.server}")
@@ -127,15 +134,55 @@ public class UserManager implements UserService {
 
 
     @Override
+    public Result  createUser(AddUserRequest user , MultipartFile file) throws IOException {
+
+        businessRules.checkIfExistsByEmail(user.getEmail());
+        businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
+        User userRequest= this.mapperService.forRequest().map(user,User.class);
+        userRequest.setPassword(this.passwordEncoder.encode(userRequest.getPassword()));
+        userRequest.setEnabled(true);
+        userRequest.setImageUrl(this.fileUpload.uploadFileUser( file,user.getEmail()));
+        this.userRepository.save(userRequest);
+        return new SuccessResult(MessageConstants.ADD.getMessage());
+    }
+
+
+    @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
 
-        this.userRepository.findById(updateUserRequest.getId())
+       User user = this.userRepository.findById(updateUserRequest.getId())
                 .orElseThrow(() -> new NotFoundException(MessageConstants.USER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
-
-        User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
+       user.setId(updateUserRequest.getId());
+       user.setName(updateUserRequest.getName());
+       user.setEmail(updateUserRequest.getEmail());
+       user.setSurname(updateUserRequest.getSurname());
+       user.setPhoneNumber(updateUserRequest.getPhoneNumber());
+       user.setPassword(updateUserRequest.getPassword());
+       user.setRole(Role.valueOf( updateUserRequest.getRole().toString()));
         this.userRepository.save(user);
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+    @Override
+    public Result updateUserImage(String email, MultipartFile file) throws IOException {
+          User user =  this.userRepository.findByEmail(email).orElseThrow(()-> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
+           String userImage = this.fileUpload.uploadFileUser(file,email);
+           user.setImageUrl(userImage);
+
+           this.userRepository.save(user);
+
+
+        return  new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+    @Override
+    public Result updateUserIsActive(int id, boolean isActive) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+        user.setActive(isActive);
+        this.userRepository.save(user);
+        return new SuccessResult(MessageConstants.UPDATE.getMessage()) ;
     }
 
     @Override
@@ -196,6 +243,13 @@ public class UserManager implements UserService {
     public User findByEmail(String email) {
 
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
+    }
+
+    @Override
+    public DataResult<GetUserResponse> getByEmail(String email) {
+     User user =   this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
+     GetUserResponse response=    this.mapperService.forResponse().map(user,GetUserResponse.class);
+        return new SuccessDataResult<>( response,MessageConstants.GET.getMessage());
     }
 
     @Override

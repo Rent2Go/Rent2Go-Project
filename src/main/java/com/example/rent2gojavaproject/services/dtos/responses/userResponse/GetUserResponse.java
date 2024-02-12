@@ -19,5 +19,11 @@ public class GetUserResponse {
 
     private String email;
 
+    private String password;
+
+    private String role;
+
+    private boolean isActive;
+
     private String imageUrl;
 }
