@@ -29,6 +29,8 @@ public class AddRentalRequest {
     @NotNull(message = "Customer ID must be entered !!")
     private int customerId;
 
+
+///Burası düzenlenecek employee ıd default olacak
     @NotNull(message = "Employee ID must be entered !!")
     private int employeeId;
 

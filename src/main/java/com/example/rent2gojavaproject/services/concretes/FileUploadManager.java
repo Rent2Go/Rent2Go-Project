@@ -52,4 +52,22 @@ public class FileUploadManager implements FileUpload {
                 .get(CloudinaryConstants.URL.getValue())
                 .toString();
     }
+
+    @Override
+    public String uploadFileLogo(MultipartFile multipartFile,int uniqColumn) throws IOException {
+
+        String publicId = CloudinaryConstants.BASE_PUBLIC_ID_LOGO.getValue() + uniqColumn;
+
+        Map params1 = ObjectUtils.asMap(
+                CloudinaryConstants.USE_FILENAME.getValue(), multipartFile.getName(),
+                CloudinaryConstants.UNIQUE_FILENAME.getValue(), true,
+                CloudinaryConstants.OVERWRITE.getValue(), true,
+                CloudinaryConstants.PUBLIC_ID.getValue(), publicId
+        );
+
+        return cloudinary.uploader()
+                .upload(multipartFile.getBytes(),params1)
+                .get(CloudinaryConstants.URL.getValue())
+                .toString();
+    }
 }

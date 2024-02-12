@@ -7,6 +7,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest
 import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsResponse.GetPageSettingListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsResponse.GetPageSettingResponse;
 import io.jsonwebtoken.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface PageSettingsService {
 
     Result addSetting(AddSettingRequest addSettingRequest) throws IOException;
 
+
     Result updateSetting(UpdateSettingRequest updateSettingRequest);
+
+    Result updateSetting(UpdateSettingRequest updateSettingRequest, MultipartFile file) throws java.io.IOException;
 
 }

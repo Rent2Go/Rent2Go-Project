@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.dtos.responses.userResponse;
 
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,6 @@ public class GetUserResponse {
     private boolean isActive;
 
     private String imageUrl;
+
+    private GetCustomerResponse customer;
 }
