@@ -21,7 +21,7 @@ import java.util.List;
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterCustomer", parameters = @ParamDef(name = "isActive", type = Boolean.class))
 @Filter(name = "isActiveFilterCustomer", condition = "IS_ACTIVE = :isActive")
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

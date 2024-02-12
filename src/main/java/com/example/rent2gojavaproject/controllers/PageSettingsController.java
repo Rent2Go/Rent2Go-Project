@@ -10,7 +10,9 @@ import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsRespon
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -31,7 +33,7 @@ public class PageSettingsController {
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public DataResult<GetPageSettingResponse> getById(int id){
+    public DataResult<GetPageSettingResponse> getById(@PathVariable("id") int id){
 
         return this.settingsService.getById(id);
     }
@@ -43,8 +45,14 @@ public class PageSettingsController {
     }
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Result updateSetting(UpdateSettingRequest updateSettingRequest){
+    public Result updateSetting(@RequestBody UpdateSettingRequest updateSettingRequest){
 
         return this.settingsService.updateSetting(updateSettingRequest);
+    }
+
+    @PutMapping("/settingsimage")
+    @ResponseStatus(HttpStatus.OK)
+    public Result updateSetting(@RequestPart("settings") UpdateSettingRequest updateSettingRequest, @RequestPart("file") MultipartFile file) throws IOException {
+        return this.settingsService.updateSetting(updateSettingRequest,file);
     }
 }
