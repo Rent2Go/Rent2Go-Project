@@ -44,7 +44,7 @@ public class OurTeamManager implements OurTeamService {
     @Override
     public Result addOurTeam(AddOurTeamRequest addOurTeamRequest, MultipartFile file) throws IOException {
 
-        String imageUrl = fileUpload.uploadFileUser(file, addOurTeamRequest.getLinkedin());
+        String imageUrl = fileUpload.uploadFileUser(file, (addOurTeamRequest.getName() + addOurTeamRequest.getSurname()));
 
         OurTeam ourTeam = this.mapperService.forRequest().map(addOurTeamRequest, OurTeam.class);
         ourTeam.setImageUrl(imageUrl);
