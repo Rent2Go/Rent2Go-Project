@@ -100,6 +100,16 @@ public class GlobalExceptionHandler {
         errorResponse.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(CardInformationNotValid.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Map<String, Object>> handleCardInformationNotValid(CardInformationNotValid ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error",  ex.getMessage());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("status", HttpStatus.NOT_FOUND.value());
+        errorResponse.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 
 
 
