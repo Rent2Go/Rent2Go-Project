@@ -30,6 +30,8 @@ public class AddSettingRequest {
         private String url;
         @NotBlank(message = "logo cannot be blank.")
         private String logo;
+        @NotBlank(message = "logo cannot be blank.")
+        private String tabLogo;
 
         @Pattern(regexp = "\\d{10}", message = "Phone number must be a 10-digit number.")
         private String phoneNumber;

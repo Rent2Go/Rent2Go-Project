@@ -43,19 +43,19 @@ public class Rental extends BaseEntity {
     @Column(name = "total_price")
     private double totalPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = true)
     private Employee employee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id", nullable = false)
     private Discount discount;
 
@@ -63,6 +63,7 @@ public class Rental extends BaseEntity {
         this.endKilometer = null;
         this.returnDate = null;
         this.discount = new Discount(1, "DEFAULT", 0);
+        this.employee = null;
     }
 
 }

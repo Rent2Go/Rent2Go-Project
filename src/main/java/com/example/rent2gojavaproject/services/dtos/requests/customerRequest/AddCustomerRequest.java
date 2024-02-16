@@ -24,18 +24,6 @@ public class AddCustomerRequest {
     @NotNull(message = "DistrictId cannot be null")
     private int districtId;
 
-    @NotNull(message = "First Name can not be null ..")
-    private String name;
-
-    @NotNull(message = "Last Name can not be null ..")
-    private String surname;
-
-    @NotNull(message = "Mail Address can not be null ..")
-    private String email;
-
-    @NotNull(message = "Phone Number can not be null ..")
-    private String phoneNumber;
-
     @NotBlank(message = "Address field cannot be blank")
     @Size(max = 300, message = "Address field cannot exceed 300 characters")
     private String address;

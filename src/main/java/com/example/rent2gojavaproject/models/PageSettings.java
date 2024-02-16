@@ -22,8 +22,11 @@ public class PageSettings {
     @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "logo", nullable = false)
+    @Column(name = "site_logo")
     private String logo;
+
+    @Column(name = "tab_logo")
+    private String tabLogo;
 
     @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;

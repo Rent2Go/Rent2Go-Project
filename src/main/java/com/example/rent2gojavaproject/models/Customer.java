@@ -28,35 +28,10 @@ public class Customer extends BaseEntity  {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "nationality_id", nullable = false, unique = true)
-    private String nationalityId;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "surname", nullable = false)
-    private String surname;
-
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
-
-    @Column(name = "phone_number", nullable = false, unique = true)
-    private String phoneNumber;
-
-    @Column(name = "address", nullable = false)
-    private String address;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id", nullable = false)
-    private City city;
-
-    @ManyToOne
-    @JoinColumn(name = "district_id", nullable = false)
-    private District district;
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnore

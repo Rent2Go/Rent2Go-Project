@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/settings")
@@ -52,7 +53,7 @@ public class PageSettingsController {
 
     @PutMapping("/settingsimage")
     @ResponseStatus(HttpStatus.OK)
-    public Result updateSetting(@RequestPart("settings") UpdateSettingRequest updateSettingRequest, @RequestPart("file") MultipartFile file) throws IOException {
+    public Result updateSetting(@RequestPart("settings") UpdateSettingRequest updateSettingRequest, @RequestPart("files[]") MultipartFile[]  file) throws IOException {
         return this.settingsService.updateSetting(updateSettingRequest,file);
     }
 }

@@ -102,7 +102,18 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(CardInformationNotValid.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Map<String, Object>> handleCardInformationNotValid(CardInformationNotValid ex) {
+    public ResponseEntity<Map<String, Object>> handleIdCardNumber(CardInformationNotValid ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error",  ex.getMessage());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("status", HttpStatus.NOT_FOUND.value());
+        errorResponse.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IdCardNotValidException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Map<String, Object>> handleIdCardInformationNotValid(IdCardNotValidException ex) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("error",  ex.getMessage());
         errorResponse.put("message", ex.getMessage());

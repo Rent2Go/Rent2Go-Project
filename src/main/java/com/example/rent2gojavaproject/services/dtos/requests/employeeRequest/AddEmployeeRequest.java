@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.dtos.requests.employeeRequest;
 
 
+import com.example.rent2gojavaproject.models.JobTitle;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -17,15 +18,7 @@ public class AddEmployeeRequest {
     @Positive(message = "Salary must be a positive number.")
     @NotNull(message = "Salary cannot be null")
     private double salary;
-
-    @NotNull(message = "CityId cannot be null")
-    private int cityId;
-
-    @NotNull(message = "DistrictId cannot be null")
-    private int districtId;
-
-    @NotBlank(message = "Address field cannot be blank")
-    @Size(max = 300, message = "Address field cannot exceed 300 characters")
-    private String address;
+    @NotNull
+    private int jobTitleId;
 
 }

@@ -30,20 +30,16 @@ public class Employee extends BaseEntity {
 
     @Column(name = "salary", nullable = false)
     private double salary;
-    @Column(name = "address", nullable = false)
-    private String address;
+
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "user_id", columnDefinition = "integer default 1", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id", nullable = false)
-    private City city;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_title_id")
+    private JobTitle jobTitle;
 
-    @ManyToOne
-    @JoinColumn(name = "district_id", nullable = false)
-    private District district;
 
     @OneToMany(mappedBy = "employee")
     @JsonIgnore

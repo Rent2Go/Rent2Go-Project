@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,6 +43,12 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "phone_number", unique = true, nullable = false)
     private String phoneNumber;
 
+    @Column(name = "birth_date",  nullable = false)
+    private LocalDate birthDate;
+
+    @Column(name = "id_card_number", nullable = false, unique = true)
+    private String idCardNumber;
+
     @NaturalId(mutable = true)
     @Column(name = "email", unique = true, nullable = false)
     private String email;
@@ -52,12 +59,22 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "enabled")
-    private boolean isEnabled = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @Column(name = "address")
+    private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -108,6 +125,6 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.isEnabled;
+        return this.isActive;
     }
 }

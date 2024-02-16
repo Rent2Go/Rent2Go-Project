@@ -2,8 +2,8 @@ package com.example.rent2gojavaproject.models;
 
 public enum Role {
 
-    ADMIN("ROLE_ADMIN"),
-    USER("ROLE_USER");
+    ADMIN("ADMIN"),
+    USER("USER");
 
     private final String roleName;
 

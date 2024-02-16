@@ -11,5 +11,5 @@ public class GetCityListResponse {
 
     private Integer id;
 
-    private String cityName;
+    private String name;
 }

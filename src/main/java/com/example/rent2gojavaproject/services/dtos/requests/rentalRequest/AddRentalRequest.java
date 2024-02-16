@@ -30,10 +30,6 @@ public class AddRentalRequest {
     private int customerId;
 
 
-///Burası düzenlenecek employee ıd default olacak
-    @NotNull(message = "Employee ID must be entered !!")
-    private int employeeId;
-
     @Pattern(regexp = "^$|^[A-Z0-9]+$", message = "Discount code must consist of uppercase letters and numbers only.")
     private String discountCode;
 
