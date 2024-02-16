@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.controllers;
+/*package com.example.rent2gojavaproject.controllers;
 
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -28,4 +28,4 @@ public class SquarePaymentController {
 
 
 
-}
+}*/

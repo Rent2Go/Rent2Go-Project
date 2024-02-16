@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.services.concretes;
+/*package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.CardInformationNotValid;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
@@ -60,3 +60,4 @@ public class SquarePaymentManager implements SquarePaymentService {
 
 
 }
+*/
