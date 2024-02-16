@@ -56,6 +56,21 @@
             <version>0.11.2</version>
         </dependency>
         <dependency>
+            <groupId>com.easywsdl</groupId>
+            <artifactId>exksoap2</artifactId>
+            <version>1.0.4.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/easywsdl/ExKsoap2-1.0.4.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-android</artifactId>
+            <version>3.6.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/easywsdl/ksoap2-android-assembly-3.6.4-jar-with-dependencies.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>0.11.2</version>
