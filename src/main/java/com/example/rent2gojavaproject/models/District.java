@@ -17,6 +17,7 @@ public class District {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "district_name")
     private String districtName;
 
@@ -24,11 +25,5 @@ public class District {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @OneToMany(mappedBy = "district")
-    @JsonIgnore
-    private List<Customer> customers;
 
-    @OneToMany(mappedBy = "district")
-    @JsonIgnore
-    private List<Employee> employees;
 }

@@ -25,12 +25,5 @@ public class City {
     @JsonIgnore
     private List<District> districts;
 
-    @OneToMany(mappedBy = "city")
-    @JsonIgnore
-    private List<Employee> employees;
-
-    @OneToMany(mappedBy = "city")
-    @JsonIgnore
-    private List<Customer> customers;
 
 }

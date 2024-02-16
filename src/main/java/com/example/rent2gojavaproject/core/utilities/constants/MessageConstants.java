@@ -16,6 +16,8 @@ public enum MessageConstants {
     NOT_FOUND(" not found"),
     ALREADY_EXISTS(" already exists"),
     EMAIL_ALREADY_EXISTS(" Email already exists"),
+    ID_CARD_NUMBER_ALREADY_EXISTS(" Id card number already exists"),
+    ID_CARD_INFORMATION_NOT_VALID(" Authentication is used in our system. Please enter your information correctly ! - :)- !"),
     PHONE_NUMBER_ALREADY_EXISTS(" Phone number already exists"),
     KILOMETER_ERROR("The last kilometer of the vehicle cannot be lower than the delivered mileage."),
     START_DATE_ERROR("Start date must be before rental end date"),

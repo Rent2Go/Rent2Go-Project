@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @MappedSuperclass
 
 public abstract class BaseEntity {
-    @Column(name = "IS_ACTIVE", columnDefinition = "boolean default true")
+    @Column(name = "IS_ACTIVE", columnDefinition = "boolean default false")
     protected boolean isActive;
     @Column(name = "CREATED_AT", updatable = false)
     protected LocalDate createdAt;

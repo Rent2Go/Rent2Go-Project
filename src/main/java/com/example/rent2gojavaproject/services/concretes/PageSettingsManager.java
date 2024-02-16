@@ -72,11 +72,17 @@ public class PageSettingsManager implements PageSettingsService {
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
     @Override
-    public Result updateSetting(UpdateSettingRequest updateSettingRequest, MultipartFile file) throws IOException {
-        String imgUrl = this.fileUpload.uploadFileLogo(file,updateSettingRequest.getId());
+    public Result updateSetting(UpdateSettingRequest updateSettingRequest, MultipartFile[] file) throws IOException {
+
+
+        String siteLogo = this.fileUpload.uploadFileLogo(file[0],updateSettingRequest.getId());
+
+        String tabLogo = this.fileUpload.uploadFileLogo(file[1],updateSettingRequest.getId()+1);
+
         this.pageSettingsRepository.findById(updateSettingRequest.getId()).orElseThrow(()->new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
         PageSettings pageSettings = this.mapperService.forRequest().map(updateSettingRequest, PageSettings.class);
-        pageSettings.setLogo(imgUrl);
+        pageSettings.setLogo(siteLogo);
+        pageSettings.setTabLogo(tabLogo);
         this.pageSettingsRepository.save(pageSettings);
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());

@@ -23,6 +23,6 @@ public interface PageSettingsService {
 
     Result updateSetting(UpdateSettingRequest updateSettingRequest);
 
-    Result updateSetting(UpdateSettingRequest updateSettingRequest, MultipartFile file) throws java.io.IOException;
+    Result updateSetting(UpdateSettingRequest updateSettingRequest, MultipartFile[] file) throws java.io.IOException;
 
 }

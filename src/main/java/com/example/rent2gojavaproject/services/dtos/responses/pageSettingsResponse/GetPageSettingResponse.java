@@ -13,6 +13,7 @@ public class GetPageSettingResponse {
     private String title;
     private String url;
     private String logo;
+    private String tabLogo;
     private String phoneNumber;
     private String email;
     private String address;
