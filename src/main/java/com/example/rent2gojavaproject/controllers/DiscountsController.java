@@ -53,9 +53,15 @@ public class DiscountsController {
         return discountService.deleteDiscount(id);
     }
 
-    @GetMapping("/code/{discountCode}")
+   /* @GetMapping("/code/{discountCode}")
     public Discount findByDiscountCode(@PathVariable String discountCode) {
 
         return this.discountService.findByDiscountCode( discountCode);
+    }*/
+
+    @GetMapping("/code/{discountCode}")
+    public DataResult<GetDiscountResponse> findByDiscount(@PathVariable String discountCode) {
+
+        return  this.discountService.findByDiscount( discountCode);
     }
 }

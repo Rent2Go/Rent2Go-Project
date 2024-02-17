@@ -108,6 +108,17 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public Discount findByDiscountCode(String discountCode) {
-        return this.discountRepository.findByDiscountCode(discountCode);
+        Discount discount = this.discountRepository.findByDiscountCode(discountCode).orElseThrow(() -> new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
+        return discount;
+    }
+
+
+    @Override
+    public DataResult<GetDiscountResponse> findByDiscount(String discountCode) {
+        Discount discount = this.discountRepository.findByDiscountCode(discountCode).orElseThrow(() -> new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
+
+        GetDiscountResponse response = this.mapperService.forResponse().map(discount, GetDiscountResponse.class);
+
+        return  new SuccessDataResult<>(response, MessageConstants.DISCOUNT.getMessage());
     }
 }
