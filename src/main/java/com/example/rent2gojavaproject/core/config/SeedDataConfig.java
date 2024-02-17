@@ -1,8 +1,11 @@
 package com.example.rent2gojavaproject.core.config;
 
+import com.example.rent2gojavaproject.models.MailConfiguration;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
+import com.example.rent2gojavaproject.repositories.MailConfigurationRepository;
 import com.example.rent2gojavaproject.repositories.UserRepository;
+import com.example.rent2gojavaproject.services.abstracts.MailConfigurationService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,8 @@ public class SeedDataConfig implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final MailConfigurationRepository mailConfigurationRepository;
+    private final MailConfigurationService mailConfigurationService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -56,6 +61,18 @@ public class SeedDataConfig implements CommandLineRunner {
 
             userService.addDefaultUser(defaultUser);
             userService.addDefaultUser(admin);
+        }
+
+        if (mailConfigurationRepository.count() == 0) {
+            MailConfiguration mailConfiguration = MailConfiguration
+                    .builder()
+                    .host("smtp.mailgun.org")
+                    .port(587)
+                    .username("postmaster@rentogo.com.tr")
+                    .password("rent2GO2024")
+                    .build();
+
+            mailConfigurationService.addMailConfiguration(mailConfiguration);
         }
     }
 }
