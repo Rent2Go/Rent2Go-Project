@@ -60,7 +60,40 @@ public enum EmailConstants {
                     "%s\n" +
                     "If you did not request a password reset, please ignore this email.\n" +
                     "Best Regards,\nThe Rent2Go Team"
-    );
+    ),
+    RESERVATION_DETAIL_SUBJECT("Reservation Detail"),
+    RESERVATION_DETAIL_HTML_CONTENT("<h1>Your reservation record has been created. Your information is below.</h1>" +
+            "<p><strong>Name:</strong> %s </p>" +
+            "<p><strong>Email:</strong> %s </p>" +
+            "<p><strong>Phone:</strong> %s </p>" +
+            "<p><strong>Start Date:</strong> %s </p>" +
+            "<p><strong>End Date:</strong> %s </p>" +
+            "<p><strong>Total Day:</strong> %s </p>" +
+            "<p><strong>Plate:</strong> %s </p>" +
+            "<p><strong>Car Info:</strong> %s </p>" +
+            "<p><strong>Total Price:</strong> %s </p>" +
+            "<p>Dear %s,<br>" +
+            "Thank you for choosing our service. Please remember to come to our office on the rental day to pick up your car. " +
+            "If you have any questions or need further assistance, please do not hesitate to contact us. " +
+            "We look forward to serving you on your rental day.<br>" +
+            "Best regards,<br>" +
+            "Rent2Go Team</p>"),
+    RESERVATION_DETAIL_TEXT_CONTENT("Your reservation record has been created. Your information is below.\n" +
+            "Name: %s\n" +
+            "Email: %s\n" +
+            "Phone: %s\n" +
+            "Start Date: %s\n" +
+            "End Date: %s\n" +
+            "Total Day: %s\n" +
+            "Plate: %s\n" +
+            "Car Info: %s\n" +
+            "Total Price: %s\n" +
+            "Dear %s,\n" +
+            "Thank you for choosing our service. Please remember to come to our office on the rental day to pick up your car. " +
+            "If you have any questions or need further assistance, please do not hesitate to contact us. " +
+            "We look forward to serving you on your rental day.\n" +
+            "Best regards,\n" +
+            "Rent2Go Team");
 
     private final String value;
 
