@@ -9,6 +9,7 @@ import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.PageSettings;
 import com.example.rent2gojavaproject.repositories.PageSettingsRepository;
+import com.example.rent2gojavaproject.services.abstracts.FileUpload;
 import com.example.rent2gojavaproject.services.abstracts.PageSettingsService;
 import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest.AddSettingRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest.UpdateSettingRequest;
@@ -17,7 +18,9 @@ import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsRespon
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,7 @@ public class PageSettingsManager implements PageSettingsService {
     private PageSettingsRepository pageSettingsRepository;
     private ModelMapperService mapperService;
     private EntityManager entityManager;
+    private final FileUpload fileUpload;
 
     @Override
     public DataResult<List<GetPageSettingListResponse>> getAllSettings(){
@@ -64,6 +68,22 @@ public class PageSettingsManager implements PageSettingsService {
     public Result updateSetting(UpdateSettingRequest updateSettingRequest){
         this.pageSettingsRepository.findById(updateSettingRequest.getId()).orElseThrow(()->new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
         PageSettings pageSettings = this.mapperService.forRequest().map(updateSettingRequest, PageSettings.class);
+        this.pageSettingsRepository.save(pageSettings);
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+    @Override
+    public Result updateSetting(UpdateSettingRequest updateSettingRequest, MultipartFile[] file) throws IOException {
+
+
+        String siteLogo = this.fileUpload.uploadFileLogo(file[0],updateSettingRequest.getId());
+
+        String tabLogo = this.fileUpload.uploadFileLogo(file[1],updateSettingRequest.getId()+1);
+
+        this.pageSettingsRepository.findById(updateSettingRequest.getId()).orElseThrow(()->new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
+        PageSettings pageSettings = this.mapperService.forRequest().map(updateSettingRequest, PageSettings.class);
+        pageSettings.setLogo(siteLogo);
+        pageSettings.setTabLogo(tabLogo);
+        this.pageSettingsRepository.save(pageSettings);
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }

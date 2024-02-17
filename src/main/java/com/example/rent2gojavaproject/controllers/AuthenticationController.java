@@ -22,7 +22,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public String signup(@Valid @RequestBody SignUpRequest request, HttpServletRequest servletRequest) throws MessagingException, UnsupportedEncodingException {
+    public String signup(@Valid @RequestBody SignUpRequest request, HttpServletRequest servletRequest) throws Exception {
         return authenticationService.signup(request, servletRequest);
     }
 

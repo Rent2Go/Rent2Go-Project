@@ -8,4 +8,5 @@ public interface FileUpload {
 
     String uploadFileCar(MultipartFile multipartFile,String uniqColumn) throws IOException;
     String uploadFileUser(MultipartFile multipartFile,String uniqColumn) throws IOException;
+    String uploadFileLogo(MultipartFile multipartFile, int uniqColumn) throws IOException;
 }

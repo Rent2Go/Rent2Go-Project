@@ -1,13 +1,14 @@
 package com.example.rent2gojavaproject.services.dtos.requests.userRequest;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -28,6 +29,16 @@ public class SignUpRequest {
 
     @Email(message = "Invalid email address format")
     String email;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @NotNull
+    @Past(message = "Birth date must be in the past")
+    public LocalDate birthDate;
+
+    @NotBlank(message = "ID Number cannot be blank")
+    @Size(min = 11, max = 11, message = "ID Number must be exactly 11 characters")
+    @Pattern(regexp = "\\d{11}", message = "ID Number must consist of 11 digits")
+    private String idCardNumber;
 
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.*])(?=\\S+$).{8,}",
             message = "At least 8 characters\n" +

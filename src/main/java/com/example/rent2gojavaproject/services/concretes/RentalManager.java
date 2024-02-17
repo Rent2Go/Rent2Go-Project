@@ -85,7 +85,7 @@ public class RentalManager implements RentalService {
         String discountCode = addRentalRequest.getDiscountCode();
         Discount defaultDiscount = businessRules.getDiscountByCodeOrDefault(discountCode);
 
-        businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId(), addRentalRequest.getEmployeeId());
+        businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId());
         businessRules.checkRentalPeriod(addRentalRequest.getStartDate(), addRentalRequest.getEndDate());
 
         double totalPrice = businessRules.calculateTotalPrice(

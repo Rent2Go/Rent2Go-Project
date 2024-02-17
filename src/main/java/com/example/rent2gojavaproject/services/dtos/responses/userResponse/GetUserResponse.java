@@ -1,8 +1,18 @@
 package com.example.rent2gojavaproject.services.dtos.responses.userResponse;
 
+import com.example.rent2gojavaproject.models.City;
+import com.example.rent2gojavaproject.models.District;
+import com.example.rent2gojavaproject.services.dtos.responses.cityResponse.GetCityListResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.districtResponse.GetDistrictListResponse;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -21,9 +31,21 @@ public class GetUserResponse {
 
     private String password;
 
+    private LocalDate birthDate;
+
+    private String idCardNumber;
+
+    private String address;
+
+    private GetCityListResponse city;
+
+    private GetDistrictListResponse district;
+
     private String role;
 
     private boolean isActive;
 
     private String imageUrl;
+
+
 }

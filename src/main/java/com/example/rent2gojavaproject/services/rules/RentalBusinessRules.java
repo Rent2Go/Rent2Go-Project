@@ -34,6 +34,16 @@ public class RentalBusinessRules {
         }
     }
 
+
+    public void checkIfExistsById(int carId, int customerId) {
+
+        if (!(carService.existsById(carId))) {
+            throw new NotFoundException(MessageConstants.CAR.getMessage() + MessageConstants.NOT_FOUND.getMessage());
+        } else if (!(customerService.existsById(customerId))) {
+            throw new NotFoundException(MessageConstants.CUSTOMER.getMessage() + MessageConstants.NOT_FOUND.getMessage());
+        }
+    }
+
     public void checkIfKilometer(int kilometer, Integer endKilometer) {
 
         Integer newKilometer = Integer.valueOf(kilometer);

@@ -21,12 +21,13 @@ import java.util.List;
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterCustomer", parameters = @ParamDef(name = "isActive", type = Boolean.class))
 @Filter(name = "isActiveFilterCustomer", condition = "IS_ACTIVE = :isActive")
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
 
     @Column(name = "nationality_id", nullable = false, unique = true)
     private String nationalityId;
@@ -38,13 +39,6 @@ public class Customer extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id", nullable = false)
-    private City city;
-
-    @ManyToOne
-    @JoinColumn(name = "district_id", nullable = false)
-    private District district;
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnore

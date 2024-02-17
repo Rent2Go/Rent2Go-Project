@@ -11,6 +11,7 @@ import com.example.rent2gojavaproject.core.utilities.constants.UrlPathConstants;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
+import com.example.rent2gojavaproject.services.abstracts.KpsMernisService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.RefreshTokenRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
@@ -42,13 +43,17 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public String signup(SignUpRequest request, HttpServletRequest servletRequest) throws MessagingException, UnsupportedEncodingException {
+
+    public String signup(SignUpRequest request, HttpServletRequest servletRequest) throws Exception {
         var user = User
                 .builder()
                 .name(request.getFirstName())
                 .surname(request.getLastName())
                 .phoneNumber(request.getPhoneNumber())
                 .email(request.getEmail())
+                .birthDate(request.getBirthDate())
+                .idCardNumber(request.getIdCardNumber())
+                .imageUrl("https://res.cloudinary.com/dmusx2nmy/image/upload/v1705233022/rent2go/userImages/x3fodxe8nggpt9vxou7v.png")
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();

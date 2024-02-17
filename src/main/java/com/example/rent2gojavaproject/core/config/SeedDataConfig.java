@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -30,7 +32,11 @@ public class SeedDataConfig implements CommandLineRunner {
                     .surname("default")
                     .phoneNumber("11111111111")
                     .email("default@rentogo.com.tr")
+                    .birthDate(LocalDate.of(1998,1,6))
+                    .idCardNumber("11111111111")
+                    .imageUrl("https://res.cloudinary.com/dmusx2nmy/image/upload/v1707498026/rent2go/userImages/default%40rentogo.com.tr.png")
                     .password(passwordEncoder.encode("password"))
+                    .isActive(true)
                     .role(Role.USER).build();
 
 
@@ -40,13 +46,16 @@ public class SeedDataConfig implements CommandLineRunner {
                     .surname("admin")
                     .phoneNumber("5436751431")
                     .email("admin@rentogo.com.tr")
+                    .birthDate(LocalDate.of(1999,2,1))
+                    .idCardNumber("11111111112")
+                    .imageUrl("https://res.cloudinary.com/dmusx2nmy/image/upload/v1707498263/rent2go/userImages/admin%40rentogo.com.tr.png")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
-                    .isEnabled(true)
+                    .isActive(true)
                     .build();
 
-            userService.addUser(defaultUser);
-            userService.addUser(admin);
+            userService.addDefaultUser(defaultUser);
+            userService.addDefaultUser(admin);
         }
     }
 }

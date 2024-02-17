@@ -1,23 +1,21 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
+import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
+import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
+import com.example.rent2gojavaproject.core.services.JwtService;
 import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
+import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.constants.UrlPathConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
-import com.example.rent2gojavaproject.models.Role;
+import com.example.rent2gojavaproject.models.District;
 import com.example.rent2gojavaproject.models.User;
-import com.example.rent2gojavaproject.core.registration.token.ConfirmationToken;
-import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenService;
 import com.example.rent2gojavaproject.repositories.UserRepository;
-import com.example.rent2gojavaproject.core.services.JwtService;
-import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
-import com.example.rent2gojavaproject.services.abstracts.FileUpload;
-import com.example.rent2gojavaproject.services.abstracts.UserService;
+import com.example.rent2gojavaproject.services.abstracts.*;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
@@ -56,7 +54,8 @@ public class UserManager implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final FileUpload fileUpload;
-
+    private final DistrictService districtService;
+    private final KpsMernisService kpsMernisService;
 
 
     @Value("${client.server}")
@@ -112,11 +111,35 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public String  addUser(User user) {
+    public String addUser(User user) throws Exception {
 
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
-        this.userRepository.save(user);
+
+        this.kpsMernisService.tcKimlikDoğrula(Long.parseLong(user.getIdCardNumber()),user.getName(),user.getSurname(),user.getBirthDate().getYear());
+        User createdUser = this.userRepository.save(user);
+
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(30),
+                user
+        );
+        tokenService.saveConfirmationToken(
+                confirmationToken);
+
+        return token;
+    }
+
+    @Override
+    public String addDefaultUser(User user) throws Exception {
+
+        businessRules.checkIfExistsByEmail(user.getEmail());
+        businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
+
+        User createdUser = this.userRepository.save(user);
 
 
         String token = UUID.randomUUID().toString();
@@ -134,14 +157,17 @@ public class UserManager implements UserService {
 
 
     @Override
-    public Result  createUser(AddUserRequest user , MultipartFile file) throws IOException {
-
+    public Result createUser(AddUserRequest user, MultipartFile file) throws IOException {
+        District  district=  this.districtService.getByIdDist(user.getDistrictId());
+        user.setCityId(district.getCity().getId());
+        businessRules.checkIfExistsByIdCarNumber(user.getIdCardNumber());
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
-        User userRequest= this.mapperService.forRequest().map(user,User.class);
+        User userRequest = this.mapperService.forRequest().map(user, User.class);
         userRequest.setPassword(this.passwordEncoder.encode(userRequest.getPassword()));
-        userRequest.setEnabled(true);
-        userRequest.setImageUrl(this.fileUpload.uploadFileUser( file,user.getEmail()));
+        userRequest.setActive(true);
+        userRequest.setImageUrl(this.fileUpload.uploadFileUser(file, user.getEmail()));
+
         this.userRepository.save(userRequest);
         return new SuccessResult(MessageConstants.ADD.getMessage());
     }
@@ -149,40 +175,40 @@ public class UserManager implements UserService {
 
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
+        District  district=  this.districtService.getByIdDist(updateUserRequest.getDistrictId());
+        updateUserRequest.setCityId(district.getCity().getId());
+        businessRules.checkIfExistsByIdCarNumber(updateUserRequest.getId(),updateUserRequest.getIdCardNumber());
+        businessRules.checkIfExistsByEmail(updateUserRequest.getId(),updateUserRequest.getEmail());
+        businessRules.checkIfExistsPhoneNumber(updateUserRequest.getId(),updateUserRequest.getPhoneNumber());
 
-       User user = this.userRepository.findById(updateUserRequest.getId())
+        this.userRepository.findById(updateUserRequest.getId())
                 .orElseThrow(() -> new NotFoundException(MessageConstants.USER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
-       user.setId(updateUserRequest.getId());
-       user.setName(updateUserRequest.getName());
-       user.setEmail(updateUserRequest.getEmail());
-       user.setSurname(updateUserRequest.getSurname());
-       user.setPhoneNumber(updateUserRequest.getPhoneNumber());
-       user.setPassword(updateUserRequest.getPassword());
-       user.setRole(Role.valueOf( updateUserRequest.getRole().toString()));
+        User user = this.mapperService.forRequest().map(updateUserRequest, User.class);
         this.userRepository.save(user);
+
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result updateUserImage(String email, MultipartFile file) throws IOException {
-          User user =  this.userRepository.findByEmail(email).orElseThrow(()-> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
-           String userImage = this.fileUpload.uploadFileUser(file,email);
-           user.setImageUrl(userImage);
+        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
+        String userImage = this.fileUpload.uploadFileUser(file, email);
+        user.setImageUrl(userImage);
 
-           this.userRepository.save(user);
+        this.userRepository.save(user);
 
 
-        return  new SuccessResult(MessageConstants.UPDATE.getMessage());
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
     public Result updateUserIsActive(int id, boolean isActive) {
         User user = this.userRepository.findById(id)
-                .orElseThrow(()-> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         user.setActive(isActive);
         this.userRepository.save(user);
-        return new SuccessResult(MessageConstants.UPDATE.getMessage()) ;
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
     @Override
@@ -191,7 +217,7 @@ public class UserManager implements UserService {
         User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         user.setDeletedAt(LocalDate.now());
         user.setActive(false);
-        user.setEnabled(false);
+
 
         this.userRepository.save(user);
 
@@ -201,29 +227,29 @@ public class UserManager implements UserService {
     @Override
     public void hardDeleteUser(int id) {
 
-            User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
 
-            this.userRepository.delete(user);
+        this.userRepository.delete(user);
     }
 
     public void resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
 
         User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
                         resetPasswordRequest.getFirstname())
-                .orElseThrow(()->new NotFoundException(resetPasswordRequest.getFirstname() + MessageConstants.NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new NotFoundException(resetPasswordRequest.getFirstname() + MessageConstants.NOT_FOUND.getMessage()));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        String token =  jwtService.generateToken(user);
+        String token = jwtService.generateToken(user);
 
         String link = clientServer + UrlPathConstants.PASSWORD_CHANGE_PATH.getPath() + token;
 
-        emailSenderService.sendResetPasswordEmail(user.getName()+ " " + user.getSurname(),resetPasswordRequest.getEmail(), link);
+        emailSenderService.sendResetPasswordEmail(user.getName() + " " + user.getSurname(), resetPasswordRequest.getEmail(), link);
     }
 
-    public String changePassword(ChangePasswordRequest changePasswordRequest){
+    public String changePassword(ChangePasswordRequest changePasswordRequest) {
 
-        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(()->new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() ));
-        userRepository.passwordChange(changePasswordRequest.getEmail(),passwordEncoder.encode(changePasswordRequest.getPassword()));
+        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
+        userRepository.passwordChange(changePasswordRequest.getEmail(), passwordEncoder.encode(changePasswordRequest.getPassword()));
 
 
         return MessageConstants.PASSWORD_CHANGED.getMessage();
@@ -247,9 +273,9 @@ public class UserManager implements UserService {
 
     @Override
     public DataResult<GetUserResponse> getByEmail(String email) {
-     User user =   this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
-     GetUserResponse response=    this.mapperService.forResponse().map(user,GetUserResponse.class);
-        return new SuccessDataResult<>( response,MessageConstants.GET.getMessage());
+        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
+        GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override

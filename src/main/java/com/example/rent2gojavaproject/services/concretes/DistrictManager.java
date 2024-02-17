@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
@@ -29,5 +30,20 @@ public class DistrictManager implements DistrictService {
                 .map(district -> this.mapperService.forResponse()
                         .map(district, GetDistrictListResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<GetDistrictListResponse> getById(int id) {
+
+      District district =   this.districtRepository.findById(id).orElseThrow(()-> new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
+
+      GetDistrictListResponse getDistrictListResponse = this.mapperService.forResponse().map(district,GetDistrictListResponse.class);
+        return  new SuccessDataResult<>(getDistrictListResponse, MessageConstants.GET_ALL.getMessage());
+    }
+
+    @Override
+    public District getByIdDist(int id) {
+        District district =   this.districtRepository.findById(id).orElseThrow(()-> new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
+        return district;
     }
 }
