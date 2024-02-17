@@ -12,7 +12,6 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
-import com.example.rent2gojavaproject.models.City;
 import com.example.rent2gojavaproject.models.District;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
@@ -134,6 +133,28 @@ public class UserManager implements UserService {
         result.add(String.valueOf(user.getId()));
         result.add(token);
         return result;
+    }
+
+    @Override
+    public String addDefaultUser(User user) throws Exception {
+
+        businessRules.checkIfExistsByEmail(user.getEmail());
+        businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
+
+        User createdUser = this.userRepository.save(user);
+
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(30),
+                user
+        );
+        tokenService.saveConfirmationToken(
+                confirmationToken);
+
+        return token;
     }
 
 

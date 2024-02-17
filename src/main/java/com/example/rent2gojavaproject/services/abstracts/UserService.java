@@ -23,6 +23,8 @@ public interface UserService {
 
     List<String > addUser(User user) throws Exception;
 
+    String addDefaultUser(User user) throws Exception;
+
     Result  createUser(AddUserRequest user , MultipartFile file) throws IOException;
 
     Result updateUser(UpdateUserRequest updateUserRequest);

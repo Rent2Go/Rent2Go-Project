@@ -1,4 +1,4 @@
-package com.example.rent2gojavaproject.services.dtos.responses.payments;
+/*package com.example.rent2gojavaproject.services.dtos.responses.payments;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -95,4 +95,4 @@ class CardDetails {
     private String last4;
 
     // Getter ve Setter metotları
-}
+}*/
