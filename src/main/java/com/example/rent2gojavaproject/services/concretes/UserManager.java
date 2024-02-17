@@ -38,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -111,8 +112,8 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public String addUser(User user) throws Exception {
-
+    public List<String> addUser(User user) throws Exception {
+        List<String> result = new ArrayList<>();
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
 
@@ -129,8 +130,9 @@ public class UserManager implements UserService {
         );
         tokenService.saveConfirmationToken(
                 confirmationToken);
-
-        return token;
+        result.add(String.valueOf(user.getId()));
+        result.add(token);
+        return result;
     }
 
     @Override

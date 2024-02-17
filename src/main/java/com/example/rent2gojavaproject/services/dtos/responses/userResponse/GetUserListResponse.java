@@ -5,6 +5,7 @@ import com.example.rent2gojavaproject.models.District;
 import com.example.rent2gojavaproject.services.dtos.responses.cityResponse.GetCityListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.districtResponse.GetDistrictListResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,8 @@ public class GetUserListResponse {
     private boolean isActive;
 
     private String imageUrl;
+
+    private int employeeId;
 
 
 }

@@ -63,7 +63,7 @@ public class Rental extends BaseEntity {
         this.endKilometer = null;
         this.returnDate = null;
         this.discount = new Discount(1, "DEFAULT", 0);
-        this.employee = null;
+        this.employee = new Employee(1);
     }
 
 }

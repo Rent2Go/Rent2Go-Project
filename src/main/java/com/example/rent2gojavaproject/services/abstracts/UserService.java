@@ -21,7 +21,7 @@ public interface UserService {
 
     DataResult<GetUserResponse> getById(int id);
 
-    String addUser(User user) throws Exception;
+    List<String > addUser(User user) throws Exception;
 
     String addDefaultUser(User user) throws Exception;
 

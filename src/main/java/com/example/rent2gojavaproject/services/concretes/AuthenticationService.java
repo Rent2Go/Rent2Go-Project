@@ -8,6 +8,8 @@ import com.example.rent2gojavaproject.core.registration.token.ConfirmationTokenS
 import com.example.rent2gojavaproject.core.services.JwtService;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.constants.UrlPathConstants;
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +47,7 @@ public class AuthenticationService {
 
 
 
-    public String signup(SignUpRequest request, HttpServletRequest servletRequest) throws Exception {
+    public DataResult<String> signup(SignUpRequest request, HttpServletRequest servletRequest) throws Exception {
         var user = User
                 .builder()
                 .name(request.getFirstName())
@@ -59,12 +62,12 @@ public class AuthenticationService {
                 .build();
 
 
-        String token = userService.addUser(user);
-        String link = UrlPathConstants.BACKEND_URL.getPath() + UrlPathConstants.CONFIRMATION_URL.getPath() + token;
+        List<String> result = userService.addUser(user);
+        String link = UrlPathConstants.BACKEND_URL.getPath() + UrlPathConstants.CONFIRMATION_URL.getPath() + result.get(1);
         emailSender.buildEmail(user.getName() + " " + user.getSurname(), request.getEmail(), link);
 
 
-        return MessageConstants.SIGNUP_SUCCESS.getMessage();
+        return new SuccessDataResult<>(result.get(0),MessageConstants.SIGNUP_SUCCESS.getMessage());
     }
 
 

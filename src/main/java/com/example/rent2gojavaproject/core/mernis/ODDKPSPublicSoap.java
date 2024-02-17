@@ -11,7 +11,7 @@ package com.example.rent2gojavaproject.core.mernis;
 // To use it in commercial project, you need to generate this class again with Premium account.
 // Check https://EasyWsdl.com/Payment/PremiumAccountDetails to see all benefits of Premium account.
 //
-// Licence: B9697BD6C5D691AB739CCF66202DE654CF97FD7764BBD0304894667E57ED51C14F0E4F2188B98CEE27DA8E651F4F1184F823E9029D89C08BE09EB718921F0394
+// Licence: D6E366107747515D7E4D93874C676CA47830C15A8588AAA06FC383DB97C117B669D42C1726B593F7EC1135AC722A10FD871E794454F8AA23D4B7600E9A2EB029
 //------------------------------------------------------------------------
 
 
@@ -26,13 +26,13 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ABIKPSPublicSoap12
+public class ODDKPSPublicSoap
 {
-    interface ABIIWcfMethod
+    interface ODDIWcfMethod
     {
-        ABIExtendedSoapSerializationEnvelope CreateSoapEnvelope() throws java.lang.Exception;
+        ODDExtendedSoapSerializationEnvelope CreateSoapEnvelope() throws java.lang.Exception;
 
-        java.lang.Object ProcessResult(ABIExtendedSoapSerializationEnvelope __envelope,java.lang.Object result) throws java.lang.Exception;
+        java.lang.Object ProcessResult(ODDExtendedSoapSerializationEnvelope __envelope,java.lang.Object result) throws java.lang.Exception;
     }
 
     String url="https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx";
@@ -44,14 +44,14 @@ public class ABIKPSPublicSoap12
     public boolean createClassesForAny = false;
 
 
-    public ABIKPSPublicSoap12(){}
+    public ODDKPSPublicSoap(){}
 
-    public ABIKPSPublicSoap12(String url)
+    public ODDKPSPublicSoap(String url)
     {
         this.url = url;
     }
 
-    public ABIKPSPublicSoap12(String url,int timeOut)
+    public ODDKPSPublicSoap(String url,int timeOut)
     {
         this.url = url;
         this.timeOut=timeOut;
@@ -84,16 +84,16 @@ public class ABIKPSPublicSoap12
         return null;
     }
 
-    protected ABIExtendedSoapSerializationEnvelope createEnvelope()
+    protected ODDExtendedSoapSerializationEnvelope createEnvelope()
     {
-        ABIExtendedSoapSerializationEnvelope envelope= new ABIExtendedSoapSerializationEnvelope(ABIExtendedSoapSerializationEnvelope.VER12);
+        ODDExtendedSoapSerializationEnvelope envelope= new ODDExtendedSoapSerializationEnvelope(ODDExtendedSoapSerializationEnvelope.VER11);
         envelope.enableLogging = enableLogging;
         envelope.createClassesForAny = createClassesForAny;
     
         return envelope;
     }
 
-    protected java.util.List sendRequest(String methodName,ABIExtendedSoapSerializationEnvelope envelope,org.ksoap2.transport.Transport transport ,com.easywsdl.exksoap2.ws_specifications.profile.WS_Profile profile )throws java.lang.Exception
+    protected java.util.List sendRequest(String methodName,ODDExtendedSoapSerializationEnvelope envelope,org.ksoap2.transport.Transport transport ,com.easywsdl.exksoap2.ws_specifications.profile.WS_Profile profile )throws java.lang.Exception
     {
         if(transport instanceof com.easywsdl.exksoap2.transport.AdvancedHttpTransportSE )
         {
@@ -105,7 +105,7 @@ public class ABIKPSPublicSoap12
         }
     }
 
-    java.lang.Object getResult(java.lang.Class destObj,java.lang.Object source,String resultName,ABIExtendedSoapSerializationEnvelope __envelope) throws java.lang.Exception
+    java.lang.Object getResult(java.lang.Class destObj,java.lang.Object source,String resultName,ODDExtendedSoapSerializationEnvelope __envelope) throws java.lang.Exception
     {
         if(source==null)
         {
@@ -147,11 +147,11 @@ public class ABIKPSPublicSoap12
     public Boolean TCKimlikNoDogrula(final Long TCKimlikNo,final String Ad,final String Soyad,final Integer DogumYili) throws java.lang.Exception
     {
         com.easywsdl.exksoap2.ws_specifications.profile.WS_Profile __profile = new com.easywsdl.exksoap2.ws_specifications.profile.WS_Profile();
-        return (Boolean)execute(new ABIIWcfMethod()
+        return (Boolean)execute(new ODDIWcfMethod()
         {
             @Override
-            public ABIExtendedSoapSerializationEnvelope CreateSoapEnvelope(){
-                ABIExtendedSoapSerializationEnvelope __envelope = createEnvelope();
+            public ODDExtendedSoapSerializationEnvelope CreateSoapEnvelope(){
+                ODDExtendedSoapSerializationEnvelope __envelope = createEnvelope();
                 SoapObject __soapReq = new SoapObject("http://tckimlik.nvi.gov.tr/WS", "TCKimlikNoDogrula");
                 __envelope.setOutputSoapObject(__soapReq);
                 
@@ -184,7 +184,7 @@ public class ABIKPSPublicSoap12
             }
             
             @Override
-            public java.lang.Object ProcessResult(ABIExtendedSoapSerializationEnvelope __envelope,java.lang.Object __result)throws java.lang.Exception {
+            public java.lang.Object ProcessResult(ODDExtendedSoapSerializationEnvelope __envelope,java.lang.Object __result)throws java.lang.Exception {
                 SoapObject __soap=(SoapObject)__result;
                 java.lang.Object obj = __soap.getProperty("TCKimlikNoDogrulaResult");        
                 if (obj instanceof SoapPrimitive)
@@ -200,11 +200,11 @@ public class ABIKPSPublicSoap12
         },"http://tckimlik.nvi.gov.tr/WS/TCKimlikNoDogrula",__profile);
     }
 
-    protected java.lang.Object execute(ABIIWcfMethod wcfMethod,String methodName,com.easywsdl.exksoap2.ws_specifications.profile.WS_Profile profile) throws java.lang.Exception
+    protected java.lang.Object execute(ODDIWcfMethod wcfMethod,String methodName,com.easywsdl.exksoap2.ws_specifications.profile.WS_Profile profile) throws java.lang.Exception
     {
         org.ksoap2.transport.Transport __httpTransport=createTransport();
         __httpTransport.debug=enableLogging;
-        ABIExtendedSoapSerializationEnvelope __envelope=wcfMethod.CreateSoapEnvelope();
+        ODDExtendedSoapSerializationEnvelope __envelope=wcfMethod.CreateSoapEnvelope();
         try
         {
             sendRequest(methodName, __envelope, __httpTransport,profile);
@@ -230,7 +230,7 @@ public class ABIKPSPublicSoap12
     }
 
 
-    protected java.lang.Exception convertToException(org.ksoap2.SoapFault fault,ABIExtendedSoapSerializationEnvelope envelope)
+    protected java.lang.Exception convertToException(org.ksoap2.SoapFault fault,ODDExtendedSoapSerializationEnvelope envelope)
     {
         org.ksoap2.SoapFault newException = fault;
         return newException;

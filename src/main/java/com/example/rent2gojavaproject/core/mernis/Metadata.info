@@ -4,7 +4,7 @@
     <Version>8.0.1.1</Version>
     <AccountType>Basic</AccountType>
     <LibrariesFolder>easywsdl</LibrariesFolder>
-    <MainClass>ABIKPSPublicSoap</MainClass>
+    <MainClass>ODDKPSPublicSoap</MainClass>
   </Info>
   <Settings>
     <Url>https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx</Url>
@@ -29,21 +29,22 @@
     <DetectDictionaries>false</DetectDictionaries>
   </Settings>
   <Files>
-    <File>ABIDateTimeConverter.java</File>
-    <File>ABIExtendedSoapSerializationEnvelope.java</File>
-    <File>ABIHelper.java</File>
-    <File>ABIKPSPublicSoap.java</File>
-    <File>ABIKPSPublicSoap12.java</File>
-    <File>ABIMarshalGuid.java</File>
-    <File>ABIStandardDateTimeConverter.java</File>
-    <File>docs/Html/ABIKPSPublicSoap.html</File>
-    <File>docs/Html/ABIKPSPublicSoap12.html</File>
-    <File>docs/Html/ABIKPSPublicSoap12_methods.html</File>
-    <File>docs/Html/ABIKPSPublicSoap_methods.html</File>
     <File>docs/Html/MTOMTransfer.html</File>
+    <File>docs/Html/ODDKPSPublicSoap.html</File>
+    <File>docs/Html/ODDKPSPublicSoap12.html</File>
+    <File>docs/Html/ODDKPSPublicSoap12_methods.html</File>
+    <File>docs/Html/ODDKPSPublicSoap_methods.html</File>
     <File>docs/Html/Tips.html</File>
     <File>docs/Index.html</File>
     <File>docs/Styles/Blueprint_Styles/Style.css</File>
+    <File>Metadata.info</File>
+    <File>ODDDateTimeConverter.java</File>
+    <File>ODDExtendedSoapSerializationEnvelope.java</File>
+    <File>ODDHelper.java</File>
+    <File>ODDKPSPublicSoap.java</File>
+    <File>ODDKPSPublicSoap12.java</File>
+    <File>ODDMarshalGuid.java</File>
+    <File>ODDStandardDateTimeConverter.java</File>
   </Files>
   <Libraries>
     <File>ExKsoap2-1.0.4.0.jar</File>

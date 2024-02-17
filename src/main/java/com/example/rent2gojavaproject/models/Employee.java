@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+
 @SQLDelete(sql = "update employees SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterEmployee", parameters = @ParamDef(name = "isActive", type = Boolean.class))
@@ -48,6 +50,10 @@ public class Employee extends BaseEntity {
 
     //  Created empty constructor for default value.
     public Employee() {
+        this.user = new User(1);
+    }
+    public Employee(int id) {
+        this.id = id;
         this.user = new User(1);
     }
 }

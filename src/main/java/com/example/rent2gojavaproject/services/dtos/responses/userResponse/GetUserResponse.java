@@ -47,5 +47,7 @@ public class GetUserResponse {
 
     private String imageUrl;
 
+    private int employeeId;
+
 
 }

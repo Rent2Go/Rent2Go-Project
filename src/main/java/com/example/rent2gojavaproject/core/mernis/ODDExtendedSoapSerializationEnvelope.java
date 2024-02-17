@@ -10,7 +10,7 @@ package com.example.rent2gojavaproject.core.mernis;
 // To use it in commercial project, you need to generate this class again with Premium account.
 // Check https://EasyWsdl.com/Payment/PremiumAccountDetails to see all benefits of Premium account.
 //
-// Licence: B9697BD6C5D691AB739CCF66202DE654CF97FD7764BBD0304894667E57ED51C14F0E4F2188B98CEE27DA8E651F4F1184F823E9029D89C08BE09EB718921F0394
+// Licence: D6E366107747515D7E4D93874C676CA47830C15A8588AAA06FC383DB97C117B669D42C1726B593F7EC1135AC722A10FD871E794454F8AA23D4B7600E9A2EB029
 //------------------------------------------------------------------------
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.*;
@@ -32,13 +32,13 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 
-class ABISoapFaultEx extends org.ksoap2.SoapFault
+class ODDSoapFaultEx extends org.ksoap2.SoapFault
 {
     public Object fault;
 }
 
 //If you have a compilation error here then you have to add a reference to ExKsoap2.jar to your project (you can find it in Libs folder in the generated zip file)
-public class ABIExtendedSoapSerializationEnvelope extends com.easywsdl.exksoap2.serialization.ExSoapSerializationEnvelope {
+public class ODDExtendedSoapSerializationEnvelope extends com.easywsdl.exksoap2.serialization.ExSoapSerializationEnvelope {
     static HashMap< java.lang.String,java.lang.Class> classNames = new HashMap< java.lang.String, java.lang.Class>();
     static HashMap< java.lang.String,java.lang.String> elementNames = new HashMap< java.lang.String, java.lang.String>();
     public static String TAG="easyWSDL";
@@ -48,31 +48,31 @@ public class ABIExtendedSoapSerializationEnvelope extends com.easywsdl.exksoap2.
     public boolean enableLogging;
     public boolean createClassesForAny = false;
 
-    public static void setDateTimeConverter(ABIDateTimeConverter converter)
+    public static void setDateTimeConverter(ODDDateTimeConverter converter)
     {
         if(converter==null)
         {
-            converter = new ABIStandardDateTimeConverter();
+            converter = new ODDStandardDateTimeConverter();
         }
         dateTimeConverter=converter;
     }
 
-    public static ABIDateTimeConverter getDateTimeConverter()
+    public static ODDDateTimeConverter getDateTimeConverter()
     {
         return dateTimeConverter;
     }
 
-    private static ABIDateTimeConverter dateTimeConverter = new ABIStandardDateTimeConverter();
+    private static ODDDateTimeConverter dateTimeConverter = new ODDStandardDateTimeConverter();
 
-    public ABIExtendedSoapSerializationEnvelope() {
+    public ODDExtendedSoapSerializationEnvelope() {
         this(SoapEnvelope.VER11);
     }
 
-    public ABIExtendedSoapSerializationEnvelope(int soapVersion) {
+    public ODDExtendedSoapSerializationEnvelope(int soapVersion) {
         super(soapVersion);
         implicitTypes = true;
         setAddAdornments(false);
-        new ABIMarshalGuid().register(this);
+        new ODDMarshalGuid().register(this);
         new MarshalFloat().register(this);
     }
 
@@ -126,7 +126,7 @@ public class ABIExtendedSoapSerializationEnvelope extends com.easywsdl.exksoap2.
         if (!type.multiRef && qName[2] == null )
         {
             if (!implicitTypes || (obj.getClass() != type.type && !(obj instanceof Vector ) && type.type!=java.lang.String.class  )) {
-                java.lang.String xmlName=ABIHelper.getKeyByValue(classNames,obj.getClass());
+                java.lang.String xmlName=ODDHelper.getKeyByValue(classNames,obj.getClass());
                 if(xmlName!=null) {
                     java.lang.String[] parts = xmlName.split("\\^\\^");
                     java.lang.String prefix = writer.getPrefix(parts[0], true);
@@ -249,7 +249,7 @@ public class ABIExtendedSoapSerializationEnvelope extends com.easywsdl.exksoap2.
     }
     private Object createObject(Object soap, Class cl) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Object obj=cl.newInstance();
-        Method ctor = obj.getClass().getMethod("loadFromSoap",Object.class,ABIExtendedSoapSerializationEnvelope.class);
+        Method ctor = obj.getClass().getMethod("loadFromSoap",Object.class,ODDExtendedSoapSerializationEnvelope.class);
         ctor.invoke(obj,soap,this);
         return obj;
     }
@@ -368,7 +368,7 @@ public class ABIExtendedSoapSerializationEnvelope extends com.easywsdl.exksoap2.
         {
             return "boolean";
         }
-        java.lang.String xmlName=ABIHelper.getKeyByValue(classNames,obj);
+        java.lang.String xmlName=ODDHelper.getKeyByValue(classNames,obj);
         if(xmlName==null)
         {
             return obj;
