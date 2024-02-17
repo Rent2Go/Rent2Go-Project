@@ -54,5 +54,13 @@ public class RentalsController {
     public Result deleteRental(@PathVariable int id) {
         return rentalService.deleteRental(id);
     }
+
+    @GetMapping("/uniquediscount/{discountId}")
+    public String checkUniqueDiscount(@RequestParam("customer") int customerId, @PathVariable int discountId) {
+
+        return this.rentalService.checkUniqueDiscount(customerId, discountId);
+    }
+
 }
+
 

@@ -6,6 +6,8 @@ import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRe
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -21,4 +23,10 @@ public interface RentalService {
     Result deleteRental(int id);
 
     DataResult<Iterable<GetRentalListResponse>> findAll(boolean isActive);
+
+
+
+
+    String checkUniqueDiscount( int customerId, int discountId);
+
 }
