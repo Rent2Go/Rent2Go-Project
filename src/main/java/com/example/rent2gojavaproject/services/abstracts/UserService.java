@@ -21,7 +21,7 @@ public interface UserService {
 
     DataResult<GetUserResponse> getById(int id);
 
-    String addUser(User user) throws Exception;
+    List<String > addUser(User user) throws Exception;
 
     Result  createUser(AddUserRequest user , MultipartFile file) throws IOException;
 

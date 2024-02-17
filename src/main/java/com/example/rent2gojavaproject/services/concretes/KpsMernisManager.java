@@ -1,10 +1,11 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.exceptions.IdCardNotValidException;
-import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
-import com.example.rent2gojavaproject.core.mernis.ABIKPSPublicSoap;
+
+
+import com.example.rent2gojavaproject.core.mernis.ODDKPSPublicSoap;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
-import com.example.rent2gojavaproject.core.utilities.results.DataResult;
+
 import com.example.rent2gojavaproject.services.abstracts.KpsMernisService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class KpsMernisManager implements KpsMernisService {
 
     @Override
     public Boolean tcKimlikDoğrula(Long TCKimlikNo, String Ad, String Soyad, Integer DogumYili) throws Exception {
-        ABIKPSPublicSoap abikpsPublicSoap = new ABIKPSPublicSoap();
+       ODDKPSPublicSoap abikpsPublicSoap = new ODDKPSPublicSoap();
        Boolean result =  abikpsPublicSoap.TCKimlikNoDogrula(TCKimlikNo,  Ad,  Soyad,  DogumYili);
 
        if(!result) {

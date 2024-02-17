@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.controllers;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.Discount;
 import com.example.rent2gojavaproject.services.abstracts.DiscountService;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.AddDiscountRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.discountRequest.UpdateDiscountRequest;
@@ -50,5 +51,11 @@ public class DiscountsController {
     @ResponseStatus(code = HttpStatus.OK)
     public Result deleteDiscount(@PathVariable int id) {
         return discountService.deleteDiscount(id);
+    }
+
+    @GetMapping("/code/{discountCode}")
+    public Discount findByDiscountCode(@PathVariable String discountCode) {
+
+        return this.discountService.findByDiscountCode( discountCode);
     }
 }

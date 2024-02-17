@@ -11,7 +11,7 @@ package com.example.rent2gojavaproject.core.mernis;
 // To use it in commercial project, you need to generate this class again with Premium account.
 // Check https://EasyWsdl.com/Payment/PremiumAccountDetails to see all benefits of Premium account.
 //
-// Licence: B9697BD6C5D691AB739CCF66202DE654CF97FD7764BBD0304894667E57ED51C14F0E4F2188B98CEE27DA8E651F4F1184F823E9029D89C08BE09EB718921F0394
+// Licence: D6E366107747515D7E4D93874C676CA47830C15A8588AAA06FC383DB97C117B669D42C1726B593F7EC1135AC722A10FD871E794454F8AA23D4B7600E9A2EB029
 //------------------------------------------------------------------------
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +19,7 @@ import java.util.Locale;
 
 
 
-public class ABIStandardDateTimeConverter implements ABIDateTimeConverter
+public class ODDStandardDateTimeConverter implements ODDDateTimeConverter
 {
     public java.util.TimeZone TimeZone=java.util.TimeZone.getTimeZone("UTC");
 

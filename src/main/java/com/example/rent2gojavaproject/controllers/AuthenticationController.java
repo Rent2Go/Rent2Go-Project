@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.controllers;
 
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.services.concretes.AuthenticationService;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.RefreshTokenRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.SignInRequest;
@@ -22,7 +23,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public String signup(@Valid @RequestBody SignUpRequest request, HttpServletRequest servletRequest) throws Exception {
+    public DataResult<String> signup(@Valid @RequestBody SignUpRequest request, HttpServletRequest servletRequest) throws Exception {
         return authenticationService.signup(request, servletRequest);
     }
 
