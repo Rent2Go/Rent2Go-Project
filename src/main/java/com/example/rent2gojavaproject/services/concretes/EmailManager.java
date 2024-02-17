@@ -3,6 +3,7 @@ package com.example.rent2gojavaproject.services.concretes;
 import com.example.rent2gojavaproject.core.utilities.constants.EmailConstants;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.dtos.requests.contactFormRequest.ContactFormRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.reservationDetailRequest.AddReservationDetailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -75,6 +76,45 @@ public class EmailManager implements EmailSenderService {
 
         mailSender.send(message);
     }
+
+    public void reservationDetailEmail(AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setFrom(EmailConstants.EMAIL_FROM.getValue(), EmailConstants.EMAIL_FROM_NAME.getValue());
+        helper.setTo(form.getEmail());
+        helper.setSubject(EmailConstants.RESERVATION_DETAIL_SUBJECT.getValue());
+
+        String htmlMsg = String.format(EmailConstants.RESERVATION_DETAIL_HTML_CONTENT.getValue(),
+                form.getName(),
+                form.getEmail(),
+                form.getPhone(),
+                form.getStartDate(),
+                form.getEndDate(),
+                form.getTotalDay(),
+                form.getPlate(),
+                form.getCarInfo(),
+                form.getTotalPrice(),
+                form.getName());
+
+        String textMsg = String.format(EmailConstants.RESERVATION_DETAIL_TEXT_CONTENT.getValue(),
+                form.getName(),
+                form.getEmail(),
+                form.getPhone(),
+                form.getStartDate(),
+                form.getEndDate(),
+                form.getTotalDay(),
+                form.getPlate(),
+                form.getCarInfo(),
+                form.getTotalPrice(),
+                form.getName());
+
+        helper.setText(textMsg, htmlMsg);
+
+        mailSender.send(message);
+    }
+
+
 
 
 }
