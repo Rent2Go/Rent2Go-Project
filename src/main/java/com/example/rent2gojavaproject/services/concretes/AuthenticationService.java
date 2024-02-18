@@ -62,7 +62,7 @@ public class AuthenticationService {
                 .build();
 
 
-        List<String> result = userService.addUser(user);
+        List<String> result = userService.addUserWithoutMernis(user);
         String link = UrlPathConstants.BACKEND_URL.getPath() + UrlPathConstants.CONFIRMATION_URL.getPath() + result.get(1);
         emailSender.buildEmail(user.getName() + " " + user.getSurname(), request.getEmail(), link);
 
