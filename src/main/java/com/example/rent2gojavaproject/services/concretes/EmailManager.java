@@ -1,6 +1,7 @@
 package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.constants.EmailConstants;
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.models.MailConfiguration;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.MailConfigurationService;
@@ -29,13 +30,13 @@ public class EmailManager implements EmailSenderService {
     private final MailConfigurationService mailConfigurationService;
 
     private JavaMailSender getJavaMailSender() {
-        GetMailConfigurationResponse mailConfiguration = mailConfigurationService.getMailConfiguration();
+        DataResult<GetMailConfigurationResponse> mailConfiguration = mailConfigurationService.getMailConfiguration();
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(mailConfiguration.getHost());
-        mailSender.setPort(mailConfiguration.getPort());
-        mailSender.setUsername(mailConfiguration.getUsername());
-        mailSender.setPassword(mailConfiguration.getPassword());
+        mailSender.setHost(mailConfiguration.getData().getHost());
+        mailSender.setPort(mailConfiguration.getData().getPort());
+        mailSender.setUsername(mailConfiguration.getData().getUsername());
+        mailSender.setPassword(mailConfiguration.getData().getPassword());
 
         return mailSender;
     }

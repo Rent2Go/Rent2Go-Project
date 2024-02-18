@@ -136,6 +136,30 @@ public class UserManager implements UserService {
     }
 
     @Override
+    public List<String> addUserWithoutMernis(User user) throws Exception {
+
+        List<String> result = new ArrayList<>();
+        businessRules.checkIfExistsByEmail(user.getEmail());
+        businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
+
+        this.userRepository.save(user);
+
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(30),
+                user
+        );
+        tokenService.saveConfirmationToken(
+                confirmationToken);
+        result.add(String.valueOf(user.getId()));
+        result.add(token);
+        return result;
+    }
+
+    @Override
     public String addDefaultUser(User user) throws Exception {
 
         businessRules.checkIfExistsByEmail(user.getEmail());

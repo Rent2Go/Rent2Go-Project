@@ -9,7 +9,7 @@ import com.example.rent2gojavaproject.services.dtos.responses.mailConfigurationR
 
 public interface MailConfigurationService {
 
-     GetMailConfigurationResponse getMailConfiguration();
+    DataResult<GetMailConfigurationResponse> getMailConfiguration();
 
     Result updateMailConfiguration(UpdateMailConfigurationRequest request);
 
