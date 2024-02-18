@@ -28,10 +28,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.example.rent2gojavaproject.core.utilities.constants.UrlPathConstants.CLIENT_URL;
 
 @Service
 @RequiredArgsConstructor
@@ -131,24 +134,22 @@ public class AuthenticationService {
     }
 
 
-    public String confirmToken(String token) {
+    public RedirectView confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
                         new NotFoundException(MessageConstants.TOKEN_NOT_FOUND.getMessage()));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            return MessageConstants.EMAIL_ALREADY_VERIFIED.getMessage();
+            return new RedirectView(CLIENT_URL.getPath()+"already-verified");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-
             confirmationTokenService.deleteConfirmationToken(token);
             userService.hardDeleteUser(confirmationToken.getUser().getId());
-            return MessageConstants.TOKEN_EXPIRED.getMessage();
-
+            return new RedirectView(CLIENT_URL.getPath()+"token-expired");
         }
 
         confirmationTokenService.setConfirmedAt(token);
@@ -157,7 +158,7 @@ public class AuthenticationService {
 
         confirmationTokenService.deleteConfirmationToken(token);
 
-        return MessageConstants.EMAIL_VERIFICATION_SUCCESS.getMessage();
+        return new RedirectView(CLIENT_URL.getPath()+"email-verification-successful");
     }
 
 
