@@ -3,7 +3,9 @@ package com.example.rent2gojavaproject.services.concretes;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.mappers.ModelMapperService;
+import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
 import com.example.rent2gojavaproject.models.MailConfiguration;
 import com.example.rent2gojavaproject.repositories.MailConfigurationRepository;
@@ -24,13 +26,13 @@ public class MailConfigurationManager implements MailConfigurationService {
 
 
     @Override
-    public GetMailConfigurationResponse getMailConfiguration() {
+    public DataResult<GetMailConfigurationResponse> getMailConfiguration() {
         MailConfiguration mailConfiguration = repository.findById(1)
                 .orElseThrow(() -> new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
 
         GetMailConfigurationResponse response = mapperService.forResponse().map(mailConfiguration, GetMailConfigurationResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
     @Override
