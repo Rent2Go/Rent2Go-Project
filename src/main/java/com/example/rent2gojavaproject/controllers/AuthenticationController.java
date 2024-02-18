@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
 
@@ -33,7 +34,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(path = "/confirm")
-    public String confirm(@RequestParam("token") String token) {
+    public RedirectView confirm(@RequestParam("token") String token) {
         return authenticationService.confirmToken(token);
     }
 
