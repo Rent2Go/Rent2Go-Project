@@ -1,8 +1,10 @@
 package com.example.rent2gojavaproject.services.dtos.responses.userResponse;
 
 import com.example.rent2gojavaproject.models.City;
+import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.District;
 import com.example.rent2gojavaproject.services.dtos.responses.cityResponse.GetCityListResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.districtResponse.GetDistrictListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeResponse;
@@ -45,7 +47,9 @@ public class GetUserListResponse {
 
     private String imageUrl;
 
-    private int employeeId;
+    private GetCustomerResponse customer;
+
+    private GetEmployeeResponse employee;
 
 
 }

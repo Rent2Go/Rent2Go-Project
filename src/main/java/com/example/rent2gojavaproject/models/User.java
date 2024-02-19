@@ -76,13 +76,13 @@ public class User extends BaseEntity implements UserDetails {
     private District district;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Customer> customers;
+    private Customer customer;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Employee> employees;
+    private Employee employees;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore

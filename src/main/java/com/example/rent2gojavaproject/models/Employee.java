@@ -34,8 +34,9 @@ public class Employee extends BaseEntity {
     private double salary;
 
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "user_id", columnDefinition = "integer default 1", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
