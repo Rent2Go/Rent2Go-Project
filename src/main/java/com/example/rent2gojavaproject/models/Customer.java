@@ -28,8 +28,9 @@ public class Customer extends BaseEntity  {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private User user;
 
 
