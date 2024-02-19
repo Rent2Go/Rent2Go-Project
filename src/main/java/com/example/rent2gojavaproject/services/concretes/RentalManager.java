@@ -1,5 +1,6 @@
 package com.example.rent2gojavaproject.services.concretes;
 
+import com.example.rent2gojavaproject.core.exceptions.DiscountNotUniqueException;
 import com.example.rent2gojavaproject.core.exceptions.NotFoundException;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.core.utilities.constants.HibernateConstants;
@@ -80,9 +81,9 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result addRental(AddRentalRequest addRentalRequest) {
-        /*Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
+        Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
 
-        String discountCode = addRentalRequest.getDiscountCode();
+        String discountCode = addRentalRequest.getDiscount().getDiscountCode();
         Discount defaultDiscount = businessRules.getDiscountByCodeOrDefault(discountCode);
 
         businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId());
@@ -97,7 +98,7 @@ public class RentalManager implements RentalService {
         rental.setTotalPrice(totalPrice);
 
         rental.setStartKilometer(car.getKilometer());
-        rentalRepository.save(rental);*/
+        rentalRepository.save(rental);
 
         return new SuccessResult(MessageConstants.ADD.getMessage());
     }
@@ -133,7 +134,12 @@ public class RentalManager implements RentalService {
     }
 
     @Override
-    public String checkUniqueDiscount(int customerId, int discountId) {
-        return this.rentalRepository.checkUniqueDiscount(customerId, discountId);
+    public boolean  findByCustomerIdAndDiscountId(int customerId, int discountId) {
+        boolean result = this.rentalRepository.existsByCustomerIdAndDiscountId(customerId, discountId);
+
+        if (result){
+            throw new DiscountNotUniqueException(MessageConstants.DISCOUNT_NOT_UNIQUE.getMessage());
+        }
+        return result;
     }
 }

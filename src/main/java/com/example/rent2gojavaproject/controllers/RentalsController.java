@@ -56,9 +56,9 @@ public class RentalsController {
     }
 
     @GetMapping("/uniquediscount/{discountId}")
-    public String checkUniqueDiscount(@RequestParam("customer") int customerId, @PathVariable int discountId) {
+    public boolean findByCustomerIdAndDiscountId(@RequestParam("customer") int customerId, @PathVariable int discountId) {
 
-        return this.rentalService.checkUniqueDiscount(customerId, discountId);
+        return this.rentalService.findByCustomerIdAndDiscountId(customerId, discountId);
     }
 
 }
