@@ -21,7 +21,6 @@ import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangeP
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
-import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -102,11 +101,11 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public DataResult<GetUserResponse> getById(int id) {
+    public DataResult<GetUserListResponse> getById(int id) {
 
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageConstants.USER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
-        GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
+        GetUserListResponse response = this.mapperService.forResponse().map(user, GetUserListResponse.class);
 
         return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
@@ -117,7 +116,7 @@ public class UserManager implements UserService {
         businessRules.checkIfExistsByEmail(user.getEmail());
         businessRules.checkIfExistsPhoneNumber(user.getPhoneNumber());
 
-        this.kpsMernisService.tcKimlikDoğrula(Long.parseLong(user.getIdCardNumber()),user.getName(),user.getSurname(),user.getBirthDate().getYear());
+        this.kpsMernisService.tcKimlikDoğrula(Long.parseLong(user.getIdCardNumber()), user.getName(), user.getSurname(), user.getBirthDate().getYear());
         User createdUser = this.userRepository.save(user);
 
 
@@ -160,7 +159,7 @@ public class UserManager implements UserService {
 
     @Override
     public Result createUser(AddUserRequest user, MultipartFile file) throws IOException {
-        District  district=  this.districtService.getByIdDist(user.getDistrictId());
+        District district = this.districtService.getByIdDist(user.getDistrictId());
         user.setCityId(district.getCity().getId());
         businessRules.checkIfExistsByIdCarNumber(user.getIdCardNumber());
         businessRules.checkIfExistsByEmail(user.getEmail());
@@ -177,11 +176,11 @@ public class UserManager implements UserService {
 
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
-        District  district=  this.districtService.getByIdDist(updateUserRequest.getDistrictId());
+        District district = this.districtService.getByIdDist(updateUserRequest.getDistrictId());
         updateUserRequest.setCityId(district.getCity().getId());
-        businessRules.checkIfExistsByIdCarNumber(updateUserRequest.getId(),updateUserRequest.getIdCardNumber());
-        businessRules.checkIfExistsByEmail(updateUserRequest.getId(),updateUserRequest.getEmail());
-        businessRules.checkIfExistsPhoneNumber(updateUserRequest.getId(),updateUserRequest.getPhoneNumber());
+        businessRules.checkIfExistsByIdCarNumber(updateUserRequest.getId(), updateUserRequest.getIdCardNumber());
+        businessRules.checkIfExistsByEmail(updateUserRequest.getId(), updateUserRequest.getEmail());
+        businessRules.checkIfExistsPhoneNumber(updateUserRequest.getId(), updateUserRequest.getPhoneNumber());
 
         this.userRepository.findById(updateUserRequest.getId())
                 .orElseThrow(() -> new NotFoundException(MessageConstants.USER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
@@ -274,9 +273,9 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public DataResult<GetUserResponse> getByEmail(String email) {
+    public DataResult<GetUserListResponse> getByEmail(String email) {
         User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
-        GetUserResponse response = this.mapperService.forResponse().map(user, GetUserResponse.class);
+        GetUserListResponse response = this.mapperService.forResponse().map(user, GetUserListResponse.class);
         return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 

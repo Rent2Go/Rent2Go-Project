@@ -38,12 +38,12 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetUserResponse> getUserById(@PathVariable int id) {
+    public DataResult<GetUserListResponse> getUserById(@PathVariable int id) {
         return userService.getById(id);
     }
 
     @GetMapping("/email")
-    public DataResult<GetUserResponse> getUserByEmail(@RequestParam("email") String email) {
+    public DataResult<GetUserListResponse> getUserByEmail(@RequestParam("email") String email) {
         return userService.getByEmail(email);
     }
     @PostMapping()

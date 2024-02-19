@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserService {
     DataResult<List<GetUserListResponse>> getAllUsers();
 
-    DataResult<GetUserResponse> getById(int id);
+    DataResult<GetUserListResponse> getById(int id);
 
     List<String > addUser(User user) throws Exception;
 
@@ -44,7 +44,7 @@ public interface UserService {
      String applicationUrl(HttpServletRequest request) ;
 
     User findByEmail(String email);
-   DataResult<GetUserResponse> getByEmail(String email);
+   DataResult<GetUserListResponse> getByEmail(String email);
 
     boolean existsByEmail(String email);
 
