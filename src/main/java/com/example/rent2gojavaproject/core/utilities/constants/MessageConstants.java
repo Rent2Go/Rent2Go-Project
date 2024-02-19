@@ -4,7 +4,7 @@ package com.example.rent2gojavaproject.core.utilities.constants;
 public enum MessageConstants {
 
     BRAND("Brand"), COLOR("Color"), CAR("Car"), CUSTOMER("Customer"), RENTAL("Rental"),
-    DISCOUNT("Discount"), EMPLOYEE("Employee"), MODEL("Model"), USER("User"), BILL("Bill"),
+    DISCOUNT("Discount"), EMPLOYEE("Employee"), MODEL("Model"), USER("User"), BILL("Bill"),PAYMENT("Payment"),
 
     ADD("The addition operation was successful!"),
     UPDATE("The update operation was successful!"),
@@ -33,7 +33,8 @@ public enum MessageConstants {
     EMAIL_ALREADY_VERIFIED("Your email address has already been verified, please log in."),
     TOKEN_EXPIRED("Your email verification link is invalid or has expired. Please, sign up again."),
     EMAIL_VERIFICATION_SUCCESS("Email verification successful! Now you can log in to your account."),
-    SIGNUP_SUCCESS("Success! Please, check your email to confirm your account.");
+    SIGNUP_SUCCESS("Success! Please, check your email to confirm your account."),
+    DISCOUNT_NOT_UNIQUE("The discount code entered has been used before.");
 
 
 
