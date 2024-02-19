@@ -49,5 +49,7 @@ public class GetUserListResponse {
 
     private GetCustomerResponse customer;
 
+    private GetEmployeeResponse employee;
+
 
 }

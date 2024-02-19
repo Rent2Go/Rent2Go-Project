@@ -13,6 +13,6 @@ public class GetBrandListResponse {
 
     private String name;
 
-    private GetBrandResponse brand;
+
 
 }
