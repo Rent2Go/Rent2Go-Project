@@ -80,7 +80,7 @@ public class RentalManager implements RentalService {
     }
 
     @Override
-    public Result addRental(AddRentalRequest addRentalRequest) {
+    public DataResult<Integer> addRental(AddRentalRequest addRentalRequest) {
         Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
 
         String discountCode = addRentalRequest.getDiscount().getDiscountCode();
@@ -98,9 +98,9 @@ public class RentalManager implements RentalService {
         rental.setTotalPrice(totalPrice);
 
         rental.setStartKilometer(car.getKilometer());
-        rentalRepository.save(rental);
+        Rental result =rentalRepository.save(rental);
 
-        return new SuccessResult(MessageConstants.ADD.getMessage());
+        return new SuccessDataResult(result.getId() , MessageConstants.ADD.getMessage());
     }
 
     @Override

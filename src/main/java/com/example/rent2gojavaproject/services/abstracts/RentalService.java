@@ -18,7 +18,7 @@ public interface RentalService {
 
     DataResult<GetRentalResponse> getById(int id);
 
-    Result addRental(AddRentalRequest addRentalRequest);
+    DataResult<Integer> addRental(AddRentalRequest addRentalRequest);
 
     Result updateRental(UpdateRentalRequest updateRentalRequest);
 

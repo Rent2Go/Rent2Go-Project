@@ -39,7 +39,8 @@ public class RentalsController {
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Result createRental(@RequestBody @Valid AddRentalRequest addRentalRequest) {
+    public DataResult<Integer> createRental(@RequestBody @Valid AddRentalRequest addRentalRequest) {
+
         return rentalService.addRental(addRentalRequest);
     }
 

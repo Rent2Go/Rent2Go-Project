@@ -14,10 +14,10 @@ import java.time.LocalDate;
 @Table(name = "rentals")
 @Data
 @AllArgsConstructor
-@SQLDelete(sql = "update rentals SET IS_ACTIVE = false WHERE id=?")
+/*@SQLDelete(sql = "update rentals SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterRental", parameters = @ParamDef(name = "isActive", type = Boolean.class))
-@Filter(name = "isActiveFilterRental", condition = "IS_ACTIVE = :isActive")
+@Filter(name = "isActiveFilterRental", condition = "IS_ACTIVE = :isActive")*/
 public class Rental extends BaseEntity {
 
     @Id

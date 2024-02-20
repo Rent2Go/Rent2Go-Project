@@ -21,7 +21,7 @@ public class AddRentalRequest {
     private LocalDate startDate;
 
     @NotNull(message = "End Date must be entered !!")
-    @Future(message = "End Date must be in the future !!")
+    //@Future(message = "End Date must be in the future !!")
     private LocalDate endDate;
 
     @NotNull(message = "Car ID must be entered !!")
@@ -31,6 +31,7 @@ public class AddRentalRequest {
     private int customerId;
 
     private Discount discount;
+
 
 
 }
