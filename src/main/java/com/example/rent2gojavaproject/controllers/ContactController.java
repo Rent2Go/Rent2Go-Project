@@ -19,5 +19,8 @@ public class ContactController {
     @PostMapping("/send-contact-email")
     public void sendEmail(@RequestBody ContactFormRequest contactForm) throws MessagingException, UnsupportedEncodingException {
         emailService.sendContactEmail(contactForm);
+        emailService.sendThankYouEmail(contactForm);
     }
+
+
 }
