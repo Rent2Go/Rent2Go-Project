@@ -87,4 +87,10 @@ public class PageSettingsManager implements PageSettingsService {
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
+
+    @Override
+    public Result addDefaultSetting (PageSettings pageSettings){
+        this.pageSettingsRepository.save(pageSettings);
+        return new SuccessResult(MessageConstants.ADD.getMessage());
+    }
 }
