@@ -108,7 +108,7 @@ public class DiscountManager implements DiscountService {
 
     @Override
     public Discount findByDiscountCode(String discountCode) {
-        Discount discount = this.discountRepository.findByDiscountCode(discountCode).orElseThrow(() -> new NotFoundException(MessageConstants.NOT_FOUND.getMessage()));
+        Discount discount = this.discountRepository.getByDiscountCode(discountCode);
         return discount;
     }
 
