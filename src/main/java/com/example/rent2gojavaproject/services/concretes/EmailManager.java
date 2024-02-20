@@ -110,6 +110,39 @@ public class EmailManager implements EmailSenderService {
         mailSender.send(message);
     }
 
+    public void sendThankYouEmail(ContactFormRequest form) throws MessagingException, UnsupportedEncodingException {
+        JavaMailSender mailSender = getJavaMailSender();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setFrom("noreply@rentogo.com.tr","Rent2Go Company");
+        helper.setTo(form.getEmail());
+        helper.setSubject("Thank you for contacting us");
+
+        String htmlMsg = "<div style=\"font-family: Arial, sans-serif; color: #333;\">"
+                + "<p style=\"font-size: 18px;\">Dear " + form.getFirstName() + " " + form.getLastName() + ",</p>"
+                + "<p>We acknowledge the receipt of your message and extend our gratitude for your interest. Our relevant department is currently reviewing your inquiry and will provide you with a response promptly.</p>"
+                + "<p>We aim to get back to you within 2 days at the latest. Please rest assured that we are readily available to address any questions or requests you may have.</p>"
+                + "<p>Should you require further information about our company and the services we offer, please do not hesitate to contact us. We are here to assist you in the best possible manner.</p>"
+                + "<p><b>Your Message:</b> " + form.getMessage() + "</p>"
+                + "<p>Best Regards,</p>"
+                + "<p><b style=\"color: #007BFF;\">Rent2Go Team</b></p>"
+                + "</div>";
+
+        String textMsg = "Dear " + form.getFirstName() + " " + form.getLastName() + ",\n"
+                + "We acknowledge the receipt of your message and extend our gratitude for your interest. Our relevant department is currently reviewing your inquiry and will provide you with a response promptly.\n"
+                + "We aim to get back to you within 2 days at the latest. Please rest assured that we are readily available to address any questions or requests you may have.\n"
+                + "Should you require further information about our company and the services we offer, please do not hesitate to contact us. We are here to assist you in the best possible manner.\n"
+                + "Your Message: " + form.getMessage() + "\n"
+                + "Best Regards,\n"
+                + "Rent2Go Team";
+
+        helper.setText(textMsg, htmlMsg);
+
+        mailSender.send(message);
+    }
+
     public void reservationDetailEmail(AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException {
         JavaMailSender mailSender = getJavaMailSender();
 
