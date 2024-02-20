@@ -71,7 +71,7 @@ public class CarsController {
     }
 
     @GetMapping("/getallisactive")
-    public DataResult<Iterable<GetCarListResponse>> findAll(@RequestParam("active") boolean isActive) {
+    public DataResult<Iterable<GetCarListResponse>> findAll(@RequestParam("isActive") boolean isActive) {
 
         return this.carService.findAll(isActive);
     }
