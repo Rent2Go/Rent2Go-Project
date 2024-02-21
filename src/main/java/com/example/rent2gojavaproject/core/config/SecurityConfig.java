@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.filter.JwtAuthenticationFilter;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.services.concretes.UserManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,8 +39,127 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/**"
             };
+    private static final String[] GET_WHITE_LIST_URL = {"/api/brands",
+            "/api/brands/getallisactive",
+            "/api/brands/{id}",
+            "/api/cars/getallisactive",
+            "/api/cities",
+            "/api/colors",
+            "/api/colors/{id}",
+            "/api/colors/getallisactive",
+            "/api/districts",
+            "/api/models",
+            "/api/models/{id}",
+            "/api/models/getallisactive",
+            "/api/ourteams",
+            "/api/settings",
+            "/api/settings/{id}",
+            "/api/confirm",
+
+
+    };
+    private static final String[] GET_ADMIN_URL = {"/api/creditcard",
+            "/api/departments",
+            "/api/departments/{id}",
+            "/api/cars",
+            "/api/cars/{id}",
+            "/api/customers",
+            "/api/customers/getallisactive",
+            "/api/customers/{id}",
+            "/api/employees",
+            "/api/employees/{id}",
+            "/api/employees/getallisactive",
+            "/api/imagedata/{fileName}",
+            "/api/jobtitles",
+            "/api/jobtitles/{id}",
+            "/api/mail-configuration",
+            "/api/users",
+            "/api/users/getallisactive",
+
+    };
+    private static final String[] GET_USER_ADMIN_URL = {"/api/discounts",
+            "/api/discounts/getallisactive",
+            "/api/discounts/{id}",
+            "/api/discounts/code/{discountCode}",
+            "/api/rentals",
+            "/api/rentals/getallisactive",
+            "/api/rentals/{id}",
+            "/api/rentals/uniquediscount/{discountId}",
+            "/api/users/{id}",
+            "/api/users/email",
+    };
+    private static final String [] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
+            "/api/signup",
+            "/api/signin",
+
+    };
+
+    private static final String[] ADMIN_POST_URL = {"/api/brands",
+            "/api/cars",
+            "/api/cars/imageupdate",
+            "/api/colors",
+            "/api/send-contact-email",
+            "/api/customers",
+            "/api/discounts",
+            "/api/employees",
+            "/api/files/upload",
+            "/api/imagedata/upload",
+            "/api/mail-configuration",
+            "/api/models",
+            "/api/ourteams",
+            "/api/settings",
+            "/api/rentals",
+            "/api/reservation-details",
+            "/api/users",
+            "/api/users/imageupdate",
+            "/api/admins/signin",
+            "/api/creditcard",
+
+
+    };
+    private static final String[] ADMIN_USER_POST_URL = {
+            "/api/refreshtoken",
+            "/api/creditcard/checkpayment",
+
+    };
+    private static final String[] ADMIN_PUT_URL = {"/api/brands",
+            "/api/cars",
+            "/api/colors",
+            "/api/customers",
+            "/api/discounts",
+            "/api/employees",
+            "/api/mail-configuration",
+            "/api/models",
+            "/api/settings",
+            "/api/settings/settingsimage",
+            "/api/rentals",
+            "/api/creditcard",
+    };
+
+    private static final String[] ADMIN_DELETE_URL = {"/api/brands/{id}",
+            "/api/cars/{id}",
+            "/api/colors/{id}",
+            "/api/customers/{id}",
+            "/api/discounts/{id}",
+            "/api/employees/{id}",
+            "/api/models/{id}",
+            "/api/ourteams/{id}",
+            "/api/rentals/{id}",
+            "/api/users/{id}",
+            "/api/creditcard/{id}",
+    };
+    private static final String[] ADMIN_PATCH_URL = {
+            "/api/users",
+
+    };
+    private static final String[] ADMIN_USER_PATCH_URL = {"/api/users/changepassword",
+            "/api/cars/isactive/{id}",
+            "/api/users/isactive/{id}",
+    };
+
+
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserManager userService;
     private final PasswordEncoder passwordEncoder;
@@ -66,21 +186,20 @@ public class SecurityConfig {
 
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+
                         .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .requestMatchers(HttpMethod.GET, GET_WHITE_LIST_URL).permitAll()
+                        .requestMatchers(HttpMethod.GET, GET_ADMIN_URL).hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, GET_USER_ADMIN_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, ADMIN_PUT_URL).hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, POST_WHITE_LIST_URL).permitAll()
+                        .requestMatchers(HttpMethod.POST, ADMIN_POST_URL).hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, ADMIN_USER_POST_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_DELETE_URL).hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PATCH, ADMIN_PATCH_URL).hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PATCH, ADMIN_USER_PATCH_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 
-
-
-
-                        .requestMatchers(HttpMethod.POST, "api/signup",
-                                "api/signin",
-                                "api/users/resetpassword",
-                                "api/admins/signin",
-                                "api/refreshtoken").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "api/cars/isactive/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/confirm/**", "api/cars", "api/colors", "api/brands", "api/models", "api/cars/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/v1/test/users").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/users/changePassword").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/cars").permitAll()
                        .anyRequest().authenticated()
 
                 )
