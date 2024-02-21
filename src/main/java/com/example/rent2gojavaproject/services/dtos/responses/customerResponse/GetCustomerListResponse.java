@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class GetCustomerListResponse {
 
     private int id;
-    private GetUserResponse user;
+    private User user;
 
 }

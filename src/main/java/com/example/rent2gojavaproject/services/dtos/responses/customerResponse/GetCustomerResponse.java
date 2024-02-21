@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class GetCustomerResponse {
 
     private int id;
-    private int userId;
+    private User user;
 ;
 }
