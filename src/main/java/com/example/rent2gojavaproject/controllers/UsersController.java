@@ -88,7 +88,7 @@ public class UsersController {
         return "Success! Please, check your email to reset your password.";
     }
 
-    @PostMapping("/changepassword")
+    @PatchMapping("/changepassword")
     public String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
 
         return userService.changePassword(changePasswordRequest);
