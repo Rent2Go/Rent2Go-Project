@@ -61,6 +61,11 @@ public class RentalsController {
 
         return this.rentalService.findByCustomerIdAndDiscountId(customerId, discountId);
     }
+    @GetMapping("/getCustomerrentals")
+    public DataResult<List<GetRentalListResponse>> findByEmployeeId(@RequestParam("id") int customerId) {
+
+        return   this.rentalService.findByEmployeeId(customerId);
+    }
 
 }
 

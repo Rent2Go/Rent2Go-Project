@@ -19,7 +19,7 @@ public class AddReservationDetailRequest {
     private String totalDay;
     private String plate;
     private String carInfo;
-    private String totalPrice;
+    private Double totalPrice;
 
 
 }

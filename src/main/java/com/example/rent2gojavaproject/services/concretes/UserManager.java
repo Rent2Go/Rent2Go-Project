@@ -16,10 +16,7 @@ import com.example.rent2gojavaproject.models.District;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import com.example.rent2gojavaproject.services.abstracts.*;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.*;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
 import jakarta.persistence.EntityManager;
@@ -30,6 +27,7 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,6 +58,11 @@ public class UserManager implements UserService {
 
     @Value("${client.server}")
     String clientServer;
+
+    public static boolean checkPassword(String plainPassword, String encryptedPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(plainPassword, encryptedPassword);
+    }
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -180,7 +183,6 @@ public class UserManager implements UserService {
         return token;
     }
 
-
     @Override
     public Result createUser(AddUserRequest user, MultipartFile file) throws IOException {
         District district = this.districtService.getByIdDist(user.getDistrictId());
@@ -197,7 +199,6 @@ public class UserManager implements UserService {
         return new SuccessResult(MessageConstants.ADD.getMessage());
     }
 
-
     @Override
     public Result updateUser(UpdateUserRequest updateUserRequest) {
         District district = this.districtService.getByIdDist(updateUserRequest.getDistrictId());
@@ -212,6 +213,30 @@ public class UserManager implements UserService {
         this.userRepository.save(user);
 
 
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+    @Override
+    public Result UpdateUserAccountSettings(int id, AccountSettingsRequest request) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+        user.setName(request.getName());
+        user.setSurname(request.getSurname());
+        user.setBirthDate(request.getBirthDate());
+        user.setPhoneNumber(request.getPhoneNumber());
+        this.userRepository.save(user);
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+    @Override
+    public Result UpdateUserLocation(int id, UpdateUserLocationRequest request) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+        User copyUser = this.mapperService.forRequest().map(request, User.class);
+        user.setCity(copyUser.getCity());
+        user.setDistrict(copyUser.getDistrict());
+        user.setAddress(copyUser.getAddress());
+        this.userRepository.save(user);
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 
@@ -271,6 +296,7 @@ public class UserManager implements UserService {
         emailSenderService.sendResetPasswordEmail(user.getName() + " " + user.getSurname(), resetPasswordRequest.getEmail(), link);
     }
 
+    @Override
     public String changePassword(ChangePasswordRequest changePasswordRequest) {
 
         userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
@@ -278,6 +304,18 @@ public class UserManager implements UserService {
 
 
         return MessageConstants.PASSWORD_CHANGED.getMessage();
+
+    }
+    @Override
+    public Result profilPageChangePassword(int id, ProfilePageChangePasswordRequest request) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+        this.businessRules.checkChangePassword(request.getOldPassword(),user.getPassword());
+        user.setPassword(this.passwordEncoder.encode(request.getPassword()));
+        this.userRepository.save(user);
+
+
+        return new SuccessResult(MessageConstants.PASSWORD_CHANGED.getMessage());
 
     }
 
@@ -307,4 +345,5 @@ public class UserManager implements UserService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
 }

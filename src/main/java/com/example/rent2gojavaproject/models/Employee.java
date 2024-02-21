@@ -57,4 +57,16 @@ public class Employee extends BaseEntity {
         this.id = id;
         this.user = new User(1);
     }
+
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", salary=" + salary +
+                ", user=" + (user != null ? user.getId() : null) +
+                ", jobTitle=" + (jobTitle != null ? jobTitle.getName() : null) +
+                '}';
+    }
+
 }

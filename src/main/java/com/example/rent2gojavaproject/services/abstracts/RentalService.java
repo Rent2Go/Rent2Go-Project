@@ -28,7 +28,7 @@ public interface RentalService {
 
     boolean findByCustomerIdAndDiscountId(int customerId, int discountId);
 
-
+    DataResult<List<GetRentalListResponse>> findByEmployeeId(int userId);
    // String checkUniqueDiscount( int customerId, int discountId);
 
 }

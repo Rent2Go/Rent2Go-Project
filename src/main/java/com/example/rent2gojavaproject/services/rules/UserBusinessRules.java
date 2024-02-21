@@ -1,10 +1,12 @@
 package com.example.rent2gojavaproject.services.rules;
 
 import com.example.rent2gojavaproject.core.exceptions.AlreadyExistsException;
+import com.example.rent2gojavaproject.core.exceptions.BusinessRuleException;
 import com.example.rent2gojavaproject.core.utilities.constants.MessageConstants;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +15,10 @@ public class UserBusinessRules {
 
     private final UserRepository userRepository;
 
+    public static boolean checkPassword(String plainPassword, String encryptedPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(plainPassword, encryptedPassword);
+    }
 
     public void checkIfExistsByEmail(String email) {
 
@@ -71,6 +77,18 @@ public class UserBusinessRules {
             if (userRepository.existsByPhoneNumber(phoneNumber)) {
                 throw new AlreadyExistsException(MessageConstants.PHONE_NUMBER_ALREADY_EXISTS.getMessage());
             }
+
+        }
+
+
+    }
+
+    public void checkChangePassword(String oldPassword, String newPassword) {
+
+        boolean result = checkPassword(oldPassword, newPassword);
+        if (!result) {
+
+            throw new BusinessRuleException(MessageConstants.INVALID_PASSWORD.getMessage());
 
         }
 

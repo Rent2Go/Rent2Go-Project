@@ -30,7 +30,7 @@ public class JwtService {
 
     public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.putAll(Map.of(
+        claims.putAll(Map.of("id",userDetails.getId(),
                 "firstname", userDetails.getName(),
                 "lastname", userDetails.getSurname(),
                 "phoneNumber", userDetails.getPhoneNumber(),
@@ -43,7 +43,7 @@ public class JwtService {
 
     public String generateRefreshToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.putAll(Map.of(
+        claims.putAll(Map.of("id",userDetails.getId(),
                 "firstname", userDetails.getName(),
                 "lastname", userDetails.getSurname(),
                 "phoneNumber", userDetails.getPhoneNumber(),

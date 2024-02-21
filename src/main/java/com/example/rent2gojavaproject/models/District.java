@@ -26,4 +26,17 @@ public class District {
     private City city;
 
 
+    @Override
+    public String toString() {
+        return "District{" +
+                "id=" + id +
+                ", districtName='" + districtName + '\'' +
+                ", city=" + (city != null ? city.getCityName() : null) +
+                '}';
+    }
+
+
+
+
 }
+

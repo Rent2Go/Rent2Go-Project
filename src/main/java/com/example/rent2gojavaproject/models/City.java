@@ -25,5 +25,14 @@ public class City {
     @JsonIgnore
     private List<District> districts;
 
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", cityName='" + cityName + '\'' +
+                '}';
+    }
+
+
 
 }

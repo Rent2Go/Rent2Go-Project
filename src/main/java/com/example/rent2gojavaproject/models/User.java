@@ -127,4 +127,23 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return this.isActive;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", birthDate=" + birthDate +
+                ", idCardNumber='" + idCardNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", role=" + role +
+                ", address='" + address + '\'' +
+                ", city=" + city +
+                ", district=" + district +
+                '}';
+    }
 }

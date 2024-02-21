@@ -142,4 +142,17 @@ public class RentalManager implements RentalService {
         }
         return result;
     }
+
+    @Override
+    public DataResult<List<GetRentalListResponse>> findByEmployeeId(int customerId) {
+        List<Rental> findEmployeeRentals = this.rentalRepository.findByCustomerId(customerId);
+        List<GetRentalListResponse> responses =
+                findEmployeeRentals.stream()
+                        .map(rental -> this.mapperService.forResponse()
+                                .map(rental,GetRentalListResponse.class))
+                        .collect(Collectors.toList());
+
+
+        return new SuccessDataResult<>(responses,MessageConstants.GET_ALL.getMessage());
+    }
 }
