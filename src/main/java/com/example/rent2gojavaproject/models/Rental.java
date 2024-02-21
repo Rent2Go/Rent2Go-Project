@@ -15,9 +15,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 /*@SQLDelete(sql = "update rentals SET IS_ACTIVE = false WHERE id=?")
-//@Where(clause = "IS_ACTIVE=true")
+//@Where(clause = "IS_ACTIVE=true")*/
 @FilterDef(name = "isActiveFilterRental", parameters = @ParamDef(name = "isActive", type = Boolean.class))
-@Filter(name = "isActiveFilterRental", condition = "IS_ACTIVE = :isActive")*/
+@Filter(name = "isActiveFilterRental", condition = "IS_ACTIVE = :isActive")
+
 public class Rental extends BaseEntity {
 
     @Id
@@ -40,7 +41,7 @@ public class Rental extends BaseEntity {
     @Column(name = "end_kilometer", columnDefinition = "INTEGER DEFAULT NULL")
     private Integer endKilometer;
 
-    @Column(name = "total_price")
+    @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
