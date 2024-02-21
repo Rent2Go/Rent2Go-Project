@@ -28,13 +28,12 @@ A Java-based Rent A Car System with a user-friendly interface, designed to simpl
 
 ## Features
 
-- Switch Language
-- Cross platform
-- Admin Dashboard
-- Three Payment Methods
+- 
+- 
+- 
+- 
 
-
-![App Screenshot](https://rentogo.com.tr/screenshoots/Screenshot_4.png)
+![Screenshot]()
 
 
 ## Languages & Tools
