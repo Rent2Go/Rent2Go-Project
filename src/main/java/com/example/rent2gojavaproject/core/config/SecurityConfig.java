@@ -39,6 +39,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
+            "/**",
             };
     private static final String[] GET_WHITE_LIST_URL = {"/api/brands",
             "/api/brands/getallisactive",
