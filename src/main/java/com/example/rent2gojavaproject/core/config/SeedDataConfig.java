@@ -47,6 +47,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .imageUrl("https://res.cloudinary.com/dmusx2nmy/image/upload/v1707498026/rent2go/userImages/default%40rentogo.com.tr.png")
                     .password(passwordEncoder.encode("password"))
                     .isActive(true)
+                    .isEnabled(true)
                     .role(Role.USER).build();
 
 
@@ -62,6 +63,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
                     .isActive(true)
+                    .isEnabled(true)
                     .build();
 
             userService.addDefaultUser(defaultUser);
