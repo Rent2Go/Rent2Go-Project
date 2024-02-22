@@ -142,7 +142,7 @@ public class AuthenticationService {
                             new NotFoundException(MessageConstants.TOKEN_NOT_FOUND.getMessage()));
 
             if (confirmationToken.getConfirmedAt() != null) {
-                return new RedirectView(CLIENT_URL.getPath()+"already-verified");
+                return new RedirectView(CLIENT_URL.getPath()+"email-verification-already-verified");
             }
 
             LocalDateTime expiredAt = confirmationToken.getExpiresAt();
@@ -150,7 +150,7 @@ public class AuthenticationService {
             if (expiredAt.isBefore(LocalDateTime.now())) {
                 confirmationTokenService.deleteConfirmationToken(token);
                 userService.hardDeleteUser(confirmationToken.getUser().getId());
-                return new RedirectView(CLIENT_URL.getPath()+"token-expired");
+                return new RedirectView(CLIENT_URL.getPath()+"email-verification-expired");
             }
 
             confirmationTokenService.setConfirmedAt(token);
@@ -161,7 +161,7 @@ public class AuthenticationService {
 
             return new RedirectView(CLIENT_URL.getPath()+"email-verification-successful");
         } catch (NotFoundException e) {
-            return new RedirectView(CLIENT_URL.getPath()+"token-not-found");
+            return new RedirectView(CLIENT_URL.getPath()+"email-verification-failed");
         }
     }
 
