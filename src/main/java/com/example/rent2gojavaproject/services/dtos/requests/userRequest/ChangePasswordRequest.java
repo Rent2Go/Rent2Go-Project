@@ -16,7 +16,7 @@ public class ChangePasswordRequest {
     private String email;
 
 
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.*])(?=\\S+$).{8,}",
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.*!()-_])(?=\\S+$).{8,}",
             message = "At least 8 characters\n" +
                     "\n" +
                     "Contains at least one digit\n" +
