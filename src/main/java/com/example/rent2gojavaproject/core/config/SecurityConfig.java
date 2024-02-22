@@ -95,7 +95,9 @@ public class SecurityConfig {
     private static final String [] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
             "/api/signup",
             "/api/signin",
-            "/api/admins/signin"
+            "/api/admins/signin",
+            "/api/send-contact-email",
+            "/api/customers",
 
     };
 
@@ -103,12 +105,8 @@ public class SecurityConfig {
             "/api/cars",
             "/api/cars/imageupdate",
             "/api/colors",
-            "/api/send-contact-email",
-            "/api/customers",
             "/api/discounts",
             "/api/employees",
-            "/api/files/upload",
-            "/api/imagedata/upload",
             "/api/mail-configuration",
             "/api/models",
             "/api/ourteams",
@@ -116,7 +114,6 @@ public class SecurityConfig {
             "/api/rentals",
             "/api/reservation-details",
             "/api/users",
-
             "/api/admins/signin",
             "/api/creditcard",
 
@@ -126,6 +123,9 @@ public class SecurityConfig {
             "/api/refreshtoken",
             "/api/creditcard/checkpayment",
             "/api/users/imageupdate",
+
+            "/api/files/upload",
+            "/api/imagedata/upload",
 
     };
     private static final String[] ADMIN_PUT_URL = {"/api/brands",
