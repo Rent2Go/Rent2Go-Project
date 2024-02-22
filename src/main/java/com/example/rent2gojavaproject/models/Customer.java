@@ -21,7 +21,7 @@ import java.util.List;
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterCustomer", parameters = @ParamDef(name = "isActive", type = Boolean.class))
 @Filter(name = "isActiveFilterCustomer", condition = "IS_ACTIVE = :isActive")
-public class Customer extends BaseEntity  {
+public class Customer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +29,14 @@ public class Customer extends BaseEntity  {
     private int id;
 
 
-    @Column(name = "nationality_id", nullable = false, unique = true)
-    private String nationalityId;
-
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private User user;
 
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
     private List<Rental> rentals;
-
 
 }

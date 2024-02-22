@@ -135,30 +135,34 @@ public class AuthenticationService {
 
 
     public RedirectView confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService
-                .getToken(token)
-                .orElseThrow(() ->
-                        new NotFoundException(MessageConstants.TOKEN_NOT_FOUND.getMessage()));
+        try {
+            ConfirmationToken confirmationToken = confirmationTokenService
+                    .getToken(token)
+                    .orElseThrow(() ->
+                            new NotFoundException(MessageConstants.TOKEN_NOT_FOUND.getMessage()));
 
-        if (confirmationToken.getConfirmedAt() != null) {
-            return new RedirectView(CLIENT_URL.getPath()+"already-verified");
-        }
+            if (confirmationToken.getConfirmedAt() != null) {
+                return new RedirectView(CLIENT_URL.getPath()+"already-verified");
+            }
 
-        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+            LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
-        if (expiredAt.isBefore(LocalDateTime.now())) {
+            if (expiredAt.isBefore(LocalDateTime.now())) {
+                confirmationTokenService.deleteConfirmationToken(token);
+                userService.hardDeleteUser(confirmationToken.getUser().getId());
+                return new RedirectView(CLIENT_URL.getPath()+"token-expired");
+            }
+
+            confirmationTokenService.setConfirmedAt(token);
+            userService.enableAppUser(
+                    confirmationToken.getUser().getEmail());
+
             confirmationTokenService.deleteConfirmationToken(token);
-            userService.hardDeleteUser(confirmationToken.getUser().getId());
-            return new RedirectView(CLIENT_URL.getPath()+"token-expired");
+
+            return new RedirectView(CLIENT_URL.getPath()+"email-verification-successful");
+        } catch (NotFoundException e) {
+            return new RedirectView(CLIENT_URL.getPath()+"token-not-found");
         }
-
-        confirmationTokenService.setConfirmedAt(token);
-        userService.enableAppUser(
-                confirmationToken.getUser().getEmail());
-
-        confirmationTokenService.deleteConfirmationToken(token);
-
-        return new RedirectView(CLIENT_URL.getPath()+"email-verification-successful");
     }
 
 

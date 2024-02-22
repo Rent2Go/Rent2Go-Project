@@ -17,7 +17,7 @@ public class GetEmployeeResponse {
 
     private double salary;
 
-    private GetUserResponse user;
+  //   private GetUserResponse user;
 
     private GetJobTitleResponse jobTitle;
 

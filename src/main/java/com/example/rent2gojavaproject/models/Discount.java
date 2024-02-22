@@ -44,4 +44,13 @@ public class Discount extends BaseEntity {
         this.percentage = percentage;
     }
 
+    @Override
+    public String toString() {
+        return "Discount{" +
+                "id=" + id +
+                ", discountCode='" + discountCode + '\'' +
+                ", percentage=" + percentage +
+                '}';
+    }
+
 }

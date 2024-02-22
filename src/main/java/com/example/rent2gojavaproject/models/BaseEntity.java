@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-
 public abstract class BaseEntity {
     @Column(name = "IS_ACTIVE", columnDefinition = "boolean default false")
     protected boolean isActive;

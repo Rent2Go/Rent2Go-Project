@@ -4,10 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.AddUserRequest;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ChangePasswordRequest;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.ResetPasswordRequest;
-import com.example.rent2gojavaproject.services.dtos.requests.userRequest.UpdateUserRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.userRequest.*;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,12 +35,12 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetUserResponse> getUserById(@PathVariable int id) {
+    public DataResult<GetUserListResponse> getUserById(@PathVariable int id) {
         return userService.getById(id);
     }
 
     @GetMapping("/email")
-    public DataResult<GetUserResponse> getUserByEmail(@RequestParam("email") String email) {
+    public DataResult<GetUserListResponse> getUserByEmail(@RequestParam("email") String email) {
         return userService.getByEmail(email);
     }
     @PostMapping()
@@ -54,10 +51,24 @@ public class UsersController {
     }
 
 
-    @PatchMapping()
+    @PutMapping()
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         return userService.updateUser(updateUserRequest);
+    }
+
+    @PatchMapping("/accountsettings/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result UpdateUserAccountSettings(@PathVariable  int id, @RequestBody AccountSettingsRequest request){
+
+        return this.userService.UpdateUserAccountSettings(id,request);
+    }
+
+    @PatchMapping("/updatelocation/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result UpdateUserLocation(@PathVariable  int id,@RequestBody UpdateUserLocationRequest request){
+
+        return this.userService.UpdateUserLocation(id, request);
     }
 
     @PostMapping("/imageupdate")
@@ -88,10 +99,15 @@ public class UsersController {
         return "Success! Please, check your email to reset your password.";
     }
 
-    @PostMapping("/changepassword")
+    @PatchMapping("/changepassword")
     public String changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
 
         return userService.changePassword(changePasswordRequest);
+    }
+    @PatchMapping("/profilchangepassword/{id}")
+    public Result profilPageChangePassword(@PathVariable  int id, @RequestBody ProfilePageChangePasswordRequest request) {
+
+        return this.userService.profilPageChangePassword(id, request);
     }
 
 

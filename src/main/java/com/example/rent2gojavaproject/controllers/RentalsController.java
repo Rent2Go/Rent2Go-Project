@@ -39,7 +39,8 @@ public class RentalsController {
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Result createRental(@RequestBody @Valid AddRentalRequest addRentalRequest) {
+    public DataResult<Integer> createRental(@RequestBody @Valid AddRentalRequest addRentalRequest) {
+
         return rentalService.addRental(addRentalRequest);
     }
 
@@ -56,9 +57,14 @@ public class RentalsController {
     }
 
     @GetMapping("/uniquediscount/{discountId}")
-    public String checkUniqueDiscount(@RequestParam("customer") int customerId, @PathVariable int discountId) {
+    public boolean findByCustomerIdAndDiscountId(@RequestParam("customer") int customerId, @PathVariable int discountId) {
 
-        return this.rentalService.checkUniqueDiscount(customerId, discountId);
+        return this.rentalService.findByCustomerIdAndDiscountId(customerId, discountId);
+    }
+    @GetMapping("/getCustomerrentals")
+    public DataResult<List<GetRentalListResponse>> findByEmployeeId(@RequestParam("id") int customerId) {
+
+        return   this.rentalService.findByEmployeeId(customerId);
     }
 
 }

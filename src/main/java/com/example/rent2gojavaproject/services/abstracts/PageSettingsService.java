@@ -2,6 +2,7 @@ package com.example.rent2gojavaproject.services.abstracts;
 
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
+import com.example.rent2gojavaproject.models.PageSettings;
 import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest.AddSettingRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.pageSettingsRequest.UpdateSettingRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.pageSettingsResponse.GetPageSettingListResponse;
@@ -21,6 +22,8 @@ public interface PageSettingsService {
     DataResult<GetPageSettingResponse> getById(int id);
 
     Result addSetting(AddSettingRequest addSettingRequest) throws IOException;
+
+    Result addDefaultSetting(PageSettings pageSettings);
 
 
     Result updateSetting(UpdateSettingRequest updateSettingRequest);

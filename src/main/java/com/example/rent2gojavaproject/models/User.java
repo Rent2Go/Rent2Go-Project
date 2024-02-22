@@ -76,13 +76,13 @@ public class User extends BaseEntity implements UserDetails {
     private District district;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Customer> customers;
+    private Customer customer;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Employee> employees;
+    private Employee employees;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -126,5 +126,24 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.isActive;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", birthDate=" + birthDate +
+                ", idCardNumber='" + idCardNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", role=" + role +
+                ", address='" + address + '\'' +
+                ", city=" + city +
+                ", district=" + district +
+                '}';
     }
 }

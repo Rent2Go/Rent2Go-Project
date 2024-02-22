@@ -75,11 +75,22 @@ public class RentalBusinessRules {
     }
 
     public double calculateTotalPrice(LocalDate startDate, LocalDate endDate, double dailyPrice, String discountCode) {
+        Double totalPrice = null;
+        double tax = 0.20 ;
+        double totalTaxPrice = (tax * dailyPrice);
+        long dateResult =(endDate.toEpochDay() - startDate.toEpochDay());
+        dateResult = dateResult <= 0 ? 1 : dateResult;
 
-        Discount discount = getDiscountByCodeOrDefault(discountCode);
+        Discount discount = this.discountService.findByDiscountCode(discountCode);
 
-        double totalDiscount = (discount.getPercentage() / 100) * dailyPrice * (endDate.toEpochDay() - startDate.toEpochDay());
-        double totalPrice = dailyPrice * (endDate.toEpochDay() - startDate.toEpochDay()) - totalDiscount;
+        double totalDiscount = (discount.getPercentage()) * dailyPrice *
+                ( dateResult >= 0 ? 1 : (dateResult));
+
+
+       if(totalDiscount > 0 ){
+            totalPrice = ((dailyPrice  * dateResult ) + (totalTaxPrice) )- totalDiscount;
+       }
+            totalPrice = (dailyPrice  * dateResult ) + (totalTaxPrice);
 
         return (totalPrice < 0) ? 0 : totalPrice;
     }

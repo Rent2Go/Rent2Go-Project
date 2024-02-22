@@ -34,8 +34,9 @@ public class Employee extends BaseEntity {
     private double salary;
 
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "user_id", columnDefinition = "integer default 1", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,4 +57,16 @@ public class Employee extends BaseEntity {
         this.id = id;
         this.user = new User(1);
     }
+
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", salary=" + salary +
+                ", user=" + (user != null ? user.getId() : null) +
+                ", jobTitle=" + (jobTitle != null ? jobTitle.getName() : null) +
+                '}';
+    }
+
 }

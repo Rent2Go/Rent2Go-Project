@@ -122,6 +122,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DiscountNotUniqueException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Map<String, Object>> handleIdCardInformationNotValid(DiscountNotUniqueException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error",  ex.getMessage());
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("status", HttpStatus.NOT_FOUND.value());
+        errorResponse.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
 
 
 }
