@@ -57,14 +57,13 @@ public class SecurityConfig {
             "/api/settings",
             "/api/settings/{id}",
             "/api/confirm",
+            "/api/cars",
 
 
     };
     private static final String[] GET_ADMIN_URL = {"/api/creditcard",
             "/api/departments",
             "/api/departments/{id}",
-            "/api/cars",
-
             "/api/customers",
             "/api/customers/getallisactive",
             "/api/customers/{id}",
@@ -114,7 +113,6 @@ public class SecurityConfig {
             "/api/rentals",
             "/api/reservation-details",
             "/api/users",
-            "/api/admins/signin",
             "/api/creditcard",
 
 
