@@ -88,6 +88,7 @@ public class SecurityConfig {
             "/api/rentals/uniquediscount/{discountId}",
             "/api/users/{id}",
             "/api/users/email",
+            "/api/getCustomerrentals",
 
 
     };
