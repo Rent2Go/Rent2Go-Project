@@ -63,6 +63,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .isActive(false)
+                .isEnabled(false)
                 .build();
 
 

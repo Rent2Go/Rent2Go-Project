@@ -193,6 +193,7 @@ public class UserManager implements UserService {
         User userRequest = this.mapperService.forRequest().map(user, User.class);
         userRequest.setPassword(this.passwordEncoder.encode(userRequest.getPassword()));
         userRequest.setActive(true);
+        userRequest.setEnabled(true);
         userRequest.setImageUrl(this.fileUpload.uploadFileUser(file, user.getEmail()));
 
         this.userRepository.save(userRequest);
@@ -257,6 +258,7 @@ public class UserManager implements UserService {
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         user.setActive(isActive);
+        user.setEnabled(isActive);
         this.userRepository.save(user);
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
@@ -267,6 +269,7 @@ public class UserManager implements UserService {
         User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         user.setDeletedAt(LocalDate.now());
         user.setActive(false);
+        user.setEnabled(false);
 
 
         this.userRepository.save(user);

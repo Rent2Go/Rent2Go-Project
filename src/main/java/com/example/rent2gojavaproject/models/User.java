@@ -67,6 +67,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "enabled")
+    private boolean isEnabled = false;
+
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
@@ -125,8 +128,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.isActive;
+        return isEnabled;
     }
+
 
     @Override
     public String toString() {
