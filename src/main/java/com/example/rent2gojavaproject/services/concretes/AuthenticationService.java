@@ -93,6 +93,13 @@ public class AuthenticationService {
     public JwtAuthenticationResponse adminSignin(SignInRequest request) {
         var user = userService.findByEmail(request.getEmail());
 
+
+        if (!Role.ADMIN.name().equals( user.getRole().toString())) {
+
+            throw new NotFoundException("Admin privileges required.");
+
+        }
+
         if (!user.isEnabled()) {
             throw new UserNotEnabledException("User not enabled. ");
         }
@@ -101,8 +108,9 @@ public class AuthenticationService {
             throw new InvalidPasswordException("Invalid password.");
         }
 
-        // Kullanıcının rolünü kontrol et
-        if (Role.ADMIN.name().equals( user.getRole().toString())) {
+
+
+            if (Role.ADMIN.name().equals( user.getRole().toString())) {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
@@ -110,7 +118,7 @@ public class AuthenticationService {
             var jwtRefreshToken = jwtService.generateRefreshToken(user);
             return JwtAuthenticationResponse.builder().token(jwtToken).refreshToken(jwtRefreshToken).build();
         } else {
-            throw new AccessDeniedException("Admin privileges required.");
+            throw new NotFoundException("Admin privileges required.");
         }
     }
 
