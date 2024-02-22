@@ -52,8 +52,8 @@ public class SeedDataConfig implements CommandLineRunner {
 
             User admin = User
                     .builder()
-                    .name("admin")
-                    .surname("admin")
+                    .name("Rent2GO")
+                    .surname("Admin")
                     .phoneNumber("5436751431")
                     .email("admin@rentogo.com.tr")
                     .birthDate(LocalDate.of(1999, 2, 1))

@@ -39,7 +39,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/**",
+
             };
     private static final String[] GET_WHITE_LIST_URL = {"/api/brands",
             "/api/brands/getallisactive",
@@ -64,7 +64,7 @@ public class SecurityConfig {
             "/api/departments",
             "/api/departments/{id}",
             "/api/cars",
-            "/api/cars/{id}",
+
             "/api/customers",
             "/api/customers/getallisactive",
             "/api/customers/{id}",
@@ -89,10 +89,13 @@ public class SecurityConfig {
             "/api/rentals/uniquediscount/{discountId}",
             "/api/users/{id}",
             "/api/users/email",
+
+
     };
     private static final String [] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
             "/api/signup",
             "/api/signin",
+            "/api/admins/signin"
 
     };
 
@@ -113,7 +116,7 @@ public class SecurityConfig {
             "/api/rentals",
             "/api/reservation-details",
             "/api/users",
-            "/api/users/imageupdate",
+
             "/api/admins/signin",
             "/api/creditcard",
 
@@ -122,6 +125,7 @@ public class SecurityConfig {
     private static final String[] ADMIN_USER_POST_URL = {
             "/api/refreshtoken",
             "/api/creditcard/checkpayment",
+            "/api/users/imageupdate",
 
     };
     private static final String[] ADMIN_PUT_URL = {"/api/brands",
