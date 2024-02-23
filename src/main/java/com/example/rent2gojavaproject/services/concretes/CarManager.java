@@ -21,6 +21,9 @@ import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,6 +57,17 @@ public class CarManager implements CarService {
                         .map(car, GetCarListResponse.class))
                 .collect(Collectors.toList());
 
+
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
+    }
+    @Override
+    public DataResult<Page<GetCarListResponse>> getAllCars(int pageNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        Page<Car> cars = this.carRepository.findAll(pageable);
+        Page<GetCarListResponse> responses = cars.map(car -> this.mapperService
+                .forResponse()
+                .map(car, GetCarListResponse.class));
 
         return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
