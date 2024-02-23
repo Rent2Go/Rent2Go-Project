@@ -2,7 +2,6 @@ package com.example.rent2gojavaproject.services.concretes;
 
 import com.example.rent2gojavaproject.core.utilities.constants.EmailConstants;
 import com.example.rent2gojavaproject.core.utilities.results.DataResult;
-import com.example.rent2gojavaproject.models.MailConfiguration;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.MailConfigurationService;
 import com.example.rent2gojavaproject.services.dtos.requests.contactFormRequest.ContactFormRequest;
@@ -12,15 +11,12 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +25,8 @@ public class EmailManager implements EmailSenderService {
     private final JavaMailSender mailSender;
     private final MailConfigurationService mailConfigurationService;
 
-    private JavaMailSender getJavaMailSender() {
+    @Override
+    public JavaMailSender getJavaMailSender() {
         DataResult<GetMailConfigurationResponse> mailConfiguration = mailConfigurationService.getMailConfiguration();
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -83,6 +80,7 @@ public class EmailManager implements EmailSenderService {
         sendEmail(name, email, link, subject, htmlContent, textContent);
     }
 
+    @Override
     public void sendContactEmail(ContactFormRequest form) throws MessagingException, UnsupportedEncodingException {
         JavaMailSender mailSender = getJavaMailSender();
 
@@ -110,6 +108,7 @@ public class EmailManager implements EmailSenderService {
         mailSender.send(message);
     }
 
+    @Override
     public void sendThankYouEmail(ContactFormRequest form) throws MessagingException, UnsupportedEncodingException {
         JavaMailSender mailSender = getJavaMailSender();
 
@@ -143,6 +142,7 @@ public class EmailManager implements EmailSenderService {
         mailSender.send(message);
     }
 
+    @Override
     public void reservationDetailEmail(AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException {
         JavaMailSender mailSender = getJavaMailSender();
 
