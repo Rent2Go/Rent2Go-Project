@@ -40,7 +40,7 @@ public class SignUpRequest {
     @Pattern(regexp = "\\d{11}", message = "ID Number must consist of 11 digits")
     private String idCardNumber;
 
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.*])(?=\\S+$).{8,}",
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.*!()-_])(?=\\S+$).{8,}",
             message = "At least 8 characters\n" +
                     "\n" +
                     "Contains at least one digit\n" +
