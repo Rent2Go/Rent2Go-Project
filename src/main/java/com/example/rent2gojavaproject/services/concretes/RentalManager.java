@@ -107,16 +107,16 @@ public class RentalManager implements RentalService {
     @Override
     public Result updateRental(UpdateRentalRequest updateRentalRequest) {
 
-        Car car = carRepository.findById(updateRentalRequest.getCarId()).orElseThrow();
+
 
         this.rentalRepository.findById(updateRentalRequest.getId())
                 .orElseThrow(() -> new NotFoundException(MessageConstants.RENTAL.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
         this.businessRules.checkIfExistsById(updateRentalRequest.getCarId(), updateRentalRequest.getCustomerId(), updateRentalRequest.getEmployeeId());
         this.businessRules.checkRentalPeriod(updateRentalRequest.getStartDate(), updateRentalRequest.getEndDate());
-        this.businessRules.checkIfKilometer(car.getKilometer(), updateRentalRequest.getEndKilometer());
+
 
         Rental rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
-        car.setKilometer(rental.getEndKilometer());
+
         this.rentalRepository.save(rental);
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
@@ -124,12 +124,15 @@ public class RentalManager implements RentalService {
 
     @Override
     public Result vehicleDelivery(ReturnRentalRequest returnRentalRequest){
+        Car car = carRepository.findById(returnRentalRequest.getCarId()).orElseThrow();
         Rental rental = rentalRepository.findById(returnRentalRequest.getId()).orElseThrow();
 
         rental.setId(returnRentalRequest.getId());
         rental.setEndKilometer(returnRentalRequest.getEndKilometer());
         rental.setReturnDate(returnRentalRequest.getReturnDate());
-
+        this.businessRules.checkIfKilometer(car.getKilometer(), returnRentalRequest.getEndKilometer());
+        car.setKilometer(rental.getEndKilometer());
+        car.setActive(true);
         this.rentalRepository.save(rental);
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
