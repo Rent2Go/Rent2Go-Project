@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "update customers SET IS_ACTIVE = false WHERE id=?")
+//@SQLDelete(sql = "update customers SET IS_ACTIVE = false WHERE id=?")
 //@Where(clause = "IS_ACTIVE=true")
 @FilterDef(name = "isActiveFilterCustomer", parameters = @ParamDef(name = "isActive", type = Boolean.class))
 @Filter(name = "isActiveFilterCustomer", condition = "IS_ACTIVE = :isActive")

@@ -12,6 +12,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.models.Role;
 import com.example.rent2gojavaproject.models.User;
+import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.abstracts.EmailSenderService;
 import com.example.rent2gojavaproject.services.abstracts.KpsMernisService;
 import com.example.rent2gojavaproject.services.abstracts.UserService;
@@ -47,6 +48,7 @@ public class AuthenticationService {
     private final EmailSenderService emailSender;
     private final ConfirmationTokenService confirmationTokenService;
     private final AuthenticationManager authenticationManager;
+    private final CustomerService customerService;
 
 
 
@@ -158,6 +160,7 @@ public class AuthenticationService {
             LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
             if (expiredAt.isBefore(LocalDateTime.now())) {
+                customerService.hardDeleteCustomer(confirmationToken.getUser().getId());
                 confirmationTokenService.deleteConfirmationToken(token);
                 userService.hardDeleteUser(confirmationToken.getUser().getId());
                 return new RedirectView(CLIENT_URL.getPath()+"email-verification-expired");

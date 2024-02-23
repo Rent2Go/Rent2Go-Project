@@ -97,15 +97,24 @@ public class CustomerManager implements CustomerService {
         Customer customer = this.customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
         customer.setDeletedAt(LocalDate.now());
+        customer.setActive(false);
 
         this.customerRepository.save(customer);
-        this.customerRepository.delete(customer);
 
         return new SuccessResult(MessageConstants.DELETE.getMessage());
+    }
+
+    public void hardDeleteCustomer(int id) {
+        this.customerRepository.deleteById(id);
     }
 
     @Override
     public boolean existsById(int id) {
         return this.customerRepository.existsById(id);
+    }
+
+    @Override
+    public Customer getCustomerByUserId(int userId) {
+        return this.customerRepository.getCustomerByUserId(userId);
     }
 }

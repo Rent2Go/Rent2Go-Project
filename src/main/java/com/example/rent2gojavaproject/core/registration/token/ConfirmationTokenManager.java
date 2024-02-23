@@ -22,6 +22,10 @@ public class ConfirmationTokenManager implements ConfirmationTokenService {
 
     }
 
+    public String findByUserIdToken(int userId) {
+        return confirmationTokenRepository.findByUserIdToken(userId);
+    }
+
     public int setConfirmedAt(String token) {
         return confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());

@@ -10,4 +10,5 @@ public interface ConfirmationTokenService {
     int setConfirmedAt(String token);
 
     void deleteConfirmationToken(String token);
+    String findByUserIdToken(int userId);
 }

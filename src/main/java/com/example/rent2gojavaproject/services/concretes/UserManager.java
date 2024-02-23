@@ -12,6 +12,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessDataResult;
 import com.example.rent2gojavaproject.core.utilities.results.SuccessResult;
+import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.models.District;
 import com.example.rent2gojavaproject.models.User;
 import com.example.rent2gojavaproject.repositories.UserRepository;
@@ -19,6 +20,7 @@ import com.example.rent2gojavaproject.services.abstracts.*;
 import com.example.rent2gojavaproject.services.dtos.requests.userRequest.*;
 import com.example.rent2gojavaproject.services.dtos.responses.userResponse.GetUserListResponse;
 import com.example.rent2gojavaproject.services.rules.UserBusinessRules;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +59,8 @@ public class UserManager implements UserService {
     private final FileUpload fileUpload;
     private final DistrictService districtService;
     private final KpsMernisService kpsMernisService;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final CustomerService customerService;
 
 
     @Value("${client.server}")
@@ -62,6 +69,26 @@ public class UserManager implements UserService {
     public static boolean checkPassword(String plainPassword, String encryptedPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(plainPassword, encryptedPassword);
+    }
+    @PostConstruct
+    public void cleanUpUsers() {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(() -> {
+            List<User> users = userRepository.findAll();
+            for (User user : users) {
+                if (!user.isEnabled()) {
+                    String token = confirmationTokenService.findByUserIdToken(user.getId());
+                    if (token != null) {
+                        confirmationTokenService.deleteConfirmationToken(token);
+                    }
+                    Customer customer = customerService.getCustomerByUserId(user.getId());
+                    if (customer != null) {
+                        customerService.hardDeleteCustomer(customer.getId());
+                    }
+                    userRepository.delete(user);
+                }
+            }
+        }, 0, 30, TimeUnit.MINUTES);
     }
 
     public UserDetailsService userDetailsService() {

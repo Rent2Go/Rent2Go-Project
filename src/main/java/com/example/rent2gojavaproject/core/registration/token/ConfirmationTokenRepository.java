@@ -32,6 +32,8 @@ public interface ConfirmationTokenRepository
             "WHERE c.token = ?1")
     void  deleteConfirmationToken (String token);
 
-
+//write find by user id for token
+    @Query("SELECT c.token FROM ConfirmationToken c WHERE c.user.id = :userId")
+    String findByUserIdToken(int userId);
 }
 
