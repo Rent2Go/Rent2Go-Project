@@ -87,7 +87,7 @@ public enum EmailConstants {
             "Total Day: %s\n" +
             "Plate: %s\n" +
             "Car Info: %s\n" +
-            "Total Price: %s\n" +
+            "Total Price: %s₺\n" +
             "Dear %s,\n" +
             "Thank you for choosing our service. Please remember to come to our office on the rental day to pick up your car. " +
             "If you have any questions or need further assistance, please do not hesitate to contact us. " +
