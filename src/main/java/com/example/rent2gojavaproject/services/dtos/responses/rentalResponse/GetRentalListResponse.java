@@ -2,7 +2,9 @@ package com.example.rent2gojavaproject.services.dtos.responses.rentalResponse;
 
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomer;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
+import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.discountResponse.GetDiscountListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.employeeResponse.GetEmployeeListResponse;
 import lombok.AllArgsConstructor;
@@ -32,7 +34,7 @@ public class GetRentalListResponse {
 
     private GetCarResponse car;
 
-    private GetCustomerListResponse customer;
+    private GetCustomer customer;
 
     private GetEmployeeListResponse employee;
 

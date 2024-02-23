@@ -111,7 +111,6 @@ public class SecurityConfig {
             "/api/ourteams",
             "/api/settings",
             "/api/rentals",
-            "/api/reservation-details",
             "/api/users",
             "/api/users/imageupdate",
             "/api/admins/signin",
@@ -122,6 +121,7 @@ public class SecurityConfig {
     private static final String[] ADMIN_USER_POST_URL = {
             "/api/refreshtoken",
             "/api/creditcard/checkpayment",
+            "/api/reservation-details",
 
     };
     private static final String[] ADMIN_PUT_URL = {"/api/brands",
@@ -152,6 +152,7 @@ public class SecurityConfig {
     };
     private static final String[] ADMIN_PATCH_URL = {
             "/api/users",
+            "api/rentals/vehicle-delivery"
 
     };
     private static final String[] ADMIN_USER_PATCH_URL = {"/api/users/changepassword",

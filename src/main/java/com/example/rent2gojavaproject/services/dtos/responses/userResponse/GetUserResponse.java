@@ -49,6 +49,8 @@ public class GetUserResponse {
 
     private String imageUrl;
 
+    private GetCustomerListResponse customer;
+
 
 
 

@@ -38,5 +38,14 @@ public class Customer extends BaseEntity  {
     @JsonIgnore
     private List<Rental> rentals;
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", user=" + user +
+                '}';
+    }
+
+
 
 }

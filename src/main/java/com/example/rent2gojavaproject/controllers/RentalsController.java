@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.ReturnRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
@@ -48,6 +49,12 @@ public class RentalsController {
     @ResponseStatus(code = HttpStatus.OK)
     public Result updateRental(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
         return rentalService.updateRental(updateRentalRequest);
+    }
+
+    @PatchMapping("/vehicle-delivery")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result vehicleDelivery(@RequestBody @Valid ReturnRentalRequest returnRentalRequest){
+        return rentalService.vehicleDelivery(returnRentalRequest);
     }
 
     @DeleteMapping("/{id}")

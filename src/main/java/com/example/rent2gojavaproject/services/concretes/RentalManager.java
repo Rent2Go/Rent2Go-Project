@@ -16,6 +16,7 @@ import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.repositories.RentalRepository;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.ReturnRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
@@ -116,6 +117,19 @@ public class RentalManager implements RentalService {
 
         Rental rental = this.mapperService.forRequest().map(updateRentalRequest, Rental.class);
         car.setKilometer(rental.getEndKilometer());
+        this.rentalRepository.save(rental);
+
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+    @Override
+    public Result vehicleDelivery(ReturnRentalRequest returnRentalRequest){
+        Rental rental = rentalRepository.findById(returnRentalRequest.getId()).orElseThrow();
+
+        rental.setId(returnRentalRequest.getId());
+        rental.setEndKilometer(returnRentalRequest.getEndKilometer());
+        rental.setReturnDate(returnRentalRequest.getReturnDate());
+
         this.rentalRepository.save(rental);
 
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
