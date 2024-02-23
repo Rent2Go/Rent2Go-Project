@@ -125,9 +125,9 @@ public class RentalManager implements RentalService {
     public Result deleteRental(int id) {
 
         Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
-        rental.setDeletedAt(LocalDate.now());
 
-        this.rentalRepository.save(rental);
+
+
         this.rentalRepository.delete(rental);
 
         return new SuccessResult(MessageConstants.DELETE.getMessage());
