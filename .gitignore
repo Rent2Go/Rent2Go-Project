@@ -1,6 +1,7 @@
 HELP.md
 src/main/resources/application.properties
 src/main/resources/static/index.html
+com/example/rent2gojavaproject/core/config/SeedDataConfig.java
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
