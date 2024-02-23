@@ -57,6 +57,7 @@ public class SecurityConfig {
             "/api/settings/{id}",
             "/api/confirm",
             "/api/cars",
+            "/api/cars/{id}",
 
 
     };
