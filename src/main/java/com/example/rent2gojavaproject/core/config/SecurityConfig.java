@@ -86,8 +86,8 @@ public class SecurityConfig {
             "/api/rentals/getallisactive",
             "/api/rentals/{id}",
             "/api/rentals/uniquediscount/{discountId}",
+            "/api/users/**",
             "/api/users/{id}",
-            "/api/users/email",
             "/api/getCustomerrentals",
 
 
