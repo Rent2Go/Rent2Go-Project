@@ -20,7 +20,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +39,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/swagger-ui.html",
 
-            };
+    };
     private static final String[] GET_WHITE_LIST_URL = {"/api/brands",
             "/api/brands/getallisactive",
             "/api/brands/{id}",
@@ -92,7 +91,7 @@ public class SecurityConfig {
 
 
     };
-    private static final String [] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
+    private static final String[] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
             "/api/signup",
             "/api/signin",
             "/api/admins/signin",
@@ -111,12 +110,6 @@ public class SecurityConfig {
             "/api/models",
             "/api/ourteams",
             "/api/settings",
-<<<<<<< HEAD
-            "/api/rentals",
-=======
-
-
->>>>>>> 64a7d6fda1d1e6f480560a9cca749342cde16e59
             "/api/users",
             "/api/creditcard",
 
@@ -125,13 +118,10 @@ public class SecurityConfig {
     private static final String[] ADMIN_USER_POST_URL = {
             "/api/refreshtoken",
             "/api/creditcard/checkpayment",
-<<<<<<< HEAD
-=======
             "/api/users/imageupdate",
             "/api/rentals",
             "/api/files/upload",
             "/api/imagedata/upload",
->>>>>>> 64a7d6fda1d1e6f480560a9cca749342cde16e59
             "/api/reservation-details",
 
     };
@@ -176,7 +166,6 @@ public class SecurityConfig {
     };
 
 
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserManager userService;
     private final PasswordEncoder passwordEncoder;
@@ -218,13 +207,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, ADMIN_PATCH_URL).hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, ADMIN_USER_PATCH_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 
-                       .anyRequest().authenticated()
+                        .anyRequest().authenticated()
 
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
 
 
         return http.build();
