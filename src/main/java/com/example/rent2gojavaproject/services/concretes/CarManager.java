@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,8 @@ public class CarManager implements CarService {
         Iterable<GetCarListResponse> cars = this.carRepository.findAll()
                 .stream().map(car -> this.mapperService.forResponse()
                         .map(car, GetCarListResponse.class))
+                .sorted(Comparator.comparing(GetCarListResponse::getId).reversed())
+
                 .collect(Collectors.toList());
         session.disableFilter(HibernateConstants.IS_ACTIVE_FILTER_CAR.getValue());
 

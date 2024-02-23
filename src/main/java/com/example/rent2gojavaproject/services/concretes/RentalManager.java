@@ -16,6 +16,7 @@ import com.example.rent2gojavaproject.repositories.CarRepository;
 import com.example.rent2gojavaproject.repositories.RentalRepository;
 import com.example.rent2gojavaproject.services.abstracts.RentalService;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.AddRentalRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.ReturnRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.requests.rentalRequest.UpdateRentalRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.rentalResponse.GetRentalResponse;
@@ -122,12 +123,25 @@ public class RentalManager implements RentalService {
     }
 
     @Override
+    public Result vehicleDelivery(ReturnRentalRequest returnRentalRequest){
+        Rental rental = rentalRepository.findById(returnRentalRequest.getId()).orElseThrow();
+
+        rental.setId(returnRentalRequest.getId());
+        rental.setEndKilometer(returnRentalRequest.getEndKilometer());
+        rental.setReturnDate(returnRentalRequest.getReturnDate());
+
+        this.rentalRepository.save(rental);
+
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+    @Override
     public Result deleteRental(int id) {
 
         Rental rental = this.rentalRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
-        rental.setDeletedAt(LocalDate.now());
 
-        this.rentalRepository.save(rental);
+
+
         this.rentalRepository.delete(rental);
 
         return new SuccessResult(MessageConstants.DELETE.getMessage());

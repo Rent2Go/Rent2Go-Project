@@ -67,4 +67,22 @@ public class Rental extends BaseEntity {
         this.employee = new Employee(1);
     }
 
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", returnDate=" + returnDate +
+                ", startKilometer=" + startKilometer +
+                ", endKilometer=" + endKilometer +
+                ", totalPrice=" + totalPrice +
+                ", car=" + car +
+                ", customer=" + customer +
+                ", employee=" + employee +
+                ", discount=" + discount +
+                '}';
+    }
+
+
 }

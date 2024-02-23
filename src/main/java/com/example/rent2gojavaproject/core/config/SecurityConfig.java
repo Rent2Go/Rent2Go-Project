@@ -57,14 +57,13 @@ public class SecurityConfig {
             "/api/settings",
             "/api/settings/{id}",
             "/api/confirm",
+            "/api/cars",
 
 
     };
     private static final String[] GET_ADMIN_URL = {"/api/creditcard",
             "/api/departments",
             "/api/departments/{id}",
-            "/api/cars",
-
             "/api/customers",
             "/api/customers/getallisactive",
             "/api/customers/{id}",
@@ -87,15 +86,18 @@ public class SecurityConfig {
             "/api/rentals/getallisactive",
             "/api/rentals/{id}",
             "/api/rentals/uniquediscount/{discountId}",
+            "/api/users/**",
             "/api/users/{id}",
-            "/api/users/email",
+            "/api/getCustomerrentals",
 
 
     };
     private static final String [] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
             "/api/signup",
             "/api/signin",
-            "/api/admins/signin"
+            "/api/admins/signin",
+            "/api/send-contact-email",
+            "/api/customers",
 
     };
 
@@ -103,21 +105,19 @@ public class SecurityConfig {
             "/api/cars",
             "/api/cars/imageupdate",
             "/api/colors",
-            "/api/send-contact-email",
-            "/api/customers",
             "/api/discounts",
             "/api/employees",
-            "/api/files/upload",
-            "/api/imagedata/upload",
             "/api/mail-configuration",
             "/api/models",
             "/api/ourteams",
             "/api/settings",
+<<<<<<< HEAD
             "/api/rentals",
-            "/api/reservation-details",
-            "/api/users",
+=======
 
-            "/api/admins/signin",
+
+>>>>>>> 64a7d6fda1d1e6f480560a9cca749342cde16e59
+            "/api/users",
             "/api/creditcard",
 
 
@@ -125,7 +125,14 @@ public class SecurityConfig {
     private static final String[] ADMIN_USER_POST_URL = {
             "/api/refreshtoken",
             "/api/creditcard/checkpayment",
+<<<<<<< HEAD
+=======
             "/api/users/imageupdate",
+            "/api/rentals",
+            "/api/files/upload",
+            "/api/imagedata/upload",
+>>>>>>> 64a7d6fda1d1e6f480560a9cca749342cde16e59
+            "/api/reservation-details",
 
     };
     private static final String[] ADMIN_PUT_URL = {"/api/brands",
@@ -150,17 +157,22 @@ public class SecurityConfig {
             "/api/employees/{id}",
             "/api/models/{id}",
             "/api/ourteams/{id}",
-            "/api/rentals/{id}",
+
             "/api/users/{id}",
             "/api/creditcard/{id}",
     };
+    private static final String[] ADMIN_USER_DELETE_URL = {"/api/rentals/{id}",
+    };
     private static final String[] ADMIN_PATCH_URL = {
             "/api/users",
+            "api/rentals/vehicle-delivery"
 
     };
     private static final String[] ADMIN_USER_PATCH_URL = {"/api/users/changepassword",
             "/api/cars/isactive/{id}",
             "/api/users/isactive/{id}",
+            "/api/users/updatelocation/{id}",
+
     };
 
 
@@ -202,6 +214,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, ADMIN_POST_URL).hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, ADMIN_USER_POST_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, ADMIN_DELETE_URL).hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_USER_DELETE_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, ADMIN_PATCH_URL).hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, ADMIN_USER_PATCH_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 
