@@ -30,10 +30,12 @@ public class FileUploadManager implements FileUpload {
                 CloudinaryConstants.PUBLIC_ID.getValue(), publicId
         );
 
-        return cloudinary.uploader()
+        String url = cloudinary.uploader()
                 .upload(multipartFile.getBytes(),params1)
                 .get(CloudinaryConstants.URL.getValue())
                 .toString();
+
+        return url.replace("http://", "https://");
     }
 
     @Override
@@ -47,10 +49,12 @@ public class FileUploadManager implements FileUpload {
                 CloudinaryConstants.PUBLIC_ID.getValue(), publicId
         );
 
-        return cloudinary.uploader()
+        String url = cloudinary.uploader()
                 .upload(multipartFile.getBytes(),params1)
                 .get(CloudinaryConstants.URL.getValue())
                 .toString();
+
+        return url.replace("http://", "https://");
     }
 
     @Override
@@ -65,9 +69,11 @@ public class FileUploadManager implements FileUpload {
                 CloudinaryConstants.PUBLIC_ID.getValue(), publicId
         );
 
-        return cloudinary.uploader()
+        String url = cloudinary.uploader()
                 .upload(multipartFile.getBytes(),params1)
                 .get(CloudinaryConstants.URL.getValue())
                 .toString();
+
+        return url.replace("http://", "https://");
     }
 }
