@@ -59,7 +59,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .birthDate(request.getBirthDate())
                 .idCardNumber(request.getIdCardNumber())
-                .imageUrl("https://res.cloudinary.com/dmusx2nmy/image/upload/v1705233022/rent2go/userImages/x3fodxe8nggpt9vxou7v.png")
+                .imageUrl("https://res.cloudinary.com/dmusx2nmy/image/upload/v1708708854/rent2go/userImages/f5c8f972a06cc30c2182b730e8f50adc.png")
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .isActive(false)

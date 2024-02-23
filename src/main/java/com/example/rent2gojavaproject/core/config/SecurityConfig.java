@@ -20,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -74,7 +75,7 @@ public class SecurityConfig {
             "/api/jobtitles",
             "/api/jobtitles/{id}",
             "/api/mail-configuration",
-            "/api/users",
+            "/api/users/**",
             "/api/users/getallisactive",
 
     };
@@ -89,10 +90,11 @@ public class SecurityConfig {
             "/api/users/**",
             "/api/users/{id}",
             "/api/getCustomerrentals",
+            "/api/users/email",
 
 
     };
-    private static final String[] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
+    private static final String [] POST_WHITE_LIST_URL = {"/api/users/resetpassword",
             "/api/signup",
             "/api/signin",
             "/api/admins/signin",
@@ -111,6 +113,8 @@ public class SecurityConfig {
             "/api/models",
             "/api/ourteams",
             "/api/settings",
+
+
             "/api/users",
             "/api/creditcard",
 
@@ -156,7 +160,7 @@ public class SecurityConfig {
     };
     private static final String[] ADMIN_PATCH_URL = {
             "/api/users",
-            "api/rentals/vehicle-delivery"
+            "api/rentals/vehicle-delivery",
 
     };
     private static final String[] ADMIN_USER_PATCH_URL = {"/api/users/changepassword",
@@ -165,6 +169,7 @@ public class SecurityConfig {
             "/api/users/updatelocation/{id}",
 
     };
+
 
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -214,6 +219,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
 
 
         return http.build();
