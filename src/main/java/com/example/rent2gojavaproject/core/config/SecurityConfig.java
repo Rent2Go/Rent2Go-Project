@@ -113,8 +113,6 @@ public class SecurityConfig {
             "/api/models",
             "/api/ourteams",
             "/api/settings",
-
-
             "/api/users",
             "/api/creditcard",
 
