@@ -230,6 +230,22 @@ public class UserManager implements UserService {
     }
 
     @Override
+    public Result UpdateUserAccountSettings(int id, AccountSettingsRequest request, MultipartFile file) throws IOException {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
+        String userImage = this.fileUpload.uploadFileUser(file, user.getEmail());
+        user.setImageUrl(userImage);
+        user.setName(request.getName());
+        user.setSurname(request.getSurname());
+        user.setBirthDate(request.getBirthDate());
+        user.setPhoneNumber(request.getPhoneNumber());
+        this.userRepository.save(user);
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+
+
+    @Override
     public Result UpdateUserLocation(int id, UpdateUserLocationRequest request) {
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));

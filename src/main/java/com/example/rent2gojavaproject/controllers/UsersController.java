@@ -64,6 +64,13 @@ public class UsersController {
         return this.userService.UpdateUserAccountSettings(id,request);
     }
 
+    @PatchMapping("/accountsettingsandimage/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result UpdateUserAccountSettings(@PathVariable  int id, @RequestPart("request") AccountSettingsRequest request,@RequestPart("file") MultipartFile file) throws IOException {
+
+            return this.userService.UpdateUserAccountSettings(id, request, file);
+    }
+
     @PatchMapping("/updatelocation/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Result UpdateUserLocation(@PathVariable  int id,@RequestBody UpdateUserLocationRequest request){

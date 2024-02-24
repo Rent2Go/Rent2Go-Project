@@ -24,4 +24,10 @@ public class ReturnRentalRequest {
     @Positive(message = "End Kilometer must be bigger than 0 !!")
     private Integer endKilometer;
 
+    @NotNull
+    @Positive(message = "Car Id must be greater than 0 !!")
+
+    private int carId;
+
+
 }
