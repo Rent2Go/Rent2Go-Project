@@ -15,6 +15,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.Add
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
+import com.example.rent2gojavaproject.services.rules.CustomerBusinessRules;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CustomerManager implements CustomerService {
     private CustomerRepository customerRepository;
+    private CustomerBusinessRules customerBusinessRules;
     private ModelMapperService mapperService;
     private EntityManager entityManager;
 
@@ -74,6 +76,8 @@ public class CustomerManager implements CustomerService {
     @Override
     public Result addCustomer(AddCustomerRequest addCustomerRequest) {
 
+
+        this.customerBusinessRules.checkIfExistsByUser(addCustomerRequest.getUserId());
         Customer customer = this.mapperService.forRequest().map(addCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
