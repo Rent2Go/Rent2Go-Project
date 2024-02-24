@@ -11,4 +11,13 @@ import lombok.NoArgsConstructor;
 public class GetCustomer {
     private int id;
     private int userId;
+    private String userImageUrl;
+    private String userName;
+    private String userSurname;
+    private String userEmail;
+    private String userPhoneNumber;
+    private String userIdCardNumber;
+    private String userCityName;
+    private String userDistrictName;
+    private String userAddress;
 }

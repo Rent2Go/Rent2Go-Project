@@ -15,6 +15,15 @@ import lombok.NoArgsConstructor;
 public class GetCustomerListResponse {
 
     private int id;
-    private User user;
+    private int userId;
+    private String userImageUrl;
+    private String userName;
+    private String userSurname;
+    private String userEmail;
+    private String userPhoneNumber;
+    private String userIdCardNumber;
+    private String userCityName;
+    private String userDistrictName;
+    private String userAddress;
 
 }
