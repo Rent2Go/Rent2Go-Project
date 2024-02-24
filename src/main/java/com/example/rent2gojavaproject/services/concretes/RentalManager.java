@@ -97,8 +97,8 @@ public class RentalManager implements RentalService {
         Rental rental = mapperService.forRequest().map(addRentalRequest, Rental.class);
         rental.setDiscount(defaultDiscount);
         rental.setTotalPrice(totalPrice);
-
         rental.setStartKilometer(car.getKilometer());
+        car.setActive(false);
         Rental result =rentalRepository.save(rental);
 
         return new SuccessDataResult(result.getId() , MessageConstants.ADD.getMessage());
