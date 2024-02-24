@@ -1,9 +1,11 @@
 package com.example.rent2gojavaproject.services.dtos.requests.rentalRequest;
 
 
+import com.example.rent2gojavaproject.core.exceptions.FutureOrPresent;
 import com.example.rent2gojavaproject.models.Discount;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +19,11 @@ import java.time.LocalDate;
 public class AddRentalRequest {
 
     @NotNull(message = "Start Date must be entered !!")
-    //@Future(message = "Start Date must be in the future !!")
+    @FutureOrPresent(message = "Start Date must be in the future !!")
     private LocalDate startDate;
 
     @NotNull(message = "End Date must be entered !!")
-    //@Future(message = "End Date must be in the future !!")
+    @Future(message = "End Date must be in the future !!")
     private LocalDate endDate;
 
     @NotNull(message = "Car ID must be entered !!")
