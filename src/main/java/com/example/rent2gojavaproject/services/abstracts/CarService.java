@@ -7,6 +7,7 @@ import com.example.rent2gojavaproject.services.dtos.requests.carRequest.AddCarRe
 import com.example.rent2gojavaproject.services.dtos.requests.carRequest.UpdateCarRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.carResponse.GetCarResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,13 +17,15 @@ public interface CarService {
 
     DataResult<List<GetCarListResponse>> getAllCars();
 
+    public DataResult<Page<GetCarListResponse>> getAllCars(int pageNo, int pageSize);
+
     DataResult<GetCarResponse> getById(int id);
 
     Result addCar(AddCarRequest addCarRequest, MultipartFile file) throws IOException;
 
-    Result updateCarImage(String carPlate , MultipartFile file) throws IOException ;
+    Result updateCarImage(String carPlate, MultipartFile file) throws IOException;
 
-    Result updateCarIsActive(int id, boolean isActive) ;
+    Result updateCarIsActive(int id, boolean isActive);
 
     Result updateCar(UpdateCarRequest updateCarRequest);
 

@@ -128,6 +128,7 @@ public class SecurityConfig {
             "/api/files/upload",
             "/api/imagedata/upload",
             "/api/reservation-details",
+            "/api/accountsettingsandimage/{id}",
 
     };
     private static final String[] ADMIN_PUT_URL = {"/api/brands",

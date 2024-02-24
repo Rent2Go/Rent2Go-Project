@@ -28,6 +28,9 @@ public interface UserService {
 
     Result UpdateUserAccountSettings(int id, AccountSettingsRequest request);
 
+
+    Result UpdateUserAccountSettings(int id, AccountSettingsRequest request, MultipartFile file) throws IOException;
+
     Result UpdateUserLocation(int id, UpdateUserLocationRequest request);
 
     Result updateUserImage(String email, MultipartFile file) throws IOException;
