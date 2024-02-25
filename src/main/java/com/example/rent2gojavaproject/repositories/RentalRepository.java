@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Optional;import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
 
@@ -16,6 +17,13 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
 
     @Query(value = "SELECT CheckUniqueDiscount(:customerId, :discountId)", nativeQuery = true)
     String checkUniqueDiscount(@Param("customerId") int customerId, @Param("discountId") int discountId);
+
+
+
+    @Query("SELECT r FROM Rental r WHERE r.returnDate IS NULL AND r.car.isActive = false")
+    List<Rental> findByReturnDateIsNullAndCarIsActiveTrue();
+    @Query("SELECT r FROM Rental r WHERE r.returnDate IS NOT NULL AND r.car.isActive = true")
+    List<Rental> findByReturnDateIsNotNullAndCarIsActiveFalse();
 
 
 

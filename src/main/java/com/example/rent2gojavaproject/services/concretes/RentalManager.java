@@ -31,7 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +63,30 @@ public class RentalManager implements RentalService {
         List<GetRentalListResponse> responses = rentalPage.getContent().stream()
                 .map(rental -> this.mapperService.forResponse().map(rental, GetRentalListResponse.class))
                 .collect(Collectors.toList());
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
+    }
+
+
+
+    @Override
+    public DataResult<List<GetRentalListResponse>> findByReturnDateIsNullAndCarIsActiveTrue() {
+        List<Rental> rentals = this.rentalRepository.findByReturnDateIsNullAndCarIsActiveTrue();
+        List<GetRentalListResponse> responses = rentals.stream()
+                .map(rental -> this.mapperService.forResponse()
+                        .map(rental, GetRentalListResponse.class))
+                .collect(Collectors.toList());
+
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<List<GetRentalListResponse>> findByReturnDateIsNotNullAndCarIsActiveFalse() {
+        List<Rental> rentals = this.rentalRepository.findByReturnDateIsNotNullAndCarIsActiveFalse();
+        List<GetRentalListResponse> responses = rentals.stream()
+                .map(rental -> this.mapperService.forResponse()
+                        .map(rental, GetRentalListResponse.class))
+                .collect(Collectors.toList());
+
         return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
