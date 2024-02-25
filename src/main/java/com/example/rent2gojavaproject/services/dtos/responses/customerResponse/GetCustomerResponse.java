@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +15,8 @@ public class GetCustomerResponse {
 
     private int id;
     private int userId;
+    private LocalDate issueDate;
+    private LocalDate expiryDate;
     private String userImageUrl;
     private String userName;
     private String userSurname;

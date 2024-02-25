@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerDriverLicence;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
@@ -19,6 +20,8 @@ public interface CustomerService {
     Result addCustomer(AddCustomerRequest addCustomerRequest);
 
     Result updateCustomer(UpdateCustomerRequest updateCustomerRequest);
+
+    Result updateCustomerLicence(UpdateCustomerDriverLicence request);
 
     Result DeleteCustomer(int customerId);
 

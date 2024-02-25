@@ -10,6 +10,7 @@ import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,12 @@ public class Customer extends BaseEntity {
     @Column(name = "id")
     private int id;
 
+
+    @Column(name=("driver_card_issue_date") ,nullable = true)
+    private LocalDate issueDate;
+
+    @Column(name=("driver_car_expiry_date"),nullable = true)
+    private LocalDate expiryDate;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

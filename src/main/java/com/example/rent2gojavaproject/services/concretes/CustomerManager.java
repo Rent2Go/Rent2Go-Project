@@ -12,6 +12,7 @@ import com.example.rent2gojavaproject.models.Customer;
 import com.example.rent2gojavaproject.repositories.CustomerRepository;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerDriverLicence;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
@@ -92,6 +93,17 @@ public class CustomerManager implements CustomerService {
         Customer customer = this.mapperService.forRequest().map(updateCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
 
+        return new SuccessResult(MessageConstants.UPDATE.getMessage());
+    }
+
+
+    @Override
+    public Result updateCustomerLicence(UpdateCustomerDriverLicence request) {
+        Customer customer = this.customerRepository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + request.getId()));
+        customer.setIssueDate(request.getIssueDate());
+        customer.setExpiryDate(request.getExpiryDate());
+        this.customerRepository.save(customer);
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
 

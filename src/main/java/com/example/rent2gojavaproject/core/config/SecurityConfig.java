@@ -166,6 +166,7 @@ public class SecurityConfig {
             "/api/cars/isactive/{id}",
             "/api/users/isactive/{id}",
             "/api/users/updatelocation/{id}",
+            "/api/customers//driverlicence"
 
     };
 

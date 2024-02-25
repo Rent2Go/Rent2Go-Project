@@ -4,6 +4,7 @@ import com.example.rent2gojavaproject.core.utilities.results.DataResult;
 import com.example.rent2gojavaproject.core.utilities.results.Result;
 import com.example.rent2gojavaproject.services.abstracts.CustomerService;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.AddCustomerRequest;
+import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerDriverLicence;
 import com.example.rent2gojavaproject.services.dtos.requests.customerRequest.UpdateCustomerRequest;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerListResponse;
 import com.example.rent2gojavaproject.services.dtos.responses.customerResponse.GetCustomerResponse;
@@ -49,6 +50,12 @@ public class CustomersController {
     public Result updateCustomer(@RequestBody @Valid UpdateCustomerRequest updateCustomerRequest) {
 
         return this.customerService.updateCustomer(updateCustomerRequest);
+    }
+    @PatchMapping("/driverlicence")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Result updateCustomerLicence(@RequestBody @Valid  UpdateCustomerDriverLicence request) {
+
+        return this.customerService.updateCustomerLicence(request);
     }
 
     @DeleteMapping("/{id}")
