@@ -35,6 +35,8 @@ public class Customer extends BaseEntity {
 
     @Column(name=("driver_car_expiry_date"),nullable = true)
     private LocalDate expiryDate;
+    @Column(name="driver_license_age",nullable = true)
+    private Integer driverLicenseAge;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

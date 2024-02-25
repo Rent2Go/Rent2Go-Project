@@ -15,6 +15,7 @@ public class GetCustomer {
     private int userId;
     private LocalDate issueDate;
     private LocalDate expiryDate;
+    private int driverLicenceAge;
     private String userImageUrl;
     private String userName;
     private String userSurname;
@@ -24,4 +25,5 @@ public class GetCustomer {
     private String userCityName;
     private String userDistrictName;
     private String userAddress;
+
 }

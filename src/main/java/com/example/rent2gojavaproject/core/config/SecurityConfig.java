@@ -68,7 +68,6 @@ public class SecurityConfig {
             "/api/departments/{id}",
             "/api/customers",
             "/api/customers/getallisactive",
-            "/api/customers/{id}",
             "/api/employees",
             "/api/employees/{id}",
             "/api/employees/getallisactive",
@@ -90,6 +89,7 @@ public class SecurityConfig {
             "/api/rentals/uniquediscount/{discountId}",
             "/api/users/{id}",
             "/api/getCustomerrentals",
+            "/api/customers/{id}",
             "/api/users/email",
 
 

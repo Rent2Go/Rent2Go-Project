@@ -68,9 +68,7 @@ public class CustomerManager implements CustomerService {
     public DataResult<GetCustomerResponse> getById(int id) {
         Customer customer = this.customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageConstants.CUSTOMER.getMessage() + MessageConstants.NOT_FOUND.getMessage()));
-
         GetCustomerResponse response = this.mapperService.forResponse().map(customer, GetCustomerResponse.class);
-
         return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
 
@@ -103,6 +101,8 @@ public class CustomerManager implements CustomerService {
                 .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + request.getId()));
         customer.setIssueDate(request.getIssueDate());
         customer.setExpiryDate(request.getExpiryDate());
+        Integer driverLicenceAge = this.customerBusinessRules.customerDrivingLicenceAge(request.getIssueDate());
+        customer.setDriverLicenseAge(driverLicenceAge);
         this.customerRepository.save(customer);
         return new SuccessResult(MessageConstants.UPDATE.getMessage());
     }
