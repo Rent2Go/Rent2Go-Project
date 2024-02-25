@@ -157,12 +157,16 @@ public class SecurityConfig {
     };
     private static final String[] ADMIN_USER_DELETE_URL = {"/api/rentals/{id}",
     };
+
+    private static final String[] PATCH_WHITE_LIST_URL = {"/api/users/changepassword",
+
+    };
     private static final String[] ADMIN_PATCH_URL = {
             "/api/users",
             "api/rentals/vehicle-delivery",
 
     };
-    private static final String[] ADMIN_USER_PATCH_URL = {"/api/users/changepassword",
+    private static final String[] ADMIN_USER_PATCH_URL = {
             "/api/cars/isactive/{id}",
             "/api/users/isactive/{id}",
             "/api/users/updatelocation/{id}",
@@ -210,6 +214,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, ADMIN_USER_POST_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, ADMIN_DELETE_URL).hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, ADMIN_USER_DELETE_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PATCH, PATCH_WHITE_LIST_URL).permitAll()
                         .requestMatchers(HttpMethod.PATCH, ADMIN_PATCH_URL).hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, ADMIN_USER_PATCH_URL).hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 

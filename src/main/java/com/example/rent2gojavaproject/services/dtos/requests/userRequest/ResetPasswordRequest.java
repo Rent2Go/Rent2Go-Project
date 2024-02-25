@@ -16,5 +16,5 @@ public class ResetPasswordRequest {
     @NotBlank
     private String email;
     @NotBlank
-    private String firstname;
+    private String idCardNumber;
 }

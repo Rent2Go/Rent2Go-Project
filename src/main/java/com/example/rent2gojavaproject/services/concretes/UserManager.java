@@ -330,9 +330,11 @@ public class UserManager implements UserService {
 
     public void resetPassword(ResetPasswordRequest resetPasswordRequest, HttpServletRequest servletRequest) throws Exception {
 
-        User user = this.userRepository.findByEmailAndName(resetPasswordRequest.getEmail(),
-                        resetPasswordRequest.getFirstname())
-                .orElseThrow(() -> new NotFoundException(resetPasswordRequest.getFirstname() + MessageConstants.NOT_FOUND.getMessage()));
+        User user = this.userRepository.findByEmail(resetPasswordRequest.getEmail())
+                .orElseThrow(() -> new NotFoundException(resetPasswordRequest.getEmail() + MessageConstants.NOT_FOUND.getMessage()));
+
+        this.userRepository.findByIdCardNumber(resetPasswordRequest.getIdCardNumber())
+                .orElseThrow(() -> new NotFoundException("Id Card Number" + MessageConstants.NOT_FOUND.getMessage()));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         String token = jwtService.generateToken(user);
