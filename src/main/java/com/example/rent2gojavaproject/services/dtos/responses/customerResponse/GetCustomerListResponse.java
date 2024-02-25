@@ -20,6 +20,7 @@ public class GetCustomerListResponse {
     private int userId;
     private LocalDate issueDate;
     private LocalDate expiryDate;
+    private int driverLicenceAge;
     private String userImageUrl;
     private String userName;
     private String userSurname;
