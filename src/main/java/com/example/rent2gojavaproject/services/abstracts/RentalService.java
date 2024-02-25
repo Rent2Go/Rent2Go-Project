@@ -25,6 +25,13 @@ public interface RentalService {
 
     Result deleteRental(int id);
 
+
+
+
+    DataResult<List<GetRentalListResponse>> findByReturnDateIsNullAndCarIsActiveTrue();
+
+    DataResult<List<GetRentalListResponse>> findByReturnDateIsNotNullAndCarIsActiveFalse();
+
     DataResult<Iterable<GetRentalListResponse>> findAll(boolean isActive);
 
     boolean findByCustomerIdAndDiscountId(int customerId, int discountId);

@@ -35,6 +35,18 @@ public class RentalsController {
        return  this.rentalService.getAllRentals(pageNo, pageSize);
     }
 
+
+
+    @GetMapping("/getallactive")
+    public DataResult<List<GetRentalListResponse>> findByReturnDateIsNullAndCarIsActiveTrue() {
+        return this.rentalService.findByReturnDateIsNullAndCarIsActiveTrue();
+    }
+
+    @GetMapping("/getallpassive")
+    public DataResult<List<GetRentalListResponse>> findByReturnDateIsNotNullAndCarIsActiveFalse() {
+        return this.rentalService.findByReturnDateIsNotNullAndCarIsActiveFalse();
+    }
+
     @GetMapping("/getallisactive")
     public DataResult<Iterable<GetRentalListResponse>> findAll(@RequestParam boolean isActive) {
         return this.rentalService.findAll(isActive);
