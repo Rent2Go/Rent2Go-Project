@@ -32,6 +32,8 @@ public class AddRentalRequest {
     @NotNull(message = "Customer ID must be entered !!")
     private int customerId;
 
+    private int employeeId;
+
     private Discount discount;
 
 
