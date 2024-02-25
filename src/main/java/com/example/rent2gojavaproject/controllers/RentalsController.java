@@ -28,6 +28,13 @@ public class RentalsController {
         return rentalService.getAllRentals();
     }
 
+
+    @GetMapping("/getallpageable/{pageNo}")
+    public DataResult<List<GetRentalListResponse>> getAllRentals(@PathVariable int pageNo, @RequestParam("size")  int pageSize) {
+
+       return  this.rentalService.getAllRentals(pageNo, pageSize);
+    }
+
     @GetMapping("/getallisactive")
     public DataResult<Iterable<GetRentalListResponse>> findAll(@RequestParam boolean isActive) {
         return this.rentalService.findAll(isActive);

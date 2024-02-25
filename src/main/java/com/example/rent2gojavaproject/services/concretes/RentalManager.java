@@ -25,6 +25,10 @@ import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -50,6 +54,16 @@ public class RentalManager implements RentalService {
                         .map(rental, GetRentalListResponse.class))
                 .collect(Collectors.toList());
 
+        return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
+    }
+
+    @Override
+    public DataResult<List<GetRentalListResponse>> getAllRentals(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo-1, pageSize, Sort.by( Sort.Direction.DESC,"startDate"));
+        Page<Rental> rentalPage = this.rentalRepository.findAll(pageable);
+        List<GetRentalListResponse> responses = rentalPage.getContent().stream()
+                .map(rental -> this.mapperService.forResponse().map(rental, GetRentalListResponse.class))
+                .collect(Collectors.toList());
         return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
@@ -83,17 +97,13 @@ public class RentalManager implements RentalService {
     @Override
     public DataResult<Integer> addRental(AddRentalRequest addRentalRequest) {
         Car car = carRepository.findById(addRentalRequest.getCarId()).orElseThrow();
-
         String discountCode = addRentalRequest.getDiscount().getDiscountCode();
         Discount defaultDiscount = businessRules.getDiscountByCodeOrDefault(discountCode);
-
         businessRules.checkIfExistsById(addRentalRequest.getCarId(), addRentalRequest.getCustomerId());
         businessRules.checkRentalPeriod(addRentalRequest.getStartDate(), addRentalRequest.getEndDate());
-
         double totalPrice = businessRules.calculateTotalPrice(
                 addRentalRequest.getStartDate(), addRentalRequest.getEndDate(),
                 car.getDailyPrice(), defaultDiscount.getDiscountCode());
-
         Rental rental = mapperService.forRequest().map(addRentalRequest, Rental.class);
         rental.setDiscount(defaultDiscount);
         rental.setTotalPrice(totalPrice);

@@ -72,6 +72,8 @@ public class CarManager implements CarService {
         return new SuccessDataResult<>(responses, MessageConstants.GET_ALL.getMessage());
     }
 
+
+
     @Override
     public DataResult<Iterable<GetCarListResponse>> findAll(boolean isActive) {
 
