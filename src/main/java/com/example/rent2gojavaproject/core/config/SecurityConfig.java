@@ -126,7 +126,8 @@ public class SecurityConfig {
             "/api/files/upload",
             "/api/imagedata/upload",
             "/api/reservation-details",
-            "/api/accountsettingsandimage/{id}",
+            "/api/send-cash-email",
+
 
     };
     private static final String[] ADMIN_PUT_URL = {"/api/brands",
@@ -170,7 +171,8 @@ public class SecurityConfig {
             "/api/cars/isactive/{id}",
             "/api/users/isactive/{id}",
             "/api/users/updatelocation/{id}",
-            "/api/customers//driverlicence"
+            "/api/customers//driverlicence",
+            "/api/accountsettingsandimage/{id}",
 
     };
 

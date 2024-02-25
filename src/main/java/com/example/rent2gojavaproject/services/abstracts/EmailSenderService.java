@@ -26,4 +26,6 @@ public interface EmailSenderService {
     void sendThankYouEmail(ContactFormRequest form) throws MessagingException, UnsupportedEncodingException;
 
     void reservationDetailEmail(AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException;
+
+    void cashReservationDetail(AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException;
 }

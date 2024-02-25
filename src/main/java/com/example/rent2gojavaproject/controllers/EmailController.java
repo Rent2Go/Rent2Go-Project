@@ -29,4 +29,10 @@ public class EmailController {
     public void sendReservationDetailEmail(@RequestBody AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException {
         emailService.reservationDetailEmail(form);
     }
+
+    @PostMapping("/send-cash-email")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void sendCashEmail(@RequestBody AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException {
+        emailService.cashReservationDetail(form);
+    }
 }

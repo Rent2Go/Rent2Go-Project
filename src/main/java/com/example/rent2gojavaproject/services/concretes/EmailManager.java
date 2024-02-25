@@ -182,6 +182,47 @@ public class EmailManager implements EmailSenderService {
         mailSender.send(message);
     }
 
+    @Override
+    public  void cashReservationDetail (AddReservationDetailRequest form) throws MessagingException, UnsupportedEncodingException {
+        JavaMailSender mailSender = getJavaMailSender();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setFrom(EmailConstants.EMAIL_FROM.getValue(), EmailConstants.EMAIL_FROM_NAME.getValue());
+        helper.setTo(form.getEmail());
+        helper.setSubject(EmailConstants.RESERVATION_CONFIRMATION_SUBJECT.getValue());
+
+        String htmlMsg = String.format(EmailConstants.RESERVATION_CONFIRMATION_HTML_CONTENT.getValue(),
+                form.getName(),
+                form.getName(),
+                form.getEmail(),
+                form.getPhone(),
+                form.getStartDate(),
+                form.getEndDate(),
+                form.getTotalDay(),
+                form.getPlate(),
+                form.getCarInfo(),
+                form.getTotalPrice());
+
+
+        String textMsg = String.format(EmailConstants.RESERVATION_CONFIRMATION_TEXT_CONTENT.getValue(),
+                form.getName(),
+                form.getName(),
+                form.getEmail(),
+                form.getPhone(),
+                form.getStartDate(),
+                form.getEndDate(),
+                form.getTotalDay(),
+                form.getPlate(),
+                form.getCarInfo(),
+                form.getTotalPrice());
+
+        helper.setText(textMsg, htmlMsg);
+
+        mailSender.send(message);
+    }
+
 
 
 

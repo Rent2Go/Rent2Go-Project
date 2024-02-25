@@ -93,7 +93,41 @@ public enum EmailConstants {
             "If you have any questions or need further assistance, please do not hesitate to contact us. " +
             "We look forward to serving you on your rental day.\n" +
             "Best regards,\n" +
-            "Rent2Go Team");
+            "Rent2Go Team"),
+
+    RESERVATION_CONFIRMATION_SUBJECT("Reservation Confirmation"),
+    RESERVATION_CONFIRMATION_HTML_CONTENT("<h1>Your reservation record has been created.</h1>" +
+                                                  "<p>Dear %s,</p>" +
+                                                  "<p>Thank you for choosing our service. To confirm your reservation, please contact us. Remember, payment should be made when you come to our office to pick up your car on the rental day.</p>" +
+                                                  "<p>Your reservation details are as follows:</p>" +
+                                                  "<p><strong>Name:</strong> %s </p>" +
+                                                  "<p><strong>Email:</strong> %s </p>" +
+                                                  "<p><strong>Phone:</strong> %s </p>" +
+                                                  "<p><strong>Start Date:</strong> %s </p>" +
+                                                  "<p><strong>End Date:</strong> %s </p>" +
+                                                  "<p><strong>Total Day:</strong> %s </p>" +
+                                                  "<p><strong>Plate:</strong> %s </p>" +
+                                                  "<p><strong>Car Info:</strong> %s </p>" +
+                                                  "<p><strong>Total Price:</strong> %s </p>" +
+                                                  "<p>We look forward to serving you on your rental day.<br>" +
+                                                  "Best regards,<br>" +
+                                                  "Rent2Go Team</p>"),
+    RESERVATION_CONFIRMATION_TEXT_CONTENT("Your reservation record has been created.\n" +
+                                                  "Dear %s,\n" +
+                                                  "Thank you for choosing our service. To confirm your reservation, please contact us. Remember, payment should be made when you come to our office to pick up your car on the rental day.\n" +
+                                                  "Your reservation details are as follows:\n" +
+                                                  "Name: %s\n" +
+                                                  "Email: %s\n" +
+                                                  "Phone: %s\n" +
+                                                  "Start Date: %s\n" +
+                                                  "End Date: %s\n" +
+                                                  "Total Day: %s\n" +
+                                                  "Plate: %s\n" +
+                                                  "Car Info: %s\n" +
+                                                  "Total Price: %s₺\n" +
+                                                  "We look forward to serving you on your rental day.\n" +
+                                                  "Best regards,\n" +
+                                                  "Rent2Go Team");
 
     private final String value;
 
