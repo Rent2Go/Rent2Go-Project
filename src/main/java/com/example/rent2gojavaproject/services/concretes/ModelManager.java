@@ -103,7 +103,7 @@ public class ModelManager implements ModelService {
     @Override
     public Result deleteModel(int id) {
 
-        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Model model = this.modelRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         modelBusinessRules.changeDeleteDate(model);
 
         this.modelRepository.save(model);

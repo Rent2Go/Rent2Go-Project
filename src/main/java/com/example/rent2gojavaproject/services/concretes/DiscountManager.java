@@ -97,7 +97,7 @@ public class DiscountManager implements DiscountService {
     @Override
     public Result deleteDiscount(int id) {
 
-        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Discount discount = this.discountRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         discount.setDeletedAt(LocalDate.now());
         this.discountRepository.save(discount);
         this.discountRepository.delete(discount);

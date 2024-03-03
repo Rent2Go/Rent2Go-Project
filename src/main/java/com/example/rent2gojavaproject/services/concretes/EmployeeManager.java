@@ -97,7 +97,7 @@ public class EmployeeManager implements EmployeeService {
     @Override
     public Result deleteEmployee(int id) {
 
-        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         employee.setDeletedAt(LocalDate.now());
         this.employeeRepository.save(employee);
         this.employeeRepository.delete(employee);

@@ -6,13 +6,14 @@ public enum MessageConstants {
     BRAND("Brand"), COLOR("Color"), CAR("Car"), CUSTOMER("Customer"), RENTAL("Rental"),
     DISCOUNT("Discount"), EMPLOYEE("Employee"), MODEL("Model"), USER("User"), BILL("Bill"),PAYMENT("Payment"),
 
-    ADD("TheAdditionOperationWasSuccessful"),
-    UPDATE("TheUpdateOperationWasSuccessful"),
+    ADD("The addition operation was successful!"),
+    UPDATE("The update operation was successful!"),
     DELETE("The deletion operation was successful!"),
     GET_ALL("All records were listed!"),
     GET("The record was found!"),
 
-    ID_NOT_FOUND("Id not found : "),
+    ID_NOT_FOUND("Id not found!"),
+
     NOT_FOUND(" not found"),
     ALREADY_EXISTS(" already exists"),
     EMAIL_ALREADY_EXISTS(" Email already exists"),

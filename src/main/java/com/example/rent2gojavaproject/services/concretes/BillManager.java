@@ -83,7 +83,7 @@ public class BillManager implements BillService {
 
     @Override
     public Result deleteBill(int id) {
-        Bill bill = this.billRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Bill bill = this.billRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         bill.setDeletedAt(LocalDate.now());
         this.billRepository.save(bill);
         this.billRepository.delete(bill);

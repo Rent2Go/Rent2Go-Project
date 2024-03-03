@@ -103,7 +103,7 @@ public class ColorManager implements ColorService {
     @Override
     public Result deleteColor(int id) {
 
-        Color color = this.colorRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Color color = this.colorRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         color.setDeletedAt(LocalDate.now());
 
         this.colorRepository.save(color);

@@ -98,7 +98,7 @@ public class CustomerManager implements CustomerService {
     @Override
     public Result updateCustomerLicence(UpdateCustomerDriverLicence request) {
         Customer customer = this.customerRepository.findById(request.getId())
-                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + request.getId()));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         customer.setIssueDate(request.getIssueDate());
         customer.setExpiryDate(request.getExpiryDate());
         Integer driverLicenceAge = this.customerBusinessRules.customerDrivingLicenceAge(request.getIssueDate());
@@ -111,7 +111,7 @@ public class CustomerManager implements CustomerService {
     public Result DeleteCustomer(int id) {
 
         Customer customer = this.customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+                .orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         customer.setDeletedAt(LocalDate.now());
         customer.setActive(false);
 

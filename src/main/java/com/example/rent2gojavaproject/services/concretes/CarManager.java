@@ -163,7 +163,7 @@ public class CarManager implements CarService {
     @Override
     public Result deleteCar(int id) {
 
-        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Car car = this.carRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         car.setDeletedAt(LocalDate.now());
 
         this.carRepository.deleteById(id);

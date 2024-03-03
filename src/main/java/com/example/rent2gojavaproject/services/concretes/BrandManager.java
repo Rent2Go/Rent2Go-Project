@@ -103,7 +103,7 @@ public class BrandManager implements BrandService {
     @Override
     public Result deleteBrand(int id) {
 
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         businessRules.changeDeleteDate(brand);
 
         this.brandRepository.save(brand);

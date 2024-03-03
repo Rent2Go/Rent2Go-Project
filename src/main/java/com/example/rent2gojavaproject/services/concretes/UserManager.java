@@ -309,7 +309,7 @@ public class UserManager implements UserService {
     @Override
     public Result deleteUser(int id) {
 
-        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
         user.setDeletedAt(LocalDate.now());
         user.setActive(false);
         user.setEnabled(false);
@@ -323,7 +323,7 @@ public class UserManager implements UserService {
     @Override
     public void hardDeleteUser(int id) {
 
-        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage() + id));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageConstants.ID_NOT_FOUND.getMessage()));
 
         this.userRepository.delete(user);
     }
