@@ -24,7 +24,7 @@ public enum MessageConstants {
     MAX_RENTAL_DAYS_ERROR("Car can be rented for a maximum of 25 days.!"),
 
     PASSWORD_CHANGED("Password changed successfully"),
-    EMAIL_NOT_FOUND("Email not found : "),
+    EMAIL_NOT_FOUND("emailNotFound"),
     FILE_UPLOAD_SUCCESS("File uploaded successfully"),
 
     USER_NOT_ENABLED("Please verify your account with your email address  "),
