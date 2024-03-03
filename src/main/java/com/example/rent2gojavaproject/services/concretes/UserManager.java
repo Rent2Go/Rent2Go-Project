@@ -286,7 +286,7 @@ public class UserManager implements UserService {
 
     @Override
     public Result updateUserImage(String email, MultipartFile file) throws IOException {
-        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() + email));
+        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
         String userImage = this.fileUpload.uploadFileUser(file, email);
         user.setImageUrl(userImage);
 
@@ -347,7 +347,7 @@ public class UserManager implements UserService {
     @Override
     public String changePassword(ChangePasswordRequest changePasswordRequest) {
 
-        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() + changePasswordRequest.getEmail()));
+        userRepository.findByEmail(changePasswordRequest.getEmail()).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
         userRepository.passwordChange(changePasswordRequest.getEmail(), passwordEncoder.encode(changePasswordRequest.getPassword()));
 
 
@@ -379,12 +379,12 @@ public class UserManager implements UserService {
     @Override
     public User findByEmail(String email) {
 
-        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() + email));
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
     }
 
     @Override
     public DataResult<GetUserListResponse> getByEmail(String email) {
-        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage() + email));
+        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(MessageConstants.EMAIL_NOT_FOUND.getMessage()));
         GetUserListResponse response = this.mapperService.forResponse().map(user, GetUserListResponse.class);
         return new SuccessDataResult<>(response, MessageConstants.GET.getMessage());
     }
