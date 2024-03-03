@@ -6,8 +6,8 @@ public enum MessageConstants {
     BRAND("Brand"), COLOR("Color"), CAR("Car"), CUSTOMER("Customer"), RENTAL("Rental"),
     DISCOUNT("Discount"), EMPLOYEE("Employee"), MODEL("Model"), USER("User"), BILL("Bill"),PAYMENT("Payment"),
 
-    ADD("The addition operation was successful!"),
-    UPDATE("The update operation was successful!"),
+    ADD("TheAdditionOperationWasSuccessful"),
+    UPDATE("TheUpdateOperationWasSuccessful"),
     DELETE("The deletion operation was successful!"),
     GET_ALL("All records were listed!"),
     GET("The record was found!"),
