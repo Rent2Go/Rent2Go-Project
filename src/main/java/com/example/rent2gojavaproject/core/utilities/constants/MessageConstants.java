@@ -28,7 +28,7 @@ public enum MessageConstants {
     FILE_UPLOAD_SUCCESS("File uploaded successfully"),
 
     USER_NOT_ENABLED("Please verify your account with your email address  "),
-    INVALID_PASSWORD("Invalid password."),
+    INVALID_PASSWORD("invalidPassword"),
     TOKEN_NOT_FOUND("Token not found!"),
     EMAIL_ALREADY_VERIFIED("Your email address has already been verified, please log in."),
     TOKEN_EXPIRED("Your email verification link is invalid or has expired. Please, sign up again."),
